@@ -1,0 +1,113 @@
+.LoginPage {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#login_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto; 
+    padding: 20px;
+}
+
+.LoginPage .login-align{
+    width: 320px; 
+    align-items: center;
+}
+
+.LoginPage .loginbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #F4F4F4;
+    width: 400px;
+    height: 430px;
+    border-radius: 25px;
+    background-color: #F4F4F4;
+}
+
+.LoginPage .emailbox, .LoginPage .pwdbox {
+    border-radius: 10px; 
+    border-style: none;
+    padding: 12px 12px; 
+    font-size: 16px; 
+    width: 320px; 
+    box-sizing: border-box;
+}
+
+.LoginPage .emailbox:focus,.LoginPage .pwdbox:focus {
+    box-sizing: border-box;
+    outline: lightcoral;
+    border: 2px solid lightcoral;
+}
+
+.LoginPage .emailLoginBtn, .LoginPage .kakaoLoginBtn, .LoginPage .naverLoginBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    box-sizing: border-box;
+    padding: 10px 20px;           
+    font-size: 16px;              
+    border-radius: 10px;             
+    color: white;   
+    width: 320px;            
+    cursor: pointer;  
+    font-weight: bold;
+}
+
+.LoginPage .emailLoginBtn {    
+    border: 1px solid #FFD8E4;   
+    background-color: #FFD8E4;       
+}
+.LoginPage .emailLoginBtn:hover {
+    background-color: white; 
+    color: #fd9bb9; 
+}
+
+
+.LoginPage .kakaoLoginBtn { 
+    color: #401717;   
+    border: 1px solid #FEE500;   
+    background-color: #FEE500;       
+}
+
+
+.LoginPage .naverLoginBtn {    
+    border: 1px solid #03C75A;   
+    background-color: #03C75A;       
+}
+
+
+.LoginPage .find {
+    display: inline-block; 
+    margin-right: 25px; 
+    font-weight: bold;
+}
+
+.LoginPage .find a {
+    text-decoration: none; 
+    color: #737373; 
+    font-size: 11px; 
+}
+
+.LoginPage .find a:hover {
+    color: #047dff; 
+}
+
+.LoginPage .LoginPage input[type="password"] {
+    margin-top: 5px; 
+}
+
+.LoginPage .LoginPage input[type="email"] {
+    margin-top: 5px; 
+}
+
