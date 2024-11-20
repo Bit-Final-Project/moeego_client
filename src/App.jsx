@@ -42,6 +42,16 @@ import Locations from "./components/mainpage/Locations.jsx";
 import ArticleMain from './components/articles/ArticleMain.jsx';
 import BookMarkPro from './components/mypage/BookMarkPro.jsx';
 import ProDetail from './components/Pro/ProDetail.jsx';
+import SideBar from "./components/admin/Sidebar.jsx";
+import DashBoard from "./components/admin/Dashboard.jsx";
+import ProApproval from "./components/admin/ProApproval.jsx";
+import ProList from "./components/admin/membership/ProList.jsx";
+import LeaveMemberList from "./components/admin/membership/LeaveMemberList.jsx";
+import MemberList from "./components/admin/membership/MemberList.jsx";
+import ProRequest from "./components/ProRequest.jsx";
+import EventList from "./components/admin/EventList.jsx";
+import EventWrite from "./components/admin/EventWrite.jsx";
+import EventUpdate from "./components/admin/EventUpdate.jsx";
 
 const App = () => {
   return (
@@ -104,6 +114,21 @@ const App = () => {
             <Route path="/pro/signup/sub" element={<ProSub />} />
             <Route path="/pro/signup" element={<Prosignup />} />
             <Route path="/pro/detail" element={<ProDetail />} />
+
+            {/* 관리자 페이지 */}
+            <Route path="/admin/SideBar" element={<SideBar />} />
+            <Route path="/admin/DashBoard" element={<DashBoard />} />
+            <Route path="/admin/ProApproval" element={<ProApproval />} />
+            <Route path="/admin/ProList" element={<ProList />} />
+            <Route path="/admin/MemberList" element={<MemberList />} />
+            <Route path="/admin/LeaveMemberList" element={<LeaveMemberList />} />
+            <Route path="/admin/EventList" element={<EventList />} />
+            <Route path="/admin/EventWrite" element={<EventWrite />} />
+            <Route path="/admin/EventUpdate" element={<EventUpdate />} />
+
+            
+
+            <Route path="/ProRequest" element={<ProRequest />} />
           </Routes>
         </div>
         <Footer />
