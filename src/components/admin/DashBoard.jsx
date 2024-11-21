@@ -26,7 +26,6 @@ const DashBoard = () => {
                 <div className="adminDashBoard-header">
                     <h1>대시보드 | 각종 이력을 간략히 확인할 수 있습니다.</h1>
                 </div>
-
                 <div className="adminDashBoard-list-section">
                     <div className="adminDashBoard-list-header">
                         <h4>List</h4>
@@ -105,7 +104,7 @@ const DashBoard = () => {
                             <div className="adminDashBoard-count-button-wrapper">
                                 <button
                                     className="adminDashBoard-count-button"
-                                    onClick={(handleEventClick)}>
+                                    onClick={() => navigate('/admin/EventList')}>
                                     <span>+</span>
                                 </button>
                             </div>
@@ -119,7 +118,7 @@ const DashBoard = () => {
                             <div className="adminDashBoard-count-button-wrapper">
                                 <button
                                     className="adminDashBoard-count-button"
-                                    onClick={handleNoticeClick}>
+                                    onClick={() => navigate('/admin/EventList')}>
                                     <span>+</span>
                                 </button>
                             </div>
