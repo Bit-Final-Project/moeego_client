@@ -5,6 +5,7 @@ import MemberList from './membership/MemberList';
 import ProApproval from './ProApproval';
 import ProList from './membership/ProList';
 import LeaveMemberList from './membership/LeaveMemberList';
+import EventList from './EventList';
 import DashBoard from './DashBoard';
 
 const AdminMain = () => {
@@ -18,6 +19,7 @@ const AdminMain = () => {
       '/admin/ProApproval': <ProApproval />,
       '/admin/ProList': <ProList />,
       '/admin/LeaveMemberList': <LeaveMemberList/>,
+      '/admin/EventList': <EventList/>,
     };
 
     // 현재 경로에 맞는 컴포넌트 선택
