@@ -1,6 +1,7 @@
 import React from 'react';
 import '../../css/admin/SideBar.css';
 import { useSideBar } from '../../js/useSideBar';
+import { Link } from 'react-router-dom';
 
 const SideBar = () => {
     const { 
@@ -15,7 +16,9 @@ const SideBar = () => {
             <div>
                 <div className="sidelogo">MoeeGo</div>
                 <ul className="menu-list">
+                    <Link to='/admin/AdminLayout'>
                     <li className="menu-item">대시보드</li>
+                    </Link>
                     <li className="menu-item">고수 권한 승인</li>
                     <div>
                         <div 
@@ -27,7 +30,9 @@ const SideBar = () => {
                         
                         {isMemberSubmenuOpen && (
                             <ul className="submenu">
+                                <Link to='/admin/AdminTest'>
                                 <li className="submenu-item">일반 회원</li>
+                                </Link>
                                 <li className="submenu-item">고수 회원</li>
                                 <li className="submenu-item">탈퇴 회원</li>
                             </ul>

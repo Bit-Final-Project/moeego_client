@@ -51,7 +51,7 @@ import EventUpdate from "./components/admin/EventUpdate.jsx";
 import ProReview from "./components/Pro/ProReview.jsx";
 import ProInfo from "./components/Pro/ProInfo.jsx";
 import AdminLogin from "./components/admin/AdminLogin.jsx";
-
+import AdminMain from "./components/admin/AdminMain.jsx";
 
 const App = () => {
   return (
@@ -120,7 +120,10 @@ const App = () => {
             <Route path="/admin/EventUpdate" element={<EventUpdate />} />
             <Route path="/admin/Login" element={<AdminLogin />}/>
 
+            <Route path="/admin/AdminMain" element={<AdminMain/>} />
+
             <Route path="/ProRequest" element={<ProRequest />} />
+            
 
             <Route path="/pro/signup/main" element={<div className='main-content'><ProMain /></div>} />
             <Route path="/pro/signup/sub" element={<div className='main-content'><ProSub /></div>} />
