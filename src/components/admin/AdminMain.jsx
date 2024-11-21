@@ -5,7 +5,7 @@ import MemberList from './membership/MemberList';
 import ProApproval from './ProApproval';
 import ProList from './membership/ProList';
 import LeaveMemberList from './membership/LeaveMemberList';
-import DashBoard from './Dashboard';
+import DashBoard from './DashBoard';
 
 const AdminMain = () => {
     // 현재 URL 경로 가져오기
