@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Projoin = () => {
+//const Projoin = () => {
+const Projoin = ({ closeModal }) => {
     return (
         <div>
             <div id="join_container">

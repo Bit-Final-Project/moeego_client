@@ -51,6 +51,8 @@ import ProjoinSub_car from "./components/Pro/ProSub_car.jsx";
 import ProjoinSub_hobby from "./components/Pro/ProSub_hobby.jsx";
 import ProjoinSub_study from "./components/Pro/ProSub_study.jsx";
 import ProjoinSub_fashion from "./components/Pro/ProSub_fashion.jsx";
+import SearchEmail from "./components/login/SearchEmail.jsx";
+import SearchPwd from "./components/login/SearchPwd.jsx";
 
 const App = () => {
   return (
@@ -100,9 +102,9 @@ const App = () => {
           <Route path={"/article/viewpage"} element={<div className='main-content'><ViewPage /></div>} />
 
           {/* 회원가입/로그인 페이지 */}
-          <Route path="/login" element={<div className='main-content'><Login /></div>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<div className='main-content'><Join /></div>} />
-
+ 
           {/* 달인 가입 페이지 */}
           <Route path="/pro/signup/main" element={<ProMain />} />
           <Route path="/pro/signup/sub_interoir" element={<ProjoinSub_interoir />} />
