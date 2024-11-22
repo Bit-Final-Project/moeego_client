@@ -115,7 +115,6 @@ const App = () => {
 
           {/* 관리자 페이지 */}
           <Route path="/admin/Login" element={<AdminLogin />} />
-          <Route path="/ProRequest" element={<ProRequest />} />
 
           <Route path="/admin/DashBoard" element={<AdminMain />} />
           <Route path="/admin/ProApproval" element={<AdminMain />} />
