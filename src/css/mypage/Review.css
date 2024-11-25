@@ -141,6 +141,22 @@
 }
 
 @media screen and (max-width: 1250px) {
+    .ReviewPage .ReviewWrap .ReviewListWrap .ReviewLIst ul li article section:nth-child(2) {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ReviewPage .ReviewWrap .ReviewListWrap .ReviewLIst ul li article section:nth-child(2) .ImageFeat img {
+        width: 100px;
+        height: 100px;
+        border-radius: 10px;
+    }
+
+    .ReviewPage .ReviewWrap .ReviewListWrap .ReviewLIst ul li article section:nth-child(2) > *:nth-child(n + 4) {
+        display: none;
+    }
+
     .ReviewListWrap .PageTitle {
         display: flex;
         align-items: center;

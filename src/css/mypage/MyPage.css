@@ -166,23 +166,26 @@
         align-items: center;
         justify-content: center;
         font-size: 10pt;
-        gap: 0;
+        gap: 0.3em;
     }
 
     .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileInfo .MailWrap .SNSWrap {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 20%;
+        width: 15%;
     }
 
     .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileInfo .MailWrap .Email {
-        display: 80%;
+        display: 85%;
     }
     
     .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileInfo .MailWrap .SNSWrap img {
-        width: 1.4em;
-        height: 1.4em;
+        width: 1.2em;
+        height: 1.2em;
+        margin: 0 auto;
+        padding: 0;
+        box-sizing: border-box;
     }
 
     .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileButton {
