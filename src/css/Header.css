@@ -414,6 +414,10 @@
         justify-content: center;
     }
 
+    .header .header-container .logo {
+        width: 25%;
+    }
+
     .header .header-container .logo a {
         font-size: 1.2rem;
     }
