@@ -30,47 +30,47 @@ function KeywordSection() {
   }, []);
 
   const handlePrev = () => {
-  if (isAnimating) return;
-  setIsAnimating(true);
-  
-  setCurrentIndex((prevIndex) => {
-    let newIndex = prevIndex - 1;
-    
-    // 첫 번째 슬라이드에서 이전 버튼을 클릭할 경우, 마지막 슬라이드로 넘어갑니다.
-    if (newIndex < 0) {
-      newIndex = images.length - 1;
+    if (isAnimating) return;
+    setIsAnimating(true);
+
+    setCurrentIndex((prevIndex) => {
+      let newIndex = prevIndex - 1;
+
+      // 첫 번째 슬라이드에서 이전 버튼을 클릭할 경우, 마지막 슬라이드로 넘어갑니다.
+      if (newIndex < 0) {
+        newIndex = images.length - 1;
+      }
+
+      return newIndex;
+    });
+  };
+
+  const handleNext = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+
+    setCurrentIndex((prevIndex) => {
+      let newIndex = prevIndex + 1;
+
+      // 마지막 슬라이드에서 다음 버튼을 클릭할 경우, 첫 번째 슬라이드로 넘어갑니다.
+      if (newIndex >= extendedImages.length) {
+        newIndex = 1; // 첫 번째 슬라이드로 설정
+      }
+
+      return newIndex;
+    });
+  };
+
+  const handleTransitionEnd = () => {
+    setIsAnimating(false);
+
+    // 복제 슬라이드에서 원래 위치로 전환
+    if (currentIndex === 0) {
+      setCurrentIndex(images.length); // 첫 번째 슬라이드로 다시 설정
+    } else if (currentIndex === extendedImages.length - slidesToShow) {
+      setCurrentIndex(1); // 마지막 슬라이드에서 첫 번째로 돌아감
     }
-
-    return newIndex;
-  });
-};
-
-const handleNext = () => {
-  if (isAnimating) return;
-  setIsAnimating(true);
-
-  setCurrentIndex((prevIndex) => {
-    let newIndex = prevIndex + 1;
-
-    // 마지막 슬라이드에서 다음 버튼을 클릭할 경우, 첫 번째 슬라이드로 넘어갑니다.
-    if (newIndex >= extendedImages.length) {
-      newIndex = 1; // 첫 번째 슬라이드로 설정
-    }
-
-    return newIndex;
-  });
-};
-
-const handleTransitionEnd = () => {
-  setIsAnimating(false);
-
-  // 복제 슬라이드에서 원래 위치로 전환
-  if (currentIndex === 0) {
-    setCurrentIndex(images.length); // 첫 번째 슬라이드로 다시 설정
-  } else if (currentIndex === extendedImages.length - slidesToShow) {
-    setCurrentIndex(1); // 마지막 슬라이드에서 첫 번째로 돌아감
-  }
-};
+  };
 
 
   return (
