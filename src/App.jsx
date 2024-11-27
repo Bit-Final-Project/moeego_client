@@ -32,13 +32,10 @@ import MyReservation from './components/mypage/MyReservation';
 import Success from './components/mypage/Success';
 import Login from "./components/login/Login";
 import Join from "./components/join/Join";
-import ProMain from "./components/pro/ProMain";
 import Prosignup from "./components/pro/Prosignup";
-import ProSub from "./components/pro/ProSub";
 import ArticleMain from './components/articles/ArticleMain.jsx';
 import BookMarkPro from './components/mypage/BookMarkPro.jsx';
-import ProDetail from './components/Pro/ProDetail.jsx';
-import ProRequest from "./components/ProRequest.jsx";
+import ProRequest from "./components/pro/ProRequest.jsx";
 import EventList from "./components/admin/EventList.jsx";
 import EventWrite from "./components/admin/EventWrite.jsx";
 import EventUpdate from "./components/admin/EventUpdate.jsx";
@@ -46,6 +43,16 @@ import ProReview from "./components/Pro/ProReview.jsx";
 import ProInfo from "./components/Pro/ProInfo.jsx";
 import AdminLogin from "./components/admin/AdminLogin.jsx";
 import AdminMain from "./components/admin/AdminMain.jsx";
+import ProjoinSub_interoir from "./components/Pro/ProSub_interoir.jsx";
+import ProjoinSub_si from "./components/Pro/ProSub_si.jsx";
+import ProjoinSub_car from "./components/Pro/ProSub_car.jsx";
+import ProjoinSub_hobby from "./components/Pro/ProSub_hobby.jsx";
+import ProjoinSub_study from "./components/Pro/ProSub_study.jsx";
+import ProjoinSub_fashion from "./components/Pro/ProSub_fashion.jsx";
+import ProjoinMain from "./components/Pro/ProjoinMain.jsx";
+import SearchEmail from "./components/login/SearchEmail.jsx";
+import SearchPwd from "./components/login/SearchPwd.jsx";
+import ServiceAreaModal from "./components/ProSearch/ServiceAreaModal.jsx";
 
 const App = () => {
   return (
@@ -53,7 +60,7 @@ const App = () => {
       <BrowserRouter>
         {/* Header와 Footer를 제외할 조건 */}
         {!window.location.pathname.startsWith('/admin') && <Header />}
-        
+
         <Routes>
           {/* 메인페이지 */}
           <Route path={"/"} element={<div className='main-content'><MainPage /></div>} />
@@ -95,33 +102,39 @@ const App = () => {
           <Route path={"/article/viewpage"} element={<div className='main-content'><ViewPage /></div>} />
 
           {/* 회원가입/로그인 페이지 */}
-          <Route path="/login" element={<div className='main-content'><Login /></div>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<div className='main-content'><Join /></div>} />
 
           {/* 달인 가입 페이지 */}
-          <Route path="/pro/signup/main" element={<ProMain />} />
-          <Route path="/pro/signup/sub" element={<ProSub />} />
+          <Route path="/pro/signup/main" element={<ProjoinMain />} />
+          <Route path="/pro/signup/sub_interoir" element={<ProjoinSub_interoir />} />
+          <Route path="/pro/signup/sub_si" element={<ProjoinSub_si />} />
+          <Route path="/pro/signup/sub_fashion" element={<ProjoinSub_fashion />} />
+          <Route path="/pro/signup/sub_study" element={<ProjoinSub_study />} />
+          <Route path="/pro/signup/sub_hobby" element={<ProjoinSub_hobby />} />
+          <Route path="/pro/signup/sub_car" element={<ProjoinSub_car />} />
           <Route path="/pro/signup" element={<Prosignup />} />
-          <Route path="/pro/detail" element={<ProDetail />} />
+          <Route path="/pro/detail" element={<ProView />} />
 
           {/* 관리자 페이지 */}
           <Route path="/admin/Login" element={<AdminLogin />} />
-          <Route path="/ProRequest" element={<ProRequest />} />
 
-          <Route path="/admin/DashBoard" element={<AdminMain/>} />
+          <Route path="/admin/DashBoard" element={<AdminMain />} />
           <Route path="/admin/ProApproval" element={<AdminMain />} />
           <Route path="/admin/MemberList" element={<AdminMain />} />
           <Route path="/admin/ProList" element={<AdminMain />} />
           <Route path="/admin/LeaveMemberList" element={<AdminMain />} />
           <Route path="/admin/EventList" element={<AdminMain />} />
           <Route path="/admin/NoticeList" element={<AdminMain />} />
-          
-          
+
+
           <Route path="/admin/event-write" element={<EventWrite />} />
           <Route path="/admin/event-update" element={<EventUpdate />} />
 
-          </Routes>
-          {!window.location.pathname.startsWith('/admin') && <Footer />}
+          <Route path="/modal" element={<ServiceAreaModal />} />
+
+        </Routes>
+        {!window.location.pathname.startsWith('/admin') && <Footer />}
       </BrowserRouter>
     </div>
   );

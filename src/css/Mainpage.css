@@ -1,39 +1,42 @@
 /* 공통 스타일 */
-h1, h2 {
+h1{
+    font-size:1.5rem;
+}
+.indexPage h1, .indexPage h2 {
     font-size: 24px;
     color: #333;
     margin-bottom: 20px;
 }
 
-p {
+.indexPage p {
     color: #666;
     font-size: 14px;
 }
 
-.container {
+.indexPage .container {
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
 }
 
-img {
+.indexPage img {
     max-width: 100%;
     height: auto;
 }
 
-.flex {
+.indexPage .flex {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
 }
 
-.grid {
+.indexPage .grid {
     display: grid;
     gap: 10px;
 }
 
-button, span {
+.indexPage button,.indexPage span {
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -57,7 +60,7 @@ button, span {
 .searchBarWrap {
     background-color: #eee;
     width: 70%;
-    height: 40px;
+    height: 50px;
     display: flex; /* Flexbox 사용 */
     align-items: center; /* 세로 정렬 */
     justify-content: flex-start; /* 왼쪽 정렬 */
@@ -72,18 +75,19 @@ button, span {
 }
 .searchBarWrap img {
     margin-right: 10px; /* 이미지와 입력창 간격 */
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
 }
 
 .searchCategoryWrap input {
     flex: 1; /* 입력창이 남은 공간 채우도록 설정 */
     padding: 10px;
-    height: 20px;
+    height: 30px;
     background-color: #eee;
     border: none;
     border-radius: 5px;
     box-sizing: border-box;
+    font-size:16pt;
 }
 
 .searchCategoryWrap input:focus {
@@ -188,59 +192,84 @@ button, span {
 
 /* 키워드 */
 .keywordWrap {
-    padding: 0 40px 20px 40px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
-
-.keyword-images {
-    display: flex; /* 가로 정렬 */
-    flex-direction: row; /* 가로로 배치 */
-    gap: 40px; /* 사진 간격 조정 */
-    justify-content: left; /* 사진을 왼쪽 정렬 */
-}
-
-.keyword-image {
-    position: relative; /* 가상 요소를 사용할 수 있도록 relative 설정 */
+  
+.carousel-track {
+    overflow: hidden;
     width: 100%;
-    height: 200px; /* 높이 고정 */
+}
+  
+.keyword-images {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    gap: 20px;
+}
+  
+.keyword-image {
+    flex: 0 0 calc(33.33% - 19px); /* 기본: 3개씩 표시 */
+    height: 340px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    transition: background-color 0.3s; /* 부드러운 전환 효과 */
+    position: relative;
 }
-
-.keyword-image::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(128, 128, 128, 0); /* 기본 투명 */
-    transition: background-color 0.3s; /* 부드러운 전환 효과 */
-    z-index: 1; /* 이미지보다 위에 위치 */
-}
-
-.keyword-image:hover::before {
-    background-color: rgba(0, 0, 0, 0.5); /* hover 시 회색 필터 */
-}
-
+  
 .keyword-image div {
     height: 100%;
     display: flex;
-    font-size:20pt;
-    position: relative; /* 텍스트를 가상 요소 아래에 위치시키기 위해 */
-    z-index: 2; /* 텍스트를 가장 위로 위치 */
-    color: white; /* 텍스트 색상 조정 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    align-items: center;
+    font-size: 1.5em;
+    color: white;
     justify-content: center;
-    opacity: 0; /* 기본적으로 텍스트 숨김 */
-    transition: opacity 0.3s; /* 부드러운 전환 효과 */
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+  
+.keyword-image:hover div {
+    opacity: 1;
+    background-color: rgba(50, 50, 50, 0.7);
 }
 
-.keyword-image:hover div {
-    opacity: 1; /* hover 시 텍스트 보이기 */
+.carousel {
+    display: flex;
+    align-items: center;
+    position: relative; /* 버튼을 바깥에 위치시키기 위해 relative로 설정 */
+    overflow: visible;
+    width: 100%;
+    padding: 0 40px; /* 양옆 여백을 추가하여 버튼이 내부에 겹치지 않도록 설정 */
 }
+
+.carousel-button {
+    border-radius: 50%;
+    border: none;
+    height: 50px;
+    width: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: white;
+    color: #333;
+    z-index: 10;
+    position: absolute; /* 절대 위치 지정 */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-button.prev {
+    left: -30px; /* 왼쪽 버튼을 carousel 바깥에 위치시킴 */
+}
+
+.carousel-button.next {
+    right: -20px; /* 오른쪽 버튼을 carousel 바깥에 위치시킴 */
+}
+
+.carousel-button:hover {
+    border-radius: 50%;
+    background-color: #bbb;
+}
+  
 
 /* 위치 목록 */
 .locationsWrap {
@@ -266,12 +295,163 @@ button, span {
 }
 
 .city-listWrap span {
-    width:80px;
-    height: 20px;
-    padding: 10px 0;
+    width:auto;
+    height: auto;
+    padding: 10px;
     background-color: #EFF9F9;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 16px;
     white-space: nowrap;
     color:#00C7AE;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1250px) {
+    .main-content{
+        width: 100%;
+    }
+    .indexPage h1, h2 {
+        font-size: 20px; /* 제목 크기 조정 */
+    }
+
+    .indexPage p {
+        font-size: 12px; /* 본문 크기 조정 */
+    }
+
+    .indexPage span{
+        font-size: 15px;
+    }
+
+    .indexPage .container {
+        padding: 10px; /* 패딩 감소 */
+    }
+
+    .mainBannerWrap {
+        padding: 20px 0; /* 배너 패딩 조정 */
+    }
+
+    .searchCategoryWrap {
+        width: 90%; /* 검색 바 폭 조정 */
+        margin: 0 auto; /* 가운데 정렬 */
+    }
+
+    .searchBarWrap {
+        width: 100%; /* 검색 바 폭을 100%로 */
+        height: 50px; /* 높이 조정 */
+        font-size: 16pt;
+    }
+    .searchBarWrap img{
+        width: 20px;
+        height: 20px;
+    }
+    .categories {
+        display: grid; /* 그리드 사용 */
+        width: 100%;
+        grid-template-columns: repeat(3, 1fr); /* 3개 열, 각 열 동일한 비율 */
+        justify-items: center; /* 각 아이템을 중앙 정렬 */
+        gap: 10px; /* 간격 조정 */
+        font-size: 16pt
+    }
+
+    .category-item {
+        width: 100%; /* 각 아이템의 폭을 100%로 설정 */
+        display: flex; /* 플렉스 사용 */
+        flex-direction: column; /* 세로 방향으로 정렬 */
+        align-items: center; /* 중앙 정렬 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+        padding: 10px; /* 패딩 추가 */
+        box-sizing: border-box; /* 패딩과 보더를 포함하도록 설정 */
+    }
+
+    .bannerWrap {
+        width: 95%; /* 배너 폭 조정 */
+        height: 80px; /* 배너 높이 조정 */
+    }
+
+    .reviewsWrap {
+        padding: 20px; /* 리뷰 패딩 조정 */
+    }
+
+    .reviewsWrap h2 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+    
+    .review-cards {
+        display: flex; /* 리뷰 카드를 가로로 배치 */
+        flex-direction: column; /* 세로로 배치 */
+        gap: 20px; /* 카드 간격 조정 */
+        width: 100%; /* 전체 폭 사용 */
+    }
+
+    .review-card {
+        width: 100%; /* 리뷰 카드 폭을 100%로 */
+        height: 250px; /* 높이 자동 조정 */
+        margin-bottom: 20px; /* 카드 간격 조정 */
+        box-sizing: border-box; /* 패딩과 보더를 포함하도록 설정 */
+    }
+
+    .keywordWrap {
+        padding: 0 20px 20px 20px;
+    }
+
+    .keywordWrap h2{
+        font-size: 1.5em;
+    }
+
+    .keyword-images {
+        display: flex; /* 가로 정렬 */
+        flex-direction: row; /* 가로로 배치 */
+        gap: 20px; /* 이미지 간격 조정 */
+        justify-content: start; /* 왼쪽 정렬 */
+    }
+
+    .keyword-image {
+        height: 150px; /* 키워드 이미지 높이 조정 */
+        width: 100%; /* 가로 폭 조정 */
+    }
+
+    .locationsWrap {
+        padding: 0 20px; /* 위치 목록 패딩 조정 */
+    }
+    
+    .locationsWrap h2{
+        font-size: 1.5em;
+    }
+
+    .locationsWrap p{
+        font-size:16pt;
+    }
+
+    .city-listWrap {
+        grid-template-columns: repeat(3, 1fr); /* 3열로 조정 */
+        gap: 10px; /* 간격 조정 */
+        margin-bottom: 1em;
+    }
+
+    .city-listWrap span {
+        font-size:16pt;
+        width: auto; /* 폭 자동 조정 */
+        height: auto;
+        padding: 10px; /* 패딩 조정 */
+    }
+    .keywordWrap{
+        width: 80%;
+    }
+
+    .keyword-image {
+        flex: 0 0 calc(50% - 19.5px); /* 2개씩 표시 */
+    }
+
+    .carousel{
+        padding: 0;
+    }
+
+    .carousel-button.prev {
+        left: -30px; /* 왼쪽 버튼을 carousel 바깥에 위치시킴 */
+    }
+    
+    .carousel-button.next {
+        right: -10px; /* 오른쪽 버튼을 carousel 바깥에 위치시킴 */
+    }
 }
