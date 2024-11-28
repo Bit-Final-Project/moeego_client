@@ -50,7 +50,10 @@ import ProjoinSub_car from "./components/Pro/ProSub_car.jsx";
 import ProjoinSub_hobby from "./components/Pro/ProSub_hobby.jsx";
 import ProjoinSub_study from "./components/Pro/ProSub_study.jsx";
 import ProjoinSub_fashion from "./components/Pro/ProSub_fashion.jsx";
-import ProjoinMain from "./components/Pro/ProjoinMain";
+import ProjoinMain from "./components/Pro/ProjoinMain.jsx";
+import SearchEmail from "./components/login/SearchEmail.jsx";
+import SearchPwd from "./components/login/SearchPwd.jsx";
+import ServiceAreaModal from "./components/ProSearch/ServiceAreaModal.jsx";
 
 const App = () => {
   return (
@@ -100,7 +103,7 @@ const App = () => {
           <Route path={"/article/viewpage"} element={<div className='main-content'><ViewPage /></div>} />
 
           {/* 회원가입/로그인 페이지 */}
-          <Route path="/login" element={<div className='main-content'><Login /></div>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<div className='main-content'><Join /></div>} />
 
           {/* 달인 가입 페이지 */}
@@ -114,6 +117,7 @@ const App = () => {
           <Route path="/pro/signup" element={<Prosignup />} />
           <Route path="/pro/detail" element={<ProDetail />} />
           <Route path="/pro/ProRequest" element={<ProRequest />} />
+
 
           {/* 관리자 페이지 */}
           <Route path="/admin/Login" element={<AdminLogin />} />
@@ -129,6 +133,8 @@ const App = () => {
 
           <Route path="/admin/event-write" element={<EventWrite />} />
           <Route path="/admin/event-update" element={<EventUpdate />} />
+
+          <Route path="/modal" element={<ServiceAreaModal />} />
 
         </Routes>
         {!window.location.pathname.startsWith('/admin') && <Footer />}

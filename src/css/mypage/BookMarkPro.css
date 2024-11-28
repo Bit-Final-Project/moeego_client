@@ -1,12 +1,35 @@
 .BookMarkProContainer {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
 }
 
 .BookMarkProContainer .BookMarkProWrap {
     margin-top: 5%;
-    width: 100%;
+    width: 80%;
+}
+
+.BookMarkProWrap .PageTitle {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.BookMarkProWrap .PageTitle .prev {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 5%;
+}
+
+.BookMarkProWrap .PageTitle .prev img {
+    height: 20px;
+    width: 20px;
+}
+
+.BookMarkProWrap .PageTitle h1 {
+    width: 95%;
 }
 
 .BookMarkProContainer .BookMarkProWrap .CheckContainer {
@@ -167,7 +190,43 @@
 .BookMarkProContainer .BookMarkProWrap .ProListContainer .infoContainer {
     width: 100%;
     display: flex;
-    align-items: center;
     box-sizing: border-box;
+    vertical-align: text-top;
     padding: 10px;
+    height: 5em;
+}
+
+.BookMarkProContainer .BookMarkProWrap .ProListContainer .scoreContainer {
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    padding: 10px;
+}
+
+@media screen and (max-width: 1250px) {
+    .BookMarkProContainer {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .BookMarkProContainer .BookMarkProWrap {
+        width: 90%;
+    }
+
+    .BookMarkProWrap .PageTitle {
+        display: flex;
+        align-items: center;
+        justify-content: left;
+    }
+
+    .BookMarkProWrap .PageTitle .prev {
+        width: 10%;
+    }
+
+    .BookMarkProWrap .PageTitle h1 {
+        width: 90%;
+    }
 }

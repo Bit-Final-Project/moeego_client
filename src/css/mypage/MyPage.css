@@ -26,21 +26,22 @@
     display: flex;
     align-items: center;
     text-decoration: none;
+    width: 100%;
+    height: 100%;
     color: black;
 }
 
-.ProfileContainer .ProfileImage {
+.ProfileSettingPage .ProfileImage {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* border: 1px solid black; */
-    width: 15%;
-    height: 15%;
     margin: 10px;
 }
 
-.ProfileContainer .ProfileImage img {
-    border-radius: 65.5px;
+.ProfileSettingPage .ProfileImage img {
+    width: 130px;
+    height: 130px;
+    border-radius: 65px;
 }
 
 .ProfileContainer .ProfileInfo {
@@ -61,7 +62,21 @@
     box-sizing: border-box;
 }
 
+.ProfileContainer .TopWrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
 .ProfileContainer .SNSWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ProfileContainer .SNSWrap img {
     width: 24px;
     height: 24px;
 }
@@ -74,7 +89,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 15%;
+    width: 20%;
 }
 
 .ProfileContainer .ProfileButton input[type="button"] {
@@ -122,4 +137,91 @@
 .MyPage .Container div .Link .next img {
     height: 20px;
     width: 20px;
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: 1250px) {
+    .MyPageWrap {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1em;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage {
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileImage {
+        width: 20%;
+        box-sizing: border-box;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileImage img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileInfo {
+        width: 80%;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileInfo .NickName {
+        font-size: 12pt;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileInfo .MailWrap {
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        vertical-align: middle;
+        font-size: 10pt;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .TopWrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .TopWrap .ProfileInfo .MailWrap .SNSWrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 10%;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .TopWrap .ProfileInfo .MailWrap .Email {
+        display: 90%;
+    }
+    
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileInfo .MailWrap .SNSWrap img {
+        width: 1.2em;
+        height: 1.2em;
+        margin: 0 auto;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .MyPageWrap .ProfileContainer .ProfileSettingPage .ProfileButton input[type='button'] {
+        width: 100%;
+        font-size: 9pt;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 0.5em;
+        margin: 1em auto 0.2em auto;
+        box-sizing: border-box;
+    }
 }

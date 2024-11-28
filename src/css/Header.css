@@ -6,60 +6,550 @@
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    flex-direction: row;
+    flex-direction: column;
     padding: 10px 20px;
     background-color: #fff;
     border-bottom: 1px solid #ddd;
     z-index: 9999;
 }
 
-.topWrap {
+/* 내부 컨테이너 */
+.header .header-container {
     width: 60%;
-    max-width: 1200px; /* 최대 너비를 설정하여 큰 화면에서도 너무 넓지 않도록 */
-    min-width: 768px; /* 최소 너비 설정하여 작은 화면에서는 레이아웃 깨짐 방지 */
-    justify-content: center;
-    align-items: center;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.logo {
-    font-size: 24px;
-    color: #fcc1cc;
-    font-weight: bold;
-}
-
-.logo a {
-    text-decoration: none;
-    color: #fcc1cc;
-}
-
-.nav {
+/* 로고 */
+.header .logo {
     display: flex;
     align-items: center;
-
+    justify-content: center;
+    width: 10%;
 }
 
-.nav a {
-    margin-left: 20px;
+.header .logo a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: #fcc1cc;
+    cursor: pointer;
+}
+
+.header .logo a img {
+    width: 100%;
+}
+
+.moblieSearch {
+    visibility: hidden;
+}
+
+/* 기본 네비게이션 메뉴 */
+.header .nav {
+    display: flex;
+}
+
+.header .nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.header .nav ul li {
+    margin: 0 15px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+}
+
+.header .nav ul li a {
+    color: #525252;
+    text-decoration: none;
+}
+
+.header .nav ul li a:hover {
+    color: #fcc1cc;
+}
+
+/* 햄버거 메뉴 */
+.header .hamburger-menu {
+    display: none; /* 데스크톱 환경에서는 숨김 */
+    cursor: pointer;
+}
+
+.hamburger-menu svg {
+    height: 50px;
+    width: 50px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.hamburger-menu svg:hover {
+    background-color: #cacaca;
+    border-radius: 25px;
+}
+
+/* 드롭다운 메뉴 */
+.dropdown-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 20px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    z-index: 10000;
+    border-right: 1px solid #cdcdcd;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu ul li {
+    margin: 1em 2em;
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 80%;
+}
+
+.dropdown-menu ul li a {
     text-decoration: none;
     color: #333;
-    font-weight: bold;
+    font-size: 1rem;
 }
 
-.nav .search {
-    margin-left: 20px;
-    padding: 5px 30px;
-    height: 30px;
-    border-radius: 15px;
-    background-color: #c2c2c2;
-    border: 1px solid #c2c2c2;
-    color: #ffffff;
+.dropdown-menu ul li a:hover {
+    color: #fcc1cc;
+    font-weight: 500;
+}
+
+.dropdown-menu .dropdown-menu-close-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.dropdown-menu .dropdown-menu-close-wrap .close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-style: none;
+    background-color: transparent;
     box-sizing: border-box;
-    outline: none;
+    padding: 0;
 }
 
-.nav .search::placeholder {
+.dropdown-menu .dropdown-menu-close-wrap .close-button svg {
+    fill: transparent;
+    border-radius: 12px;
+    height: 48px;
+    width: 48px;
+    box-sizing: border-box;
+    border-radius: 24px;
+    border: 1px solid transparent;
+}
+
+.dropdown-menu .dropdown-menu-close-wrap .close-button:hover svg {
+    background-color: #cacaca;
+    fill: #cacaca;
+}
+
+.dropdown-menu .dropdown-menu-close-wrap .close-button svg rect {
+    fill: transparent;
+    width: 36px;
+    height: 36px;
+}
+
+.dropdown-menu ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+}
+
+/* 드롭다운 메뉴 회원정보 */
+.HamburgerUserInfoWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-bottom: 1px solid #cecece;
+    width: 100%;
+}
+
+.HamburgerUserInfoLinkWrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.HamburgerUserInfoLinkWrap div:nth-child(1) {
+    width: 80%;
+}
+
+.HamburgerUserInfoLinkWrap div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 20%;
+}
+
+.HamburgerUserInfoLinkWrap img {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+.HamburgerUserInfoButtonWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 1em;
+}
+
+.HamburgerUserInfoButtonWrap input[type='button'] {
+    width: 50%;
+    border: 1px solid #f2f2f2;
+    background-color: #ffffff;
+    padding: 0.3em 1em;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    color: #a1a1a1;
+}
+
+.HamburgerUserInfoButtonWrap input[type='button']:hover {
+    color: #fcc1cc;
+    border-color: #fcc1cc;
+}
+
+/* 검색 바 */
+.header .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #c2c2c2;
+    border-radius: 50px;
+    padding: 5px 10px;
+    flex: 1;
+    max-width: 400px;
+    margin: 0 20px;
+}
+
+.header .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 5px 10px;
+    font-size: 14px;
     color: #ffffff;
+}
+
+.header .search-input::placeholder {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.header .search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    position: relative;
+}
+
+.header .search-button svg {
+    position: absolute;
+    width: 20px;
+    height: 20px;    
+    top: -0.5em;
+    right: 0;
+}
+
+/* 모바일 검색창 */
+.moblie-search-bar {
+    display: none;
+}
+
+/* 유저 메뉴 */
+.header .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+}
+
+.header .user-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.header .user-icon .default-svg {
+    height: 2.5em;
+    width: 2.5em;
+}
+
+.header .user-icon .ToggleSvg {
+    height: 1.5em;
+    width: 1.5em;
+}
+
+.header .chat {
+    cursor: pointer;
+}
+
+.ToggleMenu {
+    position: absolute; /* user-menu 아래에 위치 */
+    top: 100%; /* user-menu 아래로 배치 */
+    right: 0;
+    z-index: 9999;
+    border-radius: 0.5em;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+/* 모달 외부를 클릭하면 닫히도록 배경 처리 */
+.ToggleMenu::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.ToggleMenu .ToggleMenuListWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ToggleMenu .ToggleMenuListWrap .ToggleMenuList {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffe4ea;
+    border-radius: 1em;
+    box-sizing: border-box;
+    padding: 2em 2em 2em 2em;
+    width: 13em;
+    height: 12em;
+    margin-right: 17em;
+    gap: 1em;
+}
+
+.ToggleMenu .ToggleMenuList div:nth-child(1) {
+    color: #525252;
+    margin-left: -0.5em;
+}
+
+.ToggleMenu .ToggleMenuList div:nth-child(2) a,
+.ToggleMenu .ToggleMenuList div:nth-child(3) a {
+    margin-left: -0.5em;
+    text-decoration: none;
+    color: #525252;
+}
+
+.ToggleMenu .ToggleMenuList .Logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ToggleMenu .ToggleMenuList .Logout a {
+    text-decoration: none;
+    color: #b3b3b3;
+    font-weight: normal;
+}
+
+.ToggleMenu .ToggleMenuList .Logout a:hover {
+    color: red;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: 1250px) {
+    .header .nav {
+        display: none;
+    }
+
+    .header .user-menu {
+        display: none;
+    }
+
+    .header .hamburger-menu {
+        display: flex;
+        align-items: center;
+        justify-content: left;
+    }
+
+    .header .header-container {
+        width: 100%;
+        justify-content: left;
+    }
+
+    .header .header-container .hamburger-menu {
+        width: 20%;
+    }
+
+    .header .header-container .logo {
+        width: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header .header-container .logo a {
+        font-size: 1.2rem;
+    }
+
+    .header .header-container .nav {
+        width: 0%;
+    }
+
+    .moblieSearch {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        width: 20%;
+        visibility: visible;
+    }
+
+    .moblieSearchButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        border-style: none;
+        width: 50px;
+        height: 50px;
+        box-sizing: border-box;
+        border-radius: 25px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .moblieSearchButton svg {
+        width: 36px;
+        height: 36px;
+        box-sizing: border-box;
+        fill: transparent;
+    }
+
+    .moblieSearchButton svg path {
+        fill: #000000;
+        box-sizing: border-box;
+    }
+
+    .moblieSearchButton:hover {
+        background-color: #b2b2b2;
+        border-radius: 25px;
+    }
+
+    .header .search-bar {
+        display: none;
+    }
+
+    .ToggleMenu .ToggleMenuListWrap .ToggleMenuList {
+        margin-right: 0;
+    }
+
+    .moblie-search-insert {
+        width: 100%;
+    }
+
+    .moblie-search-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 100%;
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+    }
+
+    .moblie-search-bar .moblie-search-input {
+        width: 100%;
+        height: 2.5rem;
+        background-color: #c2c2c2;
+        border-radius: 50px;
+        padding: 0.8rem 1.25rem;
+        margin: 0.5rem 1rem;
+        outline: none;
+        font-size: 0.925rem;
+        border: 1px solid #c2c2c2;
+        box-sizing: border-box;
+        color: #ffffff;
+    }
+
+    .moblie-search-bar .moblie-search-input::placeholder {
+        color: #ffffff;
+    }
+
+    .moblie-search-bar .moblie-search-button {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0.7715rem;
+        right: 1.25rem;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: none;
+        border-radius: 1rem;
+    }
+
+    .moblie-search-bar .moblie-search-button svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .moblie-search-bar .moblie-search-button:hover {
+        background-color: #828282;
+    }
+
+    .HamburgerUserInfoWrap div:nth-child(1) h3 {
+        font-size: 1.2rem;
+    }
+
+    .HamburgerUserInfoWrap div:nth-child(1) p {
+        font-size: 0.825rem;
+    }
+
+    .header .logo a img {
+        width: 80%;
+    }
 }

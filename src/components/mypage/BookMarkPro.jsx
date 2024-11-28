@@ -7,8 +7,8 @@ const BookMarkPro = () => {
         <div className='BookMarkProContainer'>
             <div className='BookMarkProWrap'>
                 <div className='PageTitle'>
-                    <Link className="Link" to="/mypage">
-                        <div className='prev'><img src="../../src/image/prev_icon.png" alt="prev"></img></div>
+                    <Link className="prev" to="/mypage">
+                        <img src="../../src/image/prev_icon.png" alt="prev" />
                     </Link>
                     <h1>찜한 달인</h1>
                 </div>
@@ -34,8 +34,8 @@ const BookMarkPro = () => {
                                     <label htmlFor='check1'><Link to="/pro/detail">달인 이름</Link></label>
                                 </div>
                             </div>
-                            <div className='infoContainer'>한줄 소개</div>
-                            <div className='infoContainer'>평점</div>
+                            <div className='infoContainer'>저는 달인입니다. 저는 달입니다. 저는 입니다. 저는 니다.</div>
+                            <div className='scoreContainer'>평점</div>
                         </div>
                         <div className='ProList-RightContainer'>
                             <div className='ProProfile'>
@@ -55,7 +55,7 @@ const BookMarkPro = () => {
                                 </div>
                             </div>
                             <div className='infoContainer'>한줄 소개</div>
-                            <div className='infoContainer'>평점</div>
+                            <div className='scoreContainer'>평점</div>
                         </div>
                         <div className='ProList-RightContainer'>
                             <div className='ProProfile'>
@@ -75,7 +75,7 @@ const BookMarkPro = () => {
                                 </div>
                             </div>
                             <div className='infoContainer'>한줄 소개</div>
-                            <div className='infoContainer'>평점</div>
+                            <div className='scoreContainer'>평점</div>
                         </div>
                         <div className='ProList-RightContainer'>
                             <div className='ProProfile'>
@@ -95,7 +95,7 @@ const BookMarkPro = () => {
                                 </div>
                             </div>
                             <div className='infoContainer'>한줄 소개</div>
-                            <div className='infoContainer'>평점</div>
+                            <div className='scoreContainer'>평점</div>
                         </div>
                         <div className='ProList-RightContainer'>
                             <div className='ProProfile'>

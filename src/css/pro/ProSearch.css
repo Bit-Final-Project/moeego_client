@@ -1,30 +1,53 @@
 .proSearchPage{
-    width: 80%;
-    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
-.searchHeaderWrap{
-    width:100%;
+
+.proSearchPage .ContentWrap {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.proSearchPage .ContentWrap section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.searchHeaderWrap {
+    width: 95%;
     margin-top: 5%;
 }
-.searchHeaderWrap h1{
-    padding-top: 16px;
+
+.searchHeaderWrap h1 {
+    margin-bottom: 2rem;
 }
 
 .proSearchBarWrap {
     display: flex;
     align-items: center; /* 세로 정렬 */
-    margin-top: 10%;
+    justify-content: center;
+    margin-top: 5%;
     width: 100%;
+    gap: 1rem;
 }
 
 .proSearchInputBarWrap {
     display: flex; /* Flexbox 사용 */
     align-items: center; /* 세로 정렬 */
-    width: 75%; /* 검색창의 너비 설정 */
+    justify-content: center;
+    width: 80%; /* 검색창의 너비 설정 */
     background-color: #eee;
     border: 2px solid #eee;
     box-sizing: border-box;
-    margin-bottom: 5%;
+    border-radius: 10px;
 }
 
 .proSearchInputBarWrap img {
@@ -39,7 +62,7 @@
     height: 40px; /* 높이를 조정 */
     background-color: #eee;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     box-sizing: border-box;
 }
 .proSearchInputBarWrap:focus-within{
@@ -52,47 +75,60 @@
     background-color: white;
 }
 
+.mapBtnWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+}
+
 .mapBtn {
-    display: flex; /* 버튼 내부의 아이콘과 텍스트를 flex로 정렬 */
-    align-items: center; /* 세로 정렬 */
-    margin-left: 10px; /* 버튼과 입력창 간격 */
-    padding: 0 15px; /* 버튼 내부 여백 */
-    height: 40px; /* 버튼 높이를 입력창과 맞춤 */
-    border: none; /* 기본 버튼 스타일 제거 */
-    background-color: rgb(89, 185, 105); /* 버튼 배경색 */
-    border-radius: 5px; /* 버튼 모서리 둥글게 */
-    cursor: pointer; /* 마우스 커서 변경 */
-    margin-bottom: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    border: none;
+    background-color: rgb(89, 185, 105);
+    border-radius: 10px;
+    cursor: pointer;
     color:white;
 }
 
-.mapBtn i {
-    margin-right: 5px; /* 아이콘과 텍스트 간격 */
+.mapBtn .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.mapBtn .mapTitle {
+    font-size: 1rem;
 }
 
 /* SearchList 컴포넌트 CSS */
+.proSearchListWrap {
+    width: 100%;
+    display: flex; /* Flexbox 사용 */
+    margin: 15px; /* 항목 간 간격 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
 .proSearchListAWrap{
     display: flex;
     flex-direction: row;
     width: 100%;
-}
-.proSearchListLink{
-    width:100%;
+    border: 1px solid #ddd; /* 테두리 추가 (선택 사항) */
+    border-radius: 5px; /* 둥근 모서리 */
+    padding: 10px; /* 내부 여백 */
+    justify-content: space-between;
 }
 .proSearchListLink:visited{text-decoration: none; color: black;}
 .proSearchListLink:hover{text-decoration: none; color: black;}
 .proSearchListLink:link{text-decoration: none; color: black;}
 .proSearchListLink:active{text-decoration: none; color: black;}
-
-.proSearchListWrap {
-    width: 80%;
-    display: flex; /* Flexbox 사용 */
-    margin: 15px; /* 항목 간 간격 */
-    border: 1px solid #ddd; /* 테두리 추가 (선택 사항) */
-    border-radius: 5px; /* 둥근 모서리 */
-    padding: 10px; /* 내부 여백 */
-    align-items: center; /* 세로 중앙 정렬 */
-}
 
 .proSearchListContentWrap {
     flex: 1; /* 텍스트 영역이 남은 공간을 차지하도록 설정 */
@@ -101,12 +137,20 @@
 .proSearchListProfileWrap {
     margin-left: 15px; /* 프로필 사진과 텍스트 간의 간격 */
 }
+.proSearchListProfileWrap img{
+    max-width: 100%;
+    height: auto;
+}
 
 .proSearchListTitleWrap {
     font-weight: bold; /* 제목 강조 */
 }
 .proSearchListTitleWrap h3{
+    text-overflow: ellipsis;
+    white-space: nowrap;
     margin-bottom: 10px;
+    word-break: break-all;
+    overflow: hidden;
 }
 
 .proSearchListProInfoWrap {
@@ -123,3 +167,89 @@
     margin-top: 5px; /* 소개 내용 간격 */
 }
 
+.ServiceAreaModal .closeButton {
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    margin-bottom: 10px; /* 버튼과 모달 내용 간격 */
+}
+
+@media (max-width: 1250px) {
+    .main-content{
+        width: 100%;
+    }
+
+    .ContentWrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 95%;
+    }
+
+    .proSearchPage .ContentWrap section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .proSearchBarWrap {
+        align-items: flex-start; /* 왼쪽 정렬 */
+    }
+
+    .proSearchInputBarWrap {
+        width: 100%; /* 검색창 너비를 100%로 설정 */
+        margin-bottom: 10px; /* 버튼과의 간격 */
+        height: 40px;
+    }
+
+    .mapBtn {
+        width: 100%; /* 버튼 너비를 100%로 설정 */
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mapBtn .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .mapTitle {
+        display: none;
+        width: 0;
+    }
+
+    .service_areaHeader {
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        gap: 0.5rem; /* 간격 조정 */
+        margin-bottom: 1rem;
+    }
+
+    section .proSearchListWrap {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+    section .proSearchListWrap .proSearchListLink{
+        width: 60%;
+    }
+
+    .proSearchListAWrap{
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
