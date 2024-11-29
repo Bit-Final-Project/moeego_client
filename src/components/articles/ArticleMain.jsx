@@ -8,7 +8,7 @@ import apiAxios from '../../api/apiAxios.jsx';
 const ArticleMain = () => {
     const [articles, setArticles] = useState([]);
     const [error, setError] = useState(null);
-    
+
     useEffect(() => {
         apiAxios
             .get("/api/article")
@@ -117,10 +117,9 @@ const ArticleMain = () => {
                         <div className='AllArticleContainer'>
                             <h3>전체글 모이고</h3>
                             {
-                                articles.map(item => <Link key={item.articleNo} to={`/article/viewpage?article_no=${item.articleNo}` }><div className='FeedItemWrap' key={item.articleNo}>
-                                    <FeedItem item={item}/>
-                                </div>
-                                </Link>)
+                                articles.map(item => <div className='FeedItemWrap' key={item.articleNo}>
+                                    <Link className='FeedItemLink' to={`/article/viewpage?article_no=${item.articleNo}`}><FeedItem item={item} /></Link>
+                                </div>)
                             }
                         </div>
                     </div>
