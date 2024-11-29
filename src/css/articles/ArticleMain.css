@@ -367,6 +367,12 @@
     margin-top: 1em;
     margin-bottom: 1em;
 }
+
+.AllArticleContainer a:link{text-decoration: none; color: black}
+.AllArticleContainer a:hover{text-decoration: none; color: black}
+.AllArticleContainer a:active{text-decoration: none; color: black}
+.AllArticleContainer a:visited{text-decoration: none; color: black}
+
 .FeedItemWrap{
     width: 100%;
 }
