@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import LifeTopic from './FreeBoardForm/LifeTopic';
 import "../../css/articles/ArticleMain.css";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FeedItem from './FreeBoardForm/FeedItem';
 import apiAxios from '../../api/apiAxios.jsx';
 
 const ArticleMain = () => {
     const [articles, setArticles] = useState([]);
     const [error, setError] = useState(null);
-
+    
     useEffect(() => {
         apiAxios
             .get("/api/article")
@@ -117,9 +117,10 @@ const ArticleMain = () => {
                         <div className='AllArticleContainer'>
                             <h3>전체글 모이고</h3>
                             {
-                                articles.map(item => <div className='FeedItemWrap' key={item.articleNo}>
-                                    <FeedItem item={item} />
-                                </div>)
+                                articles.map(item => <Link key={item.articleNo} to={`/article/viewpage?article_no=${item.articleNo}` }><div className='FeedItemWrap' key={item.articleNo}>
+                                    <FeedItem item={item}/>
+                                </div>
+                                </Link>)
                             }
                         </div>
                     </div>
