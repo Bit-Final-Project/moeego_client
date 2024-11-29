@@ -40,7 +40,11 @@ const SignUpProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const goMain = () => {
-        navigate('/');
+        navigate(`/`);
+    }
+
+    const goLogin = () => {
+        navigate(`/`);
     }
 
     const updateSignUpData = async (field, value) => {
@@ -194,7 +198,8 @@ const SignUpProvider = ({ children }) => {
                 updateSignUpData,
                 handleAddressSearch,
                 validateForm,
-                goMain
+                goMain,
+                goLogin
             }}>{children}</SignUpContext.Provider>
     );
 };

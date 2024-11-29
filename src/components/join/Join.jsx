@@ -12,7 +12,8 @@ const Join = () => {
         updateSignUpData,
         handleAddressSearch,
         validateForm,
-        goMain
+        goMain,
+        goLogin
     } = useContext(SignUpContext);
 
     useEffect(() => {
@@ -31,8 +32,7 @@ const Join = () => {
             try {
                 const response = await apiAxios.post('/api/signup', signup);
                 console.log(response.data);
-                alert(`${signup.name}님 모이고에 오신것을 환영합니다.`);
-                { goMain };
+                navigate('/signup/success', { state: { name: signup.name } });
             } catch (error) {
                 console.error('회원가입 실패:', error);
                 alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
@@ -41,6 +41,7 @@ const Join = () => {
             return;
         }
     };
+
 
     return (
         <div className="JoinPage">
