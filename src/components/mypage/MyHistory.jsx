@@ -1,18 +1,62 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MyArticles from './MyArticles';
 import MyComments from './MyComments';
 import '../../css/mypage/MyHistory.css';
+import Loading from '../loading/loading';
+import apiAxios from '../../api/apiAxios';
 
 const MyHistory = () => {
     const [activeTab, setActiveTab] = useState('myarticle'); // 기본 탭을 'myarticle'로 설정
+    const [articles, setArticles] = useState([]);
+    const [comment, setComment] = useState([]);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); // 글 로딩 상태
+
+    useEffect(() => {
+        apiAxios
+            .get(`/api/comment/myPage?member_no=1`)
+            .then((response) => {
+                setArticles(response.data.content);
+            })
+            .catch((err) => {
+                console.error("Error fetching articles:", err);
+                setError(err);
+            })
+            .finally(() => {
+                setIsLoading(false); // 로딩 완료
+            });
+    }, []);
+
+    useEffect(() => {
+        apiAxios
+            .get(`/api/comment/myPage?member_no=1`)
+            .then((response) => {
+                setComment(response.data.content);
+            })
+            .catch((err) => {
+                console.error("Error fetching articles:", err);
+                setError(err);
+            })
+            .finally(() => {
+                setIsLoading(false); // 로딩 완료
+            });
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="loadingPage">
+                <Loading />
+            </div>
+        );
+    }
 
     const renderContent = () => {
         switch (activeTab) {
             case 'myarticle':
-                return <MyArticles />;
+                return <MyArticles articles={articles}/>;
             case 'mycomment':
-                return <MyComments />;
+                return <MyComments comment={comment}/>;
             default:
                 return null;
         }
