@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const SearchList = ({ id, name, rating, reviews, experience, intro }) => {
+const SearchList = ({ id, name, rating, reviews, experience, intro, img_main }) => {
     return (
         <article className='proSearchListWrap'>
             <div className='proSearchListAWrap'>
-                <Link className='proSearchListLink' to={`/pro/id=${id}`}>
+                {/* <Link className='proSearchListLink' to={`/pro/proview/proNo=${id}`}> */}
+                <Link className='proSearchListLink' to={`/pro/proview?proNo=${id}`}>
                     <div className='proSearchListContentWrap'>
                         {/* 제목 */}
                         <div className='proSearchListTitleWrap'>
@@ -31,10 +32,10 @@ const SearchList = ({ id, name, rating, reviews, experience, intro }) => {
                 <div className='proSearchListProfileWrap'>
                     <div className="user-profile-picture pro-profile-picture">
                         <img
+                            src={img_main}
                             width={150}
                             height={150}
-                            src="https://static.cdn.soomgo.com/upload/profile/3d1bfeb9-0261-4ee1-a92e-cffaf31f15d8.png?webp=1&amp;h=320&amp;w=320"
-                            alt="프로필 이미지"
+                            alt={name}
                         />
                     </div>
                 </div>

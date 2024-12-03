@@ -1,5 +1,7 @@
 import React, { createContext, useState } from 'react';
 import checkPost from '../../js/daumpost';
+import { useNavigate } from 'react-router-dom';
+import apiAxios from '../../api/apiAxios';
 
 const SignUpContext = createContext();
 
@@ -13,7 +15,8 @@ const initialState = {
     authCode: '',
     zipcode: '',
     address1: '',
-    address2: ''
+    address2: '',
+    address: '',
 };
 
 const initialErrors = {
@@ -25,16 +28,29 @@ const initialErrors = {
     gender: '',
     zipcode: '',
     address1: '',
+    address2: '',
+    address: '',
 };
 
 const SignUpProvider = ({ children }) => {
     const [signup, setSignup] = useState(initialState);
     const [errors, setErrors] = useState(initialErrors);
+
     const [isReadonly, setIsReadonly] = useState({
         zipcode: false,
         address1: false,
         address2: false,
     });
+
+    const navigate = useNavigate();
+
+    const goMain = () => {
+        navigate(`/`);
+    };
+
+    const goLogin = () => {
+        navigate(`/`);
+    };
 
     const updateSignUpData = async (field, value) => {
         setSignup((prevData) => ({
@@ -94,8 +110,10 @@ const SignUpProvider = ({ children }) => {
             case 'password':
                 if (!value) {
                     error = '비밀번호를 입력해주세요.';
-                } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{12,20}$/.test(value)) {
-                    error = '비밀번호는 대문자, 소문자, 숫자 조합으로 12~20자리여야 합니다.';
+                } else if (/(.)\1{2,}/.test(value)) {
+                    error = '비밀번호에 연속으로 같은 문자를 3번 이상 사용할 수 없습니다.';
+                } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+~`|}{[\]:;?,.<>]).{12,20}$/.test(value)) {
+                    error = '비밀번호는 대문자, 소문자, 숫자, 특수문자를 포함하며, 12~20자리여야 합니다.';
                 }
                 break;
             case 'confirmPassword':
@@ -132,18 +150,21 @@ const SignUpProvider = ({ children }) => {
                     error = '상세 주소를 입력해주세요.';
                 }
                 break;
+            case 'address':
+                if (!value) {
+                    error = '주소를 입력해주세요.';
+                }
+                break;
             default:
                 break;
         }
 
-        // 에러 상태 업데이트
         setErrors((prevErrors) => ({
             ...prevErrors,
             [field]: error,
         }));
     };
 
-    // 모든 필드 검증
     const validateForm = () => {
         const fieldsToValidate = Object.keys(signup);
         let isValid = true;
@@ -184,8 +205,12 @@ const SignUpProvider = ({ children }) => {
                 isReadonly,
                 updateSignUpData,
                 handleAddressSearch,
-                validateForm
-            }}>{children}</SignUpContext.Provider>
+                validateForm,
+                goMain,
+                goLogin,
+            }}>
+            {children}
+        </SignUpContext.Provider>
     );
 };
 
