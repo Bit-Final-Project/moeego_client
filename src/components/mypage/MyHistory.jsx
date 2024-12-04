@@ -13,9 +13,10 @@ const MyHistory = () => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true); // 글 로딩 상태
 
+    //게시글 불러오기
     useEffect(() => {
         apiAxios
-            .get(`/api/comment/myPage?member_no=1`)
+            .get(`/api/article/myPage?member_no=1`)
             .then((response) => {
                 setArticles(response.data.content);
             })
@@ -28,6 +29,7 @@ const MyHistory = () => {
             });
     }, []);
 
+    //댓글 불러오기
     useEffect(() => {
         apiAxios
             .get(`/api/comment/myPage?member_no=1`)

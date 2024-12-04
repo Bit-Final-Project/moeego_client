@@ -7,7 +7,7 @@ const MyArticles = ({articles}) => {
         <div className='myArticlesPage'>
             {
             articles.map(item => <Link key={item.articleNo} to={`/article/viewpage?article_no=${item.articleNo}`}>
-                    <MyArticleItem/>
+                    <MyArticleItem item={item}/>
                     </Link>)
             }
         </div>
