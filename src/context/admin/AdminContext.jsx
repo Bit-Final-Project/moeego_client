@@ -19,11 +19,11 @@ const AdminProvider = ({ children }) => {
             try {
                 // 여러 데이터 동시 요청
                 const [eventRes, noticeRes, weekDataRes, expertDataRes, memberDataRes] = await Promise.all([
-                    apiAxios.get('/article/events'),
-                    apiAxios.get('/article/notices'),
-                    apiAxios.get('/member/weekData'),
-                    apiAxios.get('/member/expertData'),
-                    apiAxios.get('/member/allmemberData'), // 회원 분포 데이터 요청
+                    apiAxios.get('/api/article/events'),
+                    apiAxios.get('/api/article/notices'),
+                    apiAxios.get('/api/member/weekData'),
+                    apiAxios.get('/api/member/expertData'),
+                    apiAxios.get('/api/member/allmemberData'), // 회원 분포 데이터 요청
                 ]);
 
                 setEvents(eventRes.data);
