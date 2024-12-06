@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import apiAxios from '../../api/apiAxios';
 
 // AdminContext 생성
 const AdminContext = createContext();
@@ -19,11 +19,11 @@ const AdminProvider = ({ children }) => {
             try {
                 // 여러 데이터 동시 요청
                 const [eventRes, noticeRes, weekDataRes, expertDataRes, memberDataRes] = await Promise.all([
-                    axios.get('/admin/events'),
-                    axios.get('/admin/notices'),
-                    axios.get('/api/weekData'),
-                    axios.get('/api/expertData'),
-                    axios.get('/api/allmemberData'), // 회원 분포 데이터 요청
+                    apiAxios.get('/article/events'),
+                    apiAxios.get('/article/notices'),
+                    apiAxios.get('/member/weekData'),
+                    apiAxios.get('/member/expertData'),
+                    apiAxios.get('/member/allmemberData'), // 회원 분포 데이터 요청
                 ]);
 
                 setEvents(eventRes.data);
