@@ -122,6 +122,20 @@ const ArticleProvider = ({ children }) => {
                 setIsLoading(false);
             });
     }, [fetchArticles]);
+    
+    // 로그인 글쓰기 버튼
+    const GoWrite = () => {
+        navigate("/article/write");
+    };
+
+    // 비로그인 글쓰기 버튼
+    const GoLogin = () => {
+        if(confirm('글을 작성하기 위해서는 로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+            navigate("/login");
+        } else {
+            return;
+        }        
+    };
 
     const contextValue = {
         articles,
@@ -140,6 +154,8 @@ const ArticleProvider = ({ children }) => {
         fetchComments,
         setCurrentPage,
         writeArticle,
+        GoWrite,
+        GoLogin
     };
 
     return (
