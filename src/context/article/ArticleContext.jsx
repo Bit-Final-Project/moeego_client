@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
 import apiAxios from "../../api/apiAxios";
+import { useNavigate } from "react-router-dom";
 
 const ArticleContext = createContext();
 
@@ -14,6 +15,7 @@ const ArticleProvider = ({ children }) => {
     const [currentPage, setCurrentPage] = useState(0); // 현재 댓글 페이지
     const [totalPages, setTotalPages] = useState(1); // 댓글 총 페이지 수
     const [error, setError] = useState(null); // 에러 상태
+    const navigate = useNavigate();
 
     // 전체 게시글 가져오기
     const fetchArticles = useCallback(() => {
@@ -103,6 +105,24 @@ const ArticleProvider = ({ children }) => {
             });
     }, []);
 
+    //게시글 쓰기
+    const writeArticle = useCallback((articleData) => {
+        setIsLoading(true);
+        apiAxios
+            .post("/api/article/write", articleData)
+            .then((response) => {
+                fetchArticles(); // 작성 후 전체 게시글 다시 가져오기
+                navigate('/article');
+            })
+            .catch((err) => {
+                console.error("Error writing article:", err);
+                setError(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, [fetchArticles]);
+
     const contextValue = {
         articles,
         hotArticle,
@@ -119,6 +139,7 @@ const ArticleProvider = ({ children }) => {
         fetchArticle,
         fetchComments,
         setCurrentPage,
+        writeArticle,
     };
 
     return (

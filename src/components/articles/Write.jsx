@@ -1,21 +1,49 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import '/src/css/articles/Write.css';
+import { ArticleContext } from '../../context/article/ArticleContext';
 
 const Write = () => {
+    const { writeArticle } = useContext(ArticleContext);
+    const [formData, setFormData] = useState({
+        subject: '',
+        content: '',
+        category: '',
+        // 추가적으로 필요한 필드
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const dto = {
+            subject: formData.title,
+            content: formData.content,
+            category: formData.category,
+            // 추가적으로 필요한 필드
+        };
+        writeArticle(dto);
+    };
+
     return (
-        <form id='articleWriteForm'>
+        <form id='articleWriteForm' onSubmit={handleSubmit}>
             <div className="write-wrap">
                 <div className=''><h1>모이고 글작성</h1></div>
                 <div className="write-container">
                     {/* 선택 및 등록 버튼 */}
                     <div className="select-container">
-                        <select>
+                        <select name="category" onChange={handleChange}>
                             <option selected disabled>주제 선택</option>
-                            <option>고수 게시판</option>
-                            <option>자유 게시판</option>
-                            <option>QnA</option>
+                            <option value="4">달인 게시판</option>
+                            <option value="2">자유 게시판</option>
+                            <option value="3">QnA</option>
                         </select>
-                        <button className="submit-button">
+                        <button type="submit" className="submit-button">
                             등록
                         </button>
                     </div>
@@ -29,7 +57,13 @@ const Write = () => {
 
                     {/* 제목 입력 */}
                     <div className="subject-container">
-                        <input type="text" placeholder="제목을 입력해주세요." maxLength={50} />
+                        <input
+                            type="text"
+                            name="subject"
+                            placeholder="제목을 입력해주세요."
+                            maxLength={50}
+                            onChange={handleChange}
+                        />
                     </div>
                     <hr />
 
@@ -41,16 +75,17 @@ const Write = () => {
                         <button>
                             <span>(선택) 지역</span>
                         </button>
-
                     </div>
                     <hr />
 
                     {/* 본문 입력 */}
                     <div className="content-container">
-                        <textarea placeholder="내용을 입력하세요" maxLength={5000}></textarea>
-                        {/*
-                <span>과외 친구, 공동 구매 그룹 , 취미활동까지 함께 할 사람을 찾아보세요. 예) 게임을 좋아하는 분 누구나</span>
-*/}
+                        <textarea
+                            name="content"
+                            placeholder="내용을 입력하세요"
+                            maxLength={5000}
+                            onChange={handleChange}
+                        ></textarea>
                     </div>
                 </div>
             </div>
