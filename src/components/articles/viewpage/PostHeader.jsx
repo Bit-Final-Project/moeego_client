@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import '../../../css/articles/PostHeader.css';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../context/member/AuthContext';
 
 const PostHeader = ({articleData}) => {
+    const {isLoggedIn, loginEmail, loginUser, loginStatus} = useContext(AuthContext);
+
     return (
         <div className="post-header">
             {/* 카테고리 및 제목 */}
@@ -50,9 +53,11 @@ const PostHeader = ({articleData}) => {
                         <img src="/image/share.png" alt="공유" className="action-icon" />
                     </button>
                     {/* 옵션 버튼 */}
-                    <button className="post-action-button">
-                        <img src="/image/3dots.png" alt="옵션" className="action-icon" />
-                    </button>
+                    {13 === articleData.memberNo ? 
+                        <button className="post-action-button">
+                            <img src="/image/3dots.png" alt="옵션" className="action-icon" />
+                        </button>
+                    : ''}
                 </div>
             </div>
         </div>
