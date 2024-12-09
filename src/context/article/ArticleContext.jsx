@@ -107,11 +107,10 @@ const ArticleProvider = ({ children }) => {
 
     //게시글 쓰기
     const writeArticle = useCallback((articleData) => {
-        setIsLoading(true);
         apiAxios
             .post("/api/article/write", articleData)
             .then((response) => {
-                fetchArticles(); // 작성 후 전체 게시글 다시 가져오기
+                fetchArticles();
                 navigate('/article');
             })
             .catch((err) => {
