@@ -10,6 +10,7 @@ const AdminProvider = ({ children }) => {
     const [notices, setNotices] = useState([]);
     const [weekData, setWeekData] = useState([]);
     const [expertData, setExpertData] = useState([]);
+    const [leavememberData, setleaveMemberData] = useState([]); // 회원 데이터 추가
     const [allmemberData, setAllmemberData] = useState(null); // 회원 데이터 추가
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -18,11 +19,12 @@ const AdminProvider = ({ children }) => {
         const fetchData = async () => {
             try {
                 // 여러 데이터 동시 요청
-                const [eventRes, noticeRes, weekDataRes, expertDataRes, memberDataRes] = await Promise.all([
+                const [eventRes, noticeRes, weekDataRes, expertDataRes,leavememberDataRes, memberDataRes] = await Promise.all([
                     apiAxios.get('/api/article/events'),
                     apiAxios.get('/api/article/notices'),
                     apiAxios.get('/api/member/weekData'),
                     apiAxios.get('/api/member/expertData'),
+                    apiAxios.get('/api/member/leavememberData'),
                     apiAxios.get('/api/member/allmemberData'), // 회원 분포 데이터 요청
                 ]);
 
@@ -30,6 +32,7 @@ const AdminProvider = ({ children }) => {
                 setNotices(noticeRes.data);
                 setWeekData(weekDataRes.data);
                 setExpertData(expertDataRes.data);
+                setleaveMemberData(leavememberDataRes.data);
                 setAllmemberData(memberDataRes.data); // 회원 데이터 저장
             } catch (err) {
                 setError(err.message);
@@ -49,6 +52,7 @@ const AdminProvider = ({ children }) => {
                 notices,
                 weekData,
                 expertData,
+                leavememberData,
                 allmemberData, // 회원 데이터 추가
                 loading,
                 error,

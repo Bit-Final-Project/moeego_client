@@ -7,7 +7,7 @@ import { AdminContext } from '../../context/admin/AdminContext';
 
 const DashBoard = () => {
     const navigate = useNavigate(); // 경로 이동 훅
-    const { events, notices, weekData, expertData, allmemberData ,loading, error } = useContext(AdminContext);  // AdminContext에서 데이터 가져오기
+    const { events, notices, weekData, expertData, leavememberData, allmemberData ,loading, error } = useContext(AdminContext);  // AdminContext에서 데이터 가져오기
 
     // 로딩 중일 때 처리
     if (loading) {
@@ -26,7 +26,7 @@ const DashBoard = () => {
                     <h1>대시보드 | 각종 이력을 간략히 확인할 수 있습니다.</h1>
                 </div>
                 <div className="chart-wrapper">
-                    <LineChart data={weekData} expertData={expertData} /> {/* 라인 차트 */}
+                    <LineChart data={weekData} expertData={expertData} leavememberData={leavememberData} />
                     <MemberPieChart data={allmemberData}/> {/* 파이 차트 */}
                 </div>
 

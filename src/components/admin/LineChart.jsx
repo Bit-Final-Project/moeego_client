@@ -5,7 +5,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 // Chart.js의 모듈 등록
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const LineChart = ({ data, expertData }) => {
+const LineChart = ({ data, expertData , leavememberData}) => {
     const chartData = {
         labels: data.map(item => item.date), // 날짜 (X축)
         datasets: [
@@ -22,6 +22,14 @@ const LineChart = ({ data, expertData }) => {
                 data: expertData.map(item => item.count), // 고수 신청 수 (Y축)
                 borderColor: 'rgba(255, 99, 132, 1)', // 고수 신청 선 색상
                 backgroundColor: 'rgba(255, 99, 132, 0.2)', // 선 내부 색상
+                fill: true, // 선 내부 채우기
+                tension: 0.4, // 선의 굴곡 정도
+            },
+            {
+                label: '탈퇴 회원 수',
+                data: leavememberData.map(item => item.count), // 탈퇴 회원 수 (Y축)
+                borderColor: 'rgba(255, 206, 86, 1)', // 탈퇴 회원 선 색상
+                backgroundColor: 'rgba(255, 206, 86, 0.2)', // 선 내부 색상
                 fill: true, // 선 내부 채우기
                 tension: 0.4, // 선의 굴곡 정도
             },
