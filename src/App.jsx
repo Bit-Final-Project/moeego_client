@@ -77,7 +77,7 @@ import { ArticleProvider } from './context/article/ArticleContext.jsx';
 import { ProProvider } from './context/pro/ProContext.jsx';
 
 // OAuth2
-import Oauth2Redirect from './api/Oauth2Redirect.jsx'
+import Oauth2Redirect from './api/Oauth2Redirect.jsx';
 
 const App = () => {
   return (
