@@ -1,4 +1,11 @@
+.Notice_eventPage{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    box-sizing: border-box;
+}
 .noticePageWrap {
+    box-sizing: border-box;
     display: flex;
     width:100%;
     flex-direction: row;
@@ -6,6 +13,18 @@
     justify-content: space-between;
     gap: 20px;
     padding: 20px;
+}
+.noticeLifeWrap{
+    display: flex;
+    align-items: center;
+    width:20%
+}
+.noticeEventListWrap{
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    gap: 1rem;
+    justify-content: space-between;
 }
 .Notice_eventPage>h1{
     margin-top: 4rem;
@@ -42,9 +61,10 @@
 
 /* 오른쪽 콘텐츠 스타일 */
 .noticeListWrap, .eventListWrap {
+    display: flex;
     flex: 1;
     background-color: #fff; /* 배경색 */
-    width:100%;
+    width:45%;
     height: 45rem;
     padding: 15px;
     box-sizing: border-box;
@@ -53,12 +73,16 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
 }
-.eventPage{
+.noticePage, .eventPage{
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     width:100%;
 }
 .noticeList, .eventList{
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
     width:100%;
 }
 .eventItemWrap, .noticeItemWrap {
@@ -74,10 +98,13 @@
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
-    overflow: hidden; /* 넘치는 콘텐츠 숨기기 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .eventItemWrap p, .noticeItemWrap p {
+
     flex: 1; /* 남은 공간 차지 */
     overflow: hidden;
     white-space: nowrap;
@@ -92,6 +119,7 @@
 .eventList a:visited, .noticeList a:visited{text-decoration: none; color: black;}
 
 .noticeList p, .eventList p{
+    width: 100%;
     margin:0;
 }
 .noticeView h1{
@@ -106,37 +134,35 @@
 
 @media (max-width: 1250px) {
     .noticePageWrap {
-        flex-direction: column; /* 세로 배치로 변경 */
-        gap: 10px; /* 간격 조정 */
+        flex-direction: column;
+        gap: 2rem;
     }
 
-    .Notice_eventPage .noticeEventMenu {
-        width: 100%; /* 메뉴 폭을 100%로 변경 */
-        margin-bottom: 1rem; /* 메뉴와 콘텐츠 간격 */
+    .noticeLifeWrap{
+        width:100%;
     }
-
-    .noticeListWrap,
-    .eventListWrap {
-        height: auto; /* 높이를 내용에 맞춤 */
-        margin-bottom: 1rem; /* 각 콘텐츠 간격 */
+    .noticeEventListWrap{
+        width: 100%;
+        flex-direction: column;
     }
-
-    .noticeListWrap {
-        order: 1; /* 공지사항이 위로 올라오게 순서 변경 */
+    .noticeListWrap, .eventListWrap{
+        width:100%;
     }
-
-    .eventListWrap {
-        order: 2; /* 이벤트는 공지사항 아래로 */
-    }
-
-    .noticePageWrap {
+    .noticeLifeWrap .life-topic-layout {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
     }
 
-    .noticePageWrap ul {
+    .noticeLifeWrap .life-topic-layout section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .noticeLifeWrap .life-topic-layout section ul {
         display: grid;
         grid-template-columns: repeat(3, 2fr);
         width: 100%;
@@ -146,7 +172,7 @@
         gap: 1em;
     }
 
-    .noticePageWrap ul li {
+    .noticeLifeWrap .life-topic-layout section ul li {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -154,7 +180,7 @@
         padding: 0;
     }
 
-    .noticePageWrap ul li a {
+    .noticeLifeWrap .life-topic-layout section ul li a {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -167,16 +193,16 @@
         margin: 0 auto;
     }
 
-    .noticePageWrap ul li:hover {
+    .noticeLifeWrap .life-topic-layout section ul li:hover {
         background-color: transparent;
         color: #323232;
     }
 
-    .noticePageWrap ul li a:hover {
-        background-color: red;
+    .noticeLifeWrap .life-topic-layout section ul li a:hover {
+        background-color: #fcc1cc;
     }
 
-    .noticePageWrap ul li:hover a {
+    .noticeLifeWrap .life-topic-layout section ul li:hover a {
         color: #323232;
     }
 }

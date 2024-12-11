@@ -11,6 +11,8 @@ import MainPage from './components/mainPage';
 
 // 이벤트, 공지
 import Notice_eventPage from "./components/notice_eventpage/Notice_eventpage.jsx";
+import NoticeView from "./components/notice_eventpage/NoticeView.jsx";
+
 
 // member
 import Login from "./components/login/Login";
@@ -76,8 +78,10 @@ import { MyPageProvider } from './context/mypage/MyPageContext.jsx';
 import { ArticleProvider } from './context/article/ArticleContext.jsx';
 import { ProProvider } from './context/pro/ProContext.jsx';
 
+import { SignOutProvider } from './context/mypage/SignOutContext.jsx';
+
 // OAuth2
-import Oauth2Redirect from './api/Oauth2Redirect.jsx';
+import Oauth2Redirect from './api/Oauth2Redirect.jsx'
 
 const App = () => {
   return (
@@ -88,6 +92,7 @@ const App = () => {
             <SignUpProvider>
               <LoginProvider>
                 <MyPageProvider>
+                  <SignOutProvider>
                   <ArticleProvider>
                     <ProProvider>
                       {/* Header와 Footer를 제외할 조건 */}
@@ -100,6 +105,7 @@ const App = () => {
                         {/* 소개페이지, 공지/이벤트 */}
                         <Route path={"/about"} element={<About />} />
                         <Route path={"/event"} element={<div className='main-content'><Notice_eventPage /></div>} />
+                        <Route path={"/noticeview"} element={<div className='main-content'><NoticeView /></div>} />
 
                         {/* 카테고리 페이지 */}
                         <Route path={"/category/:mainCateNo"} element={<div className='main-content'><SelectCategory /></div>} />
@@ -175,6 +181,7 @@ const App = () => {
                       {!window.location.pathname.startsWith('/admin') && <Footer />}
                     </ProProvider>
                   </ArticleProvider>
+                 </SignOutProvider>
                 </MyPageProvider>
               </LoginProvider>
             </SignUpProvider>

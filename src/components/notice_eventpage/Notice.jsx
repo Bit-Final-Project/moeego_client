@@ -21,7 +21,7 @@ const Notice = () => {
                 <div className='noticeList'>
                     {noticeArticles.length > 0 ? (
                         noticeArticles.map((item) => (
-                            <Link key={item.articleNo} to={`/article/noticeview?article_no=${item.articleNo}`}>
+                            <Link key={item.articleNo} to={`/noticeview?article_no=${item.articleNo}`}>
                                 <Notice_eventItem item = {item}/>
                             </Link>
                         ))
