@@ -11,9 +11,8 @@ const AdminProvider = ({ children }) => {
     const [weekData, setWeekData] = useState([]); // 이건 아직 ㅋㅋ
     const [expertData, setExpertData] = useState([]); // 이건 아직 ㅋㅋ
     const [allmemberData, setAllmemberData] = useState(null); // 회원 데이터 도 아직 ㅋㅋ
-    
-    const [approvedmember, setapprovedmember] = useState([]); // 승인 대기 중인 회원 데이터
 
+    const [approvedmember, setapprovedmember] = useState([]); // 승인 대기 중인 회원 데이터
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 

@@ -29,6 +29,24 @@ const ProApproval = () => {
         return <div>오류 발생: {error}</div>;
     }
 
+    const approveMember = (name) => {
+        const isConfirmed = window.confirm('고수 승인 하시겠습니까?');
+        if (isConfirmed) {
+            // 승인 처리 로직 추가 (예: API 호출)
+            alert(`${name}님 승인 완료!`);
+            // 실제로는 상태를 업데이트하거나 서버와 연동 필요
+        }
+    };
+
+    const cancelApproval = (name) => {
+        const isConfirmed = window.confirm('고수 승인을 취소하시겠습니까?');
+        if (isConfirmed) {
+            // 취소 처리 로직 추가 (예: API 호출)
+            alert(`${name}님 승인이 취소되었습니다.`);
+            // 실제로는 상태를 업데이트하거나 서버와 연동 필요
+        }
+    };
+
     return (
         <div className="proApproval-approve-container">
             <div className="proApproval-approve-inner-container">
@@ -43,7 +61,8 @@ const ProApproval = () => {
                                 <th>한줄 소개</th>
                                 <th>박탈 횟수</th>
                                 <th>승인 여부</th>
-                                <th>비고</th>
+                                <th>작업</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -72,6 +91,39 @@ const ProApproval = () => {
                                         >
                                             취소
                                         </button>
+                                    </td>
+                                    <td>
+                                        {row.status === '미승인' && (
+                                            <>
+                                                <button
+                                                    onClick={() => approveMember(row.name)}
+                                                    style={{
+                                                        padding: '5px 10px',
+                                                        backgroundColor: '#59B969',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '5px',
+                                                        cursor: 'pointer',
+                                                        marginRight: '10px',
+                                                    }}
+                                                >
+                                                    승인
+                                                </button>
+                                                <button
+                                                    onClick={() => cancelApproval(row.name)}
+                                                    style={{
+                                                        padding: '5px 10px',
+                                                        backgroundColor: '#E74C3C',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '5px',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                >
+                                                    취소
+                                                </button>
+                                            </>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
