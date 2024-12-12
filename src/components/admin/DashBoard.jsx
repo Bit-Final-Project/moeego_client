@@ -10,33 +10,64 @@ const DashBoard = () => {
     const navigate = useNavigate();
     const { loading, setLoading, error, setError } = useContext(AdminContext);
 
-    const [events, setEvents] = useState([]); // 이벤트 게시판 데이터
+    const [event, setEvent] = useState([]); // 이벤트 게시판 데이터
     const [notices, setNotices] = useState([]); // 공지사항 게시판 데이터
     const [weekMemberData, setWeekMemberData] = useState([]); // 일주일 회원 가입 수
     const [weekProData, setWeekProData] = useState([]); // 일주일 고수 회원 등록 수 ( 고수 )
     const [weekLeaveMemberData, setweekLeaveMemberData] = useState([]); // 일주일 탈퇴 회원 수
 
-    const [allMemberData, setAllMemberData] = useState([]);
-    const [approvedMemberData, setApprovedMemberData] = useState([]);
+    const [memberData, setMemberData] = useState([]);
+    const [proData, setProData] = useState([]);
+    const [leaveData, setLeaveData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const [eventRes, noticeRes, weekMemberDataRes, weekProDataRes, weekLeaveMemberDataRes] =
+                const [eventRes, noticeRes, weekMemberDataRes, weekProDataRes, weekLeaveMemberDataRes, memberDataRes, proDataRes, leaveDataRes] =
                     await Promise.all([
+                        //공지사항 및 이벤트
                         apiAxios.get('/api/article/event'),
                         apiAxios.get('/api/article/notices'),
-                        apiAxios.get('/api/member/weekMemberData'),
-                        apiAxios.get('/api/member/weekProData'),
-                        apiAxios.get('/api/member/weekLeaveMemberData'),
+
+                        //라인 차트
+                        apiAxios.get('/api/admin/weekmember'),
+                        apiAxios.get('/api/admin/weekpro'),
+                        apiAxios.get('/api/admin/weekleave'),
+
+                        // //파이 차트
+                        // apiAxios.get('/api/admin/member'),
+                        // apiAxios.get('/api/admin/pro'),
+                        // apiAxios.get('/api/admin/leave'),
                     ]);
 
-                setEvents(eventRes.data);
+                setEvent(eventRes.data);
                 setNotices(noticeRes.data);
+
                 setWeekMemberData(weekMemberDataRes.data);
                 setWeekProData(weekProDataRes.data);
                 setweekLeaveMemberData(weekLeaveMemberDataRes.data);
+                
+                setMemberData(memberDataRes.data);
+                setProData(proDataRes.data);
+                setLeaveData(leaveDataRes.data);
+                
+                // 파이차트 데이터 숫자로 변환
+                const memberCounts = memberDataRes.data.reduce(
+                    (counts, member) => {
+                        if (member.type === 'RULE_USER') counts.member++;
+                        else if (member.type === 'RULE_PRO') counts.pro++;
+                        else if (member.type === 'RULE_CANCEL') counts.leave++;
+                        return counts;
+                    },
+                    { member: 0, pro: 0, leave: 0 }
+                );
+    
+                setAllMemberData({
+                    labels: ['고수 회원', '일반 회원', '탈퇴 회원'],
+                    data: [memberCounts.member, memberCounts.pro, memberCounts.leave],
+                });
+
                 setError(null); // 에러 초기화
             } catch (err) {
                 setError(err.message);
@@ -60,7 +91,7 @@ const DashBoard = () => {
                 </div>
                 <div className="chart-wrapper">
                     <LineChart weekMemberData={weekMemberData} weekProData={weekProData} weekLeaveMemberData={weekLeaveMemberData} />
-                    {/* <MemberPieChart data={allmemberData}/> 파이 차트 */}
+                    <MemberPieChart memberData={memberData} proData={proData} leaveData={leaveData}/>
                 </div>
 
                 <div className="adminDashBoard-count-wrapper">
@@ -85,14 +116,17 @@ const DashBoard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {events.length > 0 ? events.slice(0, 3).map(event => (
-                                    <tr key={event.id}>
-                                        <td>{event.title}</td>
-                                        <td>{event.subject}</td>
-                                        <td>{event.view}</td>
-                                        <td>{event.date}</td>
-                                    </tr>
-                                )) : <tr><td colSpan="4">데이터가 없습니다.</td></tr>}
+                                {event && event.content && event.content.length > 0 ? event.content
+                                    .sort((a, b) => b.view - a.view)
+                                    .slice(0, 3)
+                                    .map(event => (
+                                        <tr key={event.articleNo}>
+                                            <td>{event.subject}</td>
+                                            <td>{event.content}</td>
+                                            <td>{event.view}</td>
+                                            <td>{event.writeDate}</td>
+                                        </tr>
+                                    )) : <tr><td colSpan="4">데이터가 없습니다.</td></tr>}
                             </tbody>
                         </table>
                     </div>
@@ -118,14 +152,17 @@ const DashBoard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {notices.slice(0, 3).map(notice => (
-                                    <tr key={notice.id}>
-                                        <td>{notice.title}</td>
-                                        <td>{notice.subject}</td>
-                                        <td>{notice.view}</td>
-                                        <td>{notice.date}</td>
-                                    </tr>
-                                ))}
+                                {notices.content && notices.content.length > 0 ? notices.content
+                                    .sort((a, b) => b.view - a.view)
+                                    .slice(0, 3)
+                                    .map(notice => (
+                                        <tr key={notice.articleNo}>
+                                            <td>{notice.subject}</td>
+                                            <td>{notice.content}</td>
+                                            <td>{notice.view}</td>
+                                            <td>{notice.writeDate}</td>
+                                        </tr>
+                                    )) : <tr><td colSpan="4">데이터가 없습니다.</td></tr>}
                             </tbody>
                         </table>
                     </div>

@@ -7,17 +7,6 @@ import { AdminContext } from '../../context/admin/AdminContext';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const MemberPieChart = () => {
-    const { allmemberData, loading, error } = useContext(AdminContext);
-
-    // 로딩 중일 때 처리
-    if (loading) {
-        return <div>데이터를 불러오는 중...</div>;
-    }
-
-    // 에러가 있을 경우 처리
-    if (error) {
-        return <div>데이터를 불러오는 중 오류 발생: {error}</div>;
-    }
 
     // 파이 차트 데이터
     const chartData = allmemberData && allmemberData.labels?.length && allmemberData.data?.length ? {
