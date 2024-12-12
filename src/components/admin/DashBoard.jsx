@@ -35,10 +35,10 @@ const DashBoard = () => {
                         apiAxios.get('/api/admin/weekpro'),
                         apiAxios.get('/api/admin/weekleave'),
 
-                        // //파이 차트
-                        // apiAxios.get('/api/admin/member'),
-                        // apiAxios.get('/api/admin/pro'),
-                        // apiAxios.get('/api/admin/leave'),
+                        //파이 차트
+                        apiAxios.get('/api/admin/member'),
+                        apiAxios.get('/api/admin/pro'),
+                        apiAxios.get('/api/admin/leave'),
                     ]);
 
                 setEvent(eventRes.data);
@@ -52,21 +52,6 @@ const DashBoard = () => {
                 setProData(proDataRes.data);
                 setLeaveData(leaveDataRes.data);
                 
-                // 파이차트 데이터 숫자로 변환
-                const memberCounts = memberDataRes.data.reduce(
-                    (counts, member) => {
-                        if (member.type === 'RULE_USER') counts.member++;
-                        else if (member.type === 'RULE_PRO') counts.pro++;
-                        else if (member.type === 'RULE_CANCEL') counts.leave++;
-                        return counts;
-                    },
-                    { member: 0, pro: 0, leave: 0 }
-                );
-    
-                setAllMemberData({
-                    labels: ['고수 회원', '일반 회원', '탈퇴 회원'],
-                    data: [memberCounts.member, memberCounts.pro, memberCounts.leave],
-                });
 
                 setError(null); // 에러 초기화
             } catch (err) {
@@ -101,7 +86,7 @@ const DashBoard = () => {
                             <div className="adminDashBoard-count-button-wrapper">
                                 <button
                                     className="adminDashBoard-count-button"
-                                    onClick={() => navigate('/admin/EventList')}>
+                                    onClick={() => navigate('/admin/eventlist')}>
                                     <span>+</span>
                                 </button>
                             </div>
@@ -137,7 +122,7 @@ const DashBoard = () => {
                             <div className="adminDashBoard-count-button-wrapper">
                                 <button
                                     className="adminDashBoard-count-button"
-                                    onClick={() => navigate('/admin/NoticeList')}>
+                                    onClick={() => navigate('/admin/eventlist')}>
                                     <span>+</span>
                                 </button>
                             </div>

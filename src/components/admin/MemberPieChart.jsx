@@ -6,21 +6,28 @@ import { AdminContext } from '../../context/admin/AdminContext';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const MemberPieChart = () => {
+const MemberPieChart = ({ memberData, proData, leaveData }) => {
+    // 각 데이터 배열의 길이를 기반으로 파이 차트 데이터 생성
+    const labels = ['일반 회원', '고수 회원', '탈퇴 회원'];
+    const data = [
+        memberData, // 일반 회원 (숫자 값)
+        proData,    // 고수 회원 (숫자 값)
+        leaveData,  // 탈퇴 회원 (숫자 값)
+    ];
 
-    // 파이 차트 데이터
-    const chartData = allmemberData && allmemberData.labels?.length && allmemberData.data?.length ? {
-        labels: allmemberData.labels, // 예: ['고수 회원', '일반 회원', '탈퇴 회원']
+    // 파이 차트 데이터 구성
+    const chartData = {
+        labels: labels,
         datasets: [
             {
                 label: '회원 분포',
-                data: allmemberData.data, // 예: [10, 20, 5]
+                data: data,
                 backgroundColor: ['#4CAF50', '#2196F3', '#f44336'],
                 borderColor: ['#4CAF50', '#2196F3', '#f44336'],
                 borderWidth: 1,
             },
         ],
-    } : null;
+    };
 
     const options = {
         maintainAspectRatio: false,
@@ -31,7 +38,7 @@ const MemberPieChart = () => {
         <div className="adminDashBoard-chart">
             <p>회원 분포</p>
             <div className="chart-container">
-                {chartData ? (
+                {data && data.length > 0 ? (
                     <Pie data={chartData} options={options} />
                 ) : (
                     <p>데이터가 없습니다.</p>
