@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import CommentItem from './CommentItem';
 import Loading from '../../loading/loading';
 
@@ -12,7 +12,7 @@ const CommentList = ({ commentData, isCommentLoading, isFetchingMore }) => {
     }
 
     if (!commentData || commentData.length === 0) {
-        return <div>No comments available</div>;
+        return <div></div>;
     }
 
     return (

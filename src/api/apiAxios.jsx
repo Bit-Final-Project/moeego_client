@@ -1,21 +1,39 @@
 import axios from "axios";
+import fetchReissue from "./fetchReissue";
 
-// Axios 인스턴스 생성
 const apiAxios = axios.create({
-    baseURL: "/", // API 기본 경로
-    withCredentials: true, // 쿠키 자동 포함
+    baseURL: "/",
+    withCredentials: true,
 });
 
-// 요청 인터셉터에서 access 토큰 추가
 apiAxios.interceptors.request.use(
     (config) => {
         const accessToken = window.localStorage.getItem("access");
         if (accessToken) {
-            config.headers["access"] = accessToken;
+            config.headers["Authorization"] = `Bearer ${accessToken}`;
         }
         return config;
     },
     (error) => Promise.reject(error)
+);
+
+apiAxios.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            const reissueSuccess = await fetchReissue();
+            if (reissueSuccess) {
+                const newAccessToken = window.localStorage.getItem("access");
+                originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+                return apiAxios(originalRequest);
+            }
+        }
+        return Promise.reject(error);
+    }
 );
 
 export default apiAxios;

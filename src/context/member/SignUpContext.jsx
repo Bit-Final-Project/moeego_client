@@ -34,11 +34,14 @@ const initialErrors = {
 const SignUpProvider = ({ children }) => {
     const [signup, setSignup] = useState(initialState);
     const [errors, setErrors] = useState(initialErrors);
+    const [isEmailChecked, setIsEmailChecked] = useState(false);
     const [isReadonly, setIsReadonly] = useState({
         zipcode: false,
         address1: false,
         address2: false,
     });
+
+
 
     const navigate = useNavigate();
 
@@ -53,6 +56,47 @@ const SignUpProvider = ({ children }) => {
         }));
 
         validateField(field, value);
+    };
+
+    const checkEmailDuplication = async () => {
+        if (!signup.email) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                email: "이메일을 입력해주세요.",
+            }));
+            setIsEmailChecked(false);
+            return;
+        }
+
+        if (errors.email) {
+            setIsEmailChecked(false);
+            return; // 이메일 형식 오류가 있으면 실행하지 않음
+        }
+
+        try {
+            const response = await apiAxios.post("/api/join/exist", { email: signup.email });
+
+            if (response.data.isAvailable) {
+                setIsEmailChecked(true);
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: "", // 오류 메시지 제거
+                }));
+            } else {
+                setIsEmailChecked(false);
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: "이미 사용 중인 이메일입니다.",
+                }));
+            }
+        } catch (error) {
+            console.error("이메일 중복 체크 실패:", error);
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                email: "이메일 중복 체크 중 문제가 발생했습니다.",
+            }));
+            setIsEmailChecked(false);
+        }
     };
 
     const validateField = (field, value) => {
@@ -146,8 +190,13 @@ const SignUpProvider = ({ children }) => {
             return;
         }
 
+        if (!isEmailChecked) {
+            alert("이메일 중복 체크를 완료해주세요.");
+            return;
+        }
+
         try {
-            const combinedAddress = `${signup.address1} ${signup.address2}`.trim();
+            const combinedAddress = `${signup.address1} ${signup.address2} (${signup.zipcode})`.trim();
             const dataToSubmit = {
                 ...signup,
                 address: combinedAddress,
@@ -196,12 +245,15 @@ const SignUpProvider = ({ children }) => {
             value={{
                 signup,
                 errors,
-                isReadonly,
+                setIsEmailChecked,
                 updateSignUpData,
                 handleAddressSearch,
                 submitSignupForm,
                 goMain,
                 goLogin,
+                isReadonly,
+                isEmailChecked,
+                checkEmailDuplication
             }}
         >
             {children}

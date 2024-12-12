@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import apiAxios from '../../api/apiAxios';
+import { jwtDecode } from "jwt-decode";
 
 const LoginContext = createContext();
 
@@ -10,8 +11,8 @@ const LoginProvider = ({ children }) => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [modalType, setModalType] = useState(null);
+    const { setIsLoggedIn, setLoginEmail, setLoginUser, setLoginStatus, setLoginAddress, setLoginPhone, setLoginProfile, setLoginNumber } = useContext(AuthContext);
 
-    const { setIsLoggedIn, setLoginUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
     const prevUrl = location.state || "/";
@@ -37,14 +38,47 @@ const LoginProvider = ({ children }) => {
             });
 
             if (response.status === 200) {
-                console.log('로그인 성공 : ' + response.data.name);
-                const { name } = response.data; // JSON 데이터에서 `name` 가져오기
+                console.log('███╗   ███╗ ██████╗ ███████╗███████╗ ██████╗  ██████╗ ');
+                console.log('████╗ ████║██╔═══██╗██╔════╝██╔════╝██╔════╝ ██╔═══██╗');
+                console.log('██╔████╔██║██║   ██║█████╗  █████╗  ██║  ███╗██║   ██║');
+                console.log('██║╚██╔╝██║██║   ██║██╔══╝  ██╔══╝  ██║   ██║██║   ██║');
+                console.log('██║ ╚═╝ ██║╚██████╔╝███████╗███████╗╚██████╔╝╚██████╔╝');
+                console.log('╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚══════╝ ╚═════╝  ╚═════╝ ');
 
-                window.localStorage.setItem("access", response.headers["access"]);
-                window.localStorage.setItem("name", name);
+                console.log(response.data.name + '님 환영합니다.');
+
+                const accessToken = response.data.accessToken || response.headers["access"];
+                window.localStorage.setItem("access", accessToken);
+
+                const decodedToken = jwtDecode(accessToken); // 디코딩된 토큰
+                const { name, email, memberStatus, address, phone, profileImage, memberNo } = decodedToken; // name과 email 추출
+
+                // 로컬 스토리지에 저장
+                window.localStorage.setItem("username", name);
+                window.localStorage.setItem("useremail", email);
+                window.localStorage.setItem("memberStatus", memberStatus);
+                window.localStorage.setItem("useraddress", address);
+                window.localStorage.setItem("userphone", phone);
+                if (profileImage) {
+                    window.localStorage.setItem("userprofile", profileImage);
+                } else {
+                    window.localStorage.setItem("userprofile", '/image/default.svg');
+                }
+                window.localStorage.setItem("userno", memberNo);
+                window.localStorage.setItem("login", true);
 
                 setIsLoggedIn(true);
                 setLoginUser(name);
+                setLoginEmail(email);
+                setLoginStatus(memberStatus);
+                setLoginAddress(address);
+                setLoginPhone(phone);
+                if (profileImage) {
+                    setLoginProfile(profileImage);
+                } else {
+                    setLoginProfile('/image/default.svg');
+                }
+                setLoginNumber(memberNo);
 
                 navigate(prevUrl, { replace: true });
             } else {
@@ -60,14 +94,14 @@ const LoginProvider = ({ children }) => {
     const handleLogin = async (e) => {
         e.preventDefault();
         const credentials = { email: email, pwd: password };
-        console.log(credentials);
         fetchLogin(credentials);
     }
 
     // 소셜 로그인
     const handleSocialLogin = (provider) => {
-        apiAxios.get(`/api/oauth2/authorization/${provider}`);
+        window.location.href = `/api/oauth2/authorization/${provider}`;
     };
+
 
     return (
         <LoginContext.Provider

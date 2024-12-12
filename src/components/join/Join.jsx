@@ -11,6 +11,8 @@ const Join = () => {
         updateSignUpData,
         handleAddressSearch,
         submitSignupForm,
+        checkEmailDuplication,
+        isEmailChecked,
     } = useContext(SignUpContext);
 
     useEffect(() => {
@@ -58,10 +60,12 @@ const Join = () => {
                             placeholder="moeego@example.com"
                             value={signup.email}
                             onChange={(e) => updateSignUpData('email', e.target.value)}
+                            onBlur={checkEmailDuplication} // blur 이벤트로 중복 체크 실행
                         />
                     </div>
                     <div className='errorWrap'>
                         {errors.email && <span className="error">{errors.email}</span>}
+                        {isEmailChecked && <span className='error' style={{ color: "green" }}>사용 가능한 이메일입니다.</span>}
                     </div>
                     {/* 비밀번호 입력 */}
                     <div className="join-align">
@@ -70,6 +74,7 @@ const Join = () => {
                             className="pwdbox"
                             type="password"
                             placeholder="비밀번호를 입력해주세요"
+                            autoComplete="off"
                             value={signup.pwd}
                             maxLength={20}
                             onChange={(e) => updateSignUpData('pwd', e.target.value)}
@@ -87,6 +92,7 @@ const Join = () => {
                             className="repwdbox"
                             type="password"
                             placeholder="비밀번호를 한번 더 입력해주세요"
+                            autoComplete="off"
                             value={signup.confirmpwd}
                             onChange={(e) => updateSignUpData('confirmpwd', e.target.value)}
                         />
@@ -130,13 +136,15 @@ const Join = () => {
                         <input
                             className="phonebox"
                             type="text"
-                            placeholder="010-1234-5678"
+                            placeholder="010-0000-0000"
                             value={signup.phone}
                             onChange={(e) => updateSignUpData('phone', e.target.value)}
                         />
                     </div>
-                    {errors.phone && <span className="error">{errors.phone}</span>}
-                    <div>
+                    <div className='errorWrap'>
+                        {errors.phone && <span className="error">{errors.phone}</span>}
+                    </div>
+                    <div className='join-align'>
                         <input
                             type="button"
                             className="checkBtn"
@@ -163,7 +171,7 @@ const Join = () => {
                         <input
                             type="button"
                             className="zipcheckBtn"
-                            value="우편번호 검색"
+                            value="우편번호"
                             onClick={handleAddressSearch}
                         />
                     </div>

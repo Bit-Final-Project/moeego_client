@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/mypage/MyPage.css';
+import { AuthContext } from '../../context/member/AuthContext';
+import { MyPageContext } from '../../context/mypage/MyPageContext';
 
 const MyPage = () => {
+    const { isLoggedIn, loginUser, loginEmail, loginAddress, loginProfile, loginPhone, loginNumber, loginStatus } = useContext(AuthContext);
+    const profile = localStorage.getItem('userprofile');
+
     return (
         <div className='MyPage'>
             <div className='MyPageWrap'>
@@ -11,13 +16,31 @@ const MyPage = () => {
                     <Link to='/mypage/account' className='ProfileSettingPage'>
                         <div className='TopWrap'>
                             <div className='ProfileImage'>
-                                <img src="/image/profile.svg" alt="profile" />
+                                <img src={profile} alt="profile" />  {/* 프로필 이미지 표시 */}
                             </div>
                             <div className='ProfileInfo'>
-                                <div className='NickName'>ooo 고객님</div>
+                                <div className='NickName'>{loginUser}님</div>
                                 <div className='MailWrap'>
-                                    <div className="SNSWrap"><img src="/image/naver_sns.png" alt="naver" /></div>
-                                    <div className='Email'>moeego@moeego.com</div>
+                                    <div className="SNSWrap">
+                                        {loginEmail && loginEmail.split(" ")[0] === 'naver' ? (
+                                            <img className='snsProfile' src="/image/naver_sns.png" alt="naver" />
+                                        ) : loginEmail && loginEmail.split(" ")[0] === 'kakao' ? (
+                                            <img className='snsProfile' src="/image/kakao_sns.png" alt="kakao" />
+                                        ) : loginEmail && loginEmail.split(" ")[0] === 'google' ? (
+                                            <img className='snsProfile' src="/image/google_sns.svg" alt="google" />
+                                        ) : (
+                                            <img className='snsProfile' src="/image/moeego_login.png" alt="moeego" />
+                                        )}
+                                    </div>
+                                    <div className='Email'>
+                                        {loginEmail && loginEmail.split(" ")[0] === "naver"
+                                            ? "naver_email"
+                                            : loginEmail && loginEmail.split(" ")[0] === "kakao"
+                                                ? "kakao_email"
+                                                : loginEmail && loginEmail.split(" ")[0] === "google"
+                                                    ? "google_email" :
+                                                    loginEmail}
+                                    </div>
                                 </div>
                             </div>
                         </div>
