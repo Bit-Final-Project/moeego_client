@@ -45,6 +45,9 @@ const ArticleProvider = ({ children }) => {
             } else if (category === 'event') {
                 setEventArticles(response.data.content);
             }
+            else{
+                setArticleData(response.data.content);
+            }
         } catch (err) {
             console.error(`Error fetching articles for category ${category}:`, err);
             setError(err);
@@ -122,10 +125,10 @@ const ArticleProvider = ({ children }) => {
     }, [location, setCommentData]);
 
     // 게시글 쓰기
-    const writeArticle = useCallback(async (articleData) => {
+    const writeArticle = useCallback(async (article) => {
         setIsLoading(true);
         try {
-            await apiAxios.post("/api/article/write", articleData);
+            await apiAxios.post("/api/article/write", article);
             fetchArticles(); // 글 작성 후 목록 업데이트
             navigate('/article');
         } catch (err) {
