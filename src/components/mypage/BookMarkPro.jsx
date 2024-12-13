@@ -90,8 +90,8 @@ const BookMarkPro = () => {
             if (response.status === 200) {
                 alert("선택한 항목이 삭제되었습니다."); // 성공 메시지
                 setPage(1); // 페이지 초기화
-                setFavoritePro([]); // 데이터 다시 로드
                 setSelectedPro([]); // 선택된 항목 초기화
+                fetchFavoritePro(true); // 목록 다시 불러오기
             } else {
                 console.log("항목 삭제에 실패했습니다."); // 기타 실패 처리
             }
@@ -107,11 +107,10 @@ const BookMarkPro = () => {
     };
 
     useEffect(() => {
-        // userno와 page가 변경될 때 fetchFavoritePro 호출
         if (userno) {
             fetchFavoritePro(true); // 페이지가 1일 때는 초기화
         }
-    }, [userno, page]);
+    }, [userno, page]);  // page가 변경될 때마다 fetchFavoritePro 호출
 
     return (
         <div className='BookMarkProContainer'>
