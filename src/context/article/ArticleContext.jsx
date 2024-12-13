@@ -40,13 +40,18 @@ const ArticleProvider = ({ children }) => {
         const apiUrl = `/api/article/${category}`;
         try {
             const response = await apiAxios.get(apiUrl);
-            if (category === 'notices') {
-                setNoticeArticles(response.data.content);
-            } else if (category === 'event') {
-                setEventArticles(response.data.content);
-            }
-            else{
-                setArticleData(response.data.content);
+    
+            // 카테고리에 따라 상태 업데이트
+            switch (category) {
+                case "notices":
+                    setNoticeArticles(response.data.content);
+                    break;
+                case "event":
+                    setEventArticles(response.data.content);
+                    break;
+                default:
+                    setArticles(response.data.content); // 일반 게시글은 articles에 저장
+                    break;
             }
         } catch (err) {
             console.error(`Error fetching articles for category ${category}:`, err);
@@ -54,7 +59,7 @@ const ArticleProvider = ({ children }) => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, []);    
 
     // 인기 게시글 가져오기
     useEffect(() => {
