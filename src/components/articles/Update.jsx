@@ -86,26 +86,32 @@ const Update = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // 업데이트 요청 보내기
-        if (!formData.type || !formData.subject || !formData.content) {
-            alert("모든 필드를 입력해주세요.");
-            return;
-        }
-
-        // Prepare FormData for submission
+        
+        // 새로운 FormData 생성
         const data = new FormData();
         data.append("subject", formData.subject);
         data.append("content", formData.content);
         data.append("type", formData.type);
         data.append("service", formData.service);
         data.append("area", formData.area);
-
-        // Append files to FormData
+        
+        // 기존 이미지들을 파일처럼 추가 (Blob 사용)
+        if (images && images.length > 0) {
+            images.forEach(image => {
+                // 기존 이미지를 Blob으로 변환
+                const imageBlob = new Blob([image], { type: 'image/jpg' }); // 예시로 jpeg로 설정
+                const imageFile = new File([imageBlob], image.imageName, { type: 'image/jpg' });
+                data.append("images", imageFile); // 기존 이미지도 파일처럼 서버에 전송
+            });
+        }
+    
+        // 새로운 이미지 파일들을 FormData에 추가
         selectedFiles.forEach(file => data.append("images", file));
-
-        updateArticle(articleData.articleNo, data); // Send data for update
+    
+        // 서버에 전송
+        updateArticle(articleData.articleNo, data); // 전송 요청
     };
-
+    
     // 로딩 상태이거나 데이터가 준비되지 않았을 때 로딩 컴포넌트 렌더링
     if (isLoading || !articleData) {
         return <Loading />;
