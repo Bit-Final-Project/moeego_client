@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import '/src/css/mypage/ReviewWrite.css';
+import { ArticleContext } from '../../context/article/ArticleContext';
 
 const ReviewWrite = () => {
     const userNo = localStorage.getItem("userno");
+    const {reviewWrite} = useContext(ArticleContext);
 
     // 평점 상태 추가
     const [rating, setRating] = useState(0); // 선택된 평점
@@ -10,9 +12,11 @@ const ReviewWrite = () => {
 
     // State for form data
     const [formData, setFormData] = useState({
-        content: '',
-        memberNo: userNo,
         rating:'',
+        mainCateNo: 1,      // 이전 페이지에서 데이터 받아옴
+        memberNo: userNo,
+        proItemNo:4,        // 이전 페이지에서 데이터 받아옴
+        content: '',
     });
 
     const [selectedFiles, setSelectedFiles] = useState([]); // Files selected for upload
@@ -60,32 +64,38 @@ const ReviewWrite = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.type) {
-            alert("카테고리를 선택해주세요!");
+    
+        // 유효성 검사: 평점이 입력되지 않은 경우
+        if (rating === 0) {
+            alert("평점을 입력해주세요!");
             return;
         }
-        if (!formData.subject || !formData.content) {
-            alert("제목과 내용을 모두 입력해주세요!");
+    
+        // 유효성 검사: 내용이 입력되지 않은 경우
+        if (!formData.content) {
+            alert("내용을 입력해주세요!");
             return;
         }
-
+    
         const data = new FormData();
         // Add form data fields
-        data.append("reviewContent", formData.content);
-        data.append("memberNo", formData.memberNo);
         data.append("star", rating); // 평점 추가
-
+        data.append("mainCateNo", formData.mainCateNo);
+        data.append("memberNo", formData.memberNo);
+        data.append("proItemNo", formData.proItemNo);
+        data.append("reviewContent", formData.content);
+    
         // Add files to FormData
         selectedFiles.forEach(file => data.append("images", file));
-
+    
         try {
-            // 여기에 제출함수 ㄱㄱ
+            reviewWrite(formData); // 서버로 데이터 전송
             console.log("Form submitted", data);
         } catch (error) {
             console.error("Error submitting the form", error);
         }
     };
-
+    
     // 평점 설정 함수
     const handleRatingClick = (value) => {
         setRating(value);
