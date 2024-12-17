@@ -18,6 +18,7 @@ const Update = () => {
     });
 
     const [selectedFiles, setSelectedFiles] = useState([]); // 선택한 파일 저장
+    const [removedImageIds, setRemovedImageIds] = useState([]);
     const maxFileSize = 20 * 1024 * 1024; // 20MB
     const maxFileCount = 5; // 최대 5장
 
@@ -81,35 +82,41 @@ const Update = () => {
     };
 
     const handleRemoveFile = (fileToRemove) => {
-        setSelectedFiles(prevFiles => prevFiles.filter(file => file !== fileToRemove));
+        setSelectedFiles((prevFiles) => prevFiles.filter((file) => file !== fileToRemove));
+    
+        // 기존 이미지의 경우 삭제 목록에 추가
+        if (fileToRemove.imageUuidName) {
+            setRemovedImageIds((prevIds) => [...prevIds, fileToRemove.imageUuidName]);
+        }
     };
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        // 새로운 FormData 생성
+    
         const data = new FormData();
+    
+        // 게시글 데이터
         data.append("subject", formData.subject);
         data.append("content", formData.content);
         data.append("type", formData.type);
         data.append("service", formData.service);
         data.append("area", formData.area);
-        
-        // 기존 이미지들을 파일처럼 추가 (Blob 사용)
-        if (images && images.length > 0) {
-            images.forEach(image => {
-                // 기존 이미지를 Blob으로 변환
-                const imageBlob = new Blob([image], { type: 'image/jpg' }); // 예시로 jpeg로 설정
-                const imageFile = new File([imageBlob], image.imageName, { type: 'image/jpg' });
-                data.append("images", imageFile); // 기존 이미지도 파일처럼 서버에 전송
-            });
-        }
     
-        // 새로운 이미지 파일들을 FormData에 추가
-        selectedFiles.forEach(file => data.append("images", file));
+        // 유지할 기존 이미지 ID 추가
+        images.forEach((image) => {
+            if (image.imageUuidName) {
+                data.append("existingImages", image.imageUuidName);
+            }
+        });
     
-        // 서버에 전송
-        updateArticle(articleData.articleNo, data); // 전송 요청
+        // 삭제할 이미지 ID 추가
+        removedImageIds.forEach((id) => data.append("removedImages", id));
+    
+        // 새 이미지 추가
+        selectedFiles.forEach((file) => data.append("images", file));
+    
+        // 서버 요청
+        updateArticle(articleData.articleNo, data);
     };
     
     // 로딩 상태이거나 데이터가 준비되지 않았을 때 로딩 컴포넌트 렌더링
