@@ -19,6 +19,7 @@ const ArticleProvider = ({ children }) => {
     const [images, setImages] = useState([]);
     const [pages, setPages] = useState(1); // 총 페이지 수
     const [articleCurrentPage, setArticleCurrentPage] = useState(1); // 현재 페이지
+    const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
 
     const [noticeArticles, setNoticeArticles] = useState([]);
@@ -333,7 +334,21 @@ const ArticleProvider = ({ children }) => {
             return;
         }
     };
-    
+    // 전체 리뷰 조회
+    const fetchReviews = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const response = await apiAxios.get(`/api/review`);
+            setReviews(response.data.content);
+        } catch (err) { 
+            console.error("Error fetching articles:", err);
+            setError(err);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    // 리뷰 쓰기
     const reviewWrite = useCallback(async (formData) => {
         setIsLoading(true);
         try {
@@ -346,6 +361,27 @@ const ArticleProvider = ({ children }) => {
             setIsLoading(false);
         }
     }, [navigate]);
+
+    // 리뷰 삭제
+    const deleteReview = async (reviewNo) => {
+        try {
+            // 사용자 확인
+            if (!window.confirm("정말로 이 리뷰를 삭제하시겠습니까?")) {
+                return;
+            }
+    
+            // 삭제 요청
+            const response = await apiAxios.delete(`/api/review/delete/${reviewNo}`);
+            if (response.status === 200) {
+                alert("리뷰가 삭제되었습니다.");
+                // 삭제 후 필요한 작업 (예: 게시글 목록 갱신 또는 페이지 이동)
+                window.location.href = "/mypage/review/0"; // 목록 페이지로 이동
+            }
+        } catch (err) {
+            console.error("Error deleting article:", err);
+            alert("리뷰 삭제 중 오류가 발생했습니다.");
+        }
+    };
 
     // 조회수
     const hitUpdate = async (articleNo) => {
@@ -364,6 +400,7 @@ const ArticleProvider = ({ children }) => {
         latestArticle,
         eventArticles,
         articleData,
+        reviews,
         commentData,
         isLoading,
         isCommentLoading,
@@ -393,6 +430,7 @@ const ArticleProvider = ({ children }) => {
         fetchLatestArticle,
         setArticleCurrentPage,
         reviewWrite,
+        fetchReviews,
         GoWrite,
         GoLogin
     };
