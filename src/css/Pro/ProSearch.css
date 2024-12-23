@@ -57,6 +57,7 @@
     margin: 0 10px; /* 이미지와 입력창 간격 */
     width: 20px;
     height: 20px;
+    cursor: pointer;
 }
 
 .proSearchInputBarWrap input {
@@ -67,15 +68,20 @@
     border: none;
     border-radius: 10px;
     box-sizing: border-box;
+    outline: none;
 }
-.proSearchInputBarWrap:focus-within{
+.proSearchInputBarWrap:focus-within {
     border: 2px solid #fcc1cc;
     background-color: white;
+    outline: none;
     box-sizing: border-box;
 }
+
 .proSearchInputBarWrap input:focus {
-    outline: none;
+    width: 100%;
     background-color: white;
+    outline: none;
+    box-sizing: border-box;
 }
 
 .mapBtnWrap {
@@ -95,7 +101,7 @@
     background-color: rgb(89, 185, 105);
     border-radius: 10px;
     cursor: pointer;
-    color:white;
+    color: white;
 }
 
 .mapBtn .icon {
@@ -117,6 +123,7 @@
     display: flex; /* Flexbox 사용 */
     align-items: center; /* 세로 중앙 정렬 */
     justify-content: center;
+    flex-direction: column;
     box-sizing: border-box;
     width: 100%;
     margin: 15px; /* 항목 간 간격 */
@@ -141,10 +148,22 @@
     width: calc(100% - 9rem);
 }
 
-.proSearchListLink:visited{text-decoration: none; color: black;}
-.proSearchListLink:hover{text-decoration: none; color: black;}
-.proSearchListLink:link{text-decoration: none; color: black;}
-.proSearchListLink:active{text-decoration: none; color: black;}
+.proSearchListLink:visited {
+    text-decoration: none;
+    color: black;
+}
+.proSearchListLink:hover {
+    text-decoration: none;
+    color: black;
+}
+.proSearchListLink:link {
+    text-decoration: none;
+    color: black;
+}
+.proSearchListLink:active {
+    text-decoration: none;
+    color: black;
+}
 
 .proSearchListContentWrap {
     display: flex;
@@ -166,7 +185,7 @@
     height: 100%;
 }
 
-.proSearchListProfileWrap .user-profile-picture img{
+.proSearchListProfileWrap .user-profile-picture img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -176,7 +195,8 @@
 .proSearchListTitleWrap {
     font-weight: bold; /* 제목 강조 */
 }
-.proSearchListTitleWrap h3{
+
+.proSearchListTitleWrap h3 {
     text-overflow: ellipsis;
     white-space: nowrap;
     margin-bottom: 10px;
@@ -191,17 +211,30 @@
 }
 
 .proSearchListProInfoWrap {
-    margin: 0 0 5px 0; /* 상세정보 간격 */
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 100%;
 }
-.proSearchListProInfoWrap span{
-    font-size: 12pt;
-    color: black;
+
+.proSearchListProInfoWrap span {
+    font-size: 0.825rem;
+    color: #626262;
+    font-weight: bold;
 }
+
 .proSearchListIntro {
     white-space: pre-wrap; /* 줄 바꿈 및 공백 유지 */
-    font-size: 11pt;
+    font-size: 0.9rem;
     color: #898888;
-    margin-top: 5px; /* 소개 내용 간격 */
+    margin-bottom: 0.2rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 100%;
 }
 
 .ServiceAreaModal .closeButton {
@@ -237,6 +270,14 @@
         width: 100%; /* 검색창 너비를 100%로 설정 */
         margin-bottom: 10px; /* 버튼과의 간격 */
         height: 40px;
+    }
+
+    .proSearchInputBarWrap input:focus {
+        width: 100%;
+        height: 1rem;
+        background-color: white;
+        outline: none;
+        box-sizing: border-box;
     }
 
     .mapBtn {
@@ -288,7 +329,7 @@
         justify-content: center;
         margin-bottom: 0.5rem;
     }
-    section .proSearchListWrap .proSearchListLink{
+    section .proSearchListWrap .proSearchListLink {
         width: calc(100% - 7rem);
     }
 
@@ -297,8 +338,10 @@
         height: 6rem;
     }
 
-    .proSearchListAWrap{
+    .proSearchListAWrap {
         width: 100%;
         box-sizing: border-box;
     }
 }
+
+/* 뭐가 문제지 */

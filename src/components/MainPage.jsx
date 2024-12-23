@@ -9,15 +9,13 @@ import Locations from './mainpage/Locations';
 const MainPage = () => {
     return (
         <section className='indexPage'>
-            <MainBanner/>
+            <MainBanner />
 
-            <Banner/>
+            <Reviews />
 
-            <Reviews/>
-                
-            <KeywordSection/>
+            <KeywordSection />
 
-            <Locations/>
+            <Locations />
 
         </section>
     );

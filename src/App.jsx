@@ -3,26 +3,28 @@ import React from "react";
 import { Router, Route, Routes, BrowserRouter } from "react-router-dom";
 
 // 헤더 푸터
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx";
 
 // mainPage
-import MainPage from './components/mainPage';
+import MainPage from './components/MainPage.jsx';
+
+// 검색결과
+import SearchPage from "./components/search/SearchPage.jsx";
 
 // 이벤트, 공지
 import Notice_eventPage from "./components/notice_eventpage/Notice_eventpage.jsx";
 import NoticeView from "./components/notice_eventpage/NoticeView.jsx";
 
-
 // member
-import Login from "./components/login/Login";
-import Join from "./components/join/Join";
+import Login from "./components/login/Login.jsx";
+import Join from "./components/join/Join.jsx";
 import JoinSuccess from './components/join/JoinSuccess.jsx';
 import Logout from './components/login/Logout.jsx';
 
 // pro
-import Prosignup from "./components/pro/Prosignup";
-import ProjoinSub from "./components/pro/ProSub.jsx";
+import Prosignup from "./components/Pro/Prosignup.jsx";
+import ProjoinSub from "./components/Pro/ProSub.jsx";
 import ProjoinMain from "./components/Pro/ProjoinMain.jsx";
 import ProSearch from "./components/ProSearch/ProSearch";
 import ProRequest from "./components/Pro/ProRequest.jsx";
@@ -33,35 +35,35 @@ import ProServiceIntro from './components/Pro/ProServiceIntro.jsx';
 
 // article
 import ArticleMain from './components/articles/ArticleMain.jsx';
-import Write from "./components/articles/Write";
-import Update from "./components/articles/Update";
+import Write from "./components/articles/Write.jsx";
+import Update from "./components/articles/Update.jsx";
 import FreeBoardForm from "./components/articles/FreeBoardForm/FreeBoardForm.jsx";
 import LatestReview from "./components/articles/FreeBoardForm/LatestReview.jsx";
-import ViewPage from "./components/articles/ViewPage/ViewPage.jsx";
+import ViewPage from './components/articles/viewpage/ViewPage.jsx';
 
 // myPage
-import Review from "./components/mypage/Review";
+import Review from "./components/mypage/Review.jsx";
 import ReviewWrite from "./components/mypage/ReviewWrite.jsx";
-import MyPage from './components/mypage/MyPage';
-import MyHistory from './components/mypage/MyHistory';
-import MyArticles from './components/mypage/MyArticles';
-import MyComments from './components/mypage/MyComments';
-import Private from './components/mypage/Private';
+import MyPage from './components/mypage/MyPage.jsx';
+import MyHistory from './components/mypage/MyHistory.jsx';
+import MyArticles from './components/mypage/MyArticles.jsx';
+import MyComments from './components/mypage/MyComments.jsx';
+import Private from './components/mypage/Private.jsx';
 import Account from './components/mypage/Account.jsx';
-import ChangeAddress from './components/mypage/ChangeAddress';
-import ChangePassword from './components/mypage/ChangePassword';
-import ChangeEmail from './components/mypage/ChangeEmail';
-import SignOut from './components/mypage/SignOut';
-import MyReservation from './components/mypage/MyReservation';
-import Success from './components/mypage/Success';
+import ChangeAddress from './components/mypage/ChangeAddress.jsx';
+import ChangePassword from './components/mypage/ChangePassword.jsx';
+import ChangePhone from './components/mypage/ChangePhone.jsx';
+import SignOut from './components/mypage/SignOut.jsx';
+import MyReservation from './components/mypage/MyReservation.jsx';
+import Success from './components/mypage/Success.jsx';
 import BookMarkPro from './components/mypage/BookMarkPro.jsx';
 import ChangeIntro from './components/mypage/ChangeIntro.jsx';
 
 // category
-import SelectCategory from './components/detail_category/SelectCategory';
+import SelectCategory from './components/detail_category/SelectCategory.jsx';
 
 // about
-import About from './components/about/About';
+import About from './components/about/About.jsx';
 
 // admin
 import EventWrite from "./components/admin/EventWrite.jsx";
@@ -84,6 +86,7 @@ import { SignOutProvider } from './context/mypage/SignOutContext.jsx';
 
 // OAuth2
 import Oauth2Redirect from './api/Oauth2Redirect.jsx'
+import KakaoMap from "./components/ProSearch/KakaoMap.jsx";
 
 const App = () => {
   return (
@@ -105,6 +108,8 @@ const App = () => {
                             <Routes>
                               {/* 메인페이지 */}
                               <Route path={"/"} element={<div className='main-content'><MainPage /></div>} />
+                              {/* 검색결과 페이지 */}
+                              <Route path={"/search"} element={<div className='main-content'><SearchPage /></div>} />
 
                               {/* 소개페이지, 공지/이벤트 */}
                               <Route path={"/about"} element={<About />} />
@@ -131,7 +136,7 @@ const App = () => {
                               <Route path={"/mypage/review/write"} element={<div className='main-content'><ReviewWrite /></div>} />
                               <Route path={"/mypage/account"} element={<div className='main-content'><Account /></div>} />
                               <Route path={"/mypage/account/private"} element={<div className='main-content'><Private /></div>} />
-                              <Route path={"/mypage/account/private/email"} element={<div className='main-content'><ChangeEmail /></div>} />
+                              <Route path={"/mypage/account/private/phone"} element={<div className='main-content'><ChangePhone /></div>} />
                               <Route path={"/mypage/account/private/password"} element={<div className='main-content'><ChangePassword /></div>} />
                               <Route path={"/mypage/account/private/address"} element={<div className='main-content'><ChangeAddress /></div>} />
                               <Route path={"/mypage/account/private/signout"} element={<div className='main-content'><SignOut /></div>} />
@@ -177,6 +182,10 @@ const App = () => {
                               <Route path="/admin/event-write" element={<EventWrite />} />
                               <Route path="/admin/event-update" element={<EventUpdate />} />
                               <Route path="/modal" element={<ServiceAreaModal />} />
+
+                              {/* 카카오맵 */}
+                              <Route path="/map" element={<KakaoMap />} />
+
                             </Routes>
                             {!window.location.pathname.startsWith('/admin') && <Footer />}
                           </ProProvider>

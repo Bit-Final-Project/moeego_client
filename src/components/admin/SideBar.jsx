@@ -1,7 +1,7 @@
 import React from 'react';
-import '../../css/admin/SideBar.css';
 import { useSideBar } from '../../js/useSideBar';
 import { Link, useNavigate } from 'react-router-dom';
+import '../../css/admin/SideBarStyle.css';
 
 const SideBar = () => {
     const {

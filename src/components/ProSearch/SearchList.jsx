@@ -1,44 +1,99 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const SearchList = ({ id, name, rating, reviews, experience, intro, img_main }) => {
+const SearchList = ({ item, proNo }) => {
+    const [isToggled, setIsToggled] = useState(false); // 토글 상태 관리
+    const navigate = useNavigate();
+
+    const handleProViewNavigation = (serviceItem) => {
+        navigate("/pro/proview", {
+            state: { item: item, serviceItem, proNo },
+        });
+    };
+
+    const toggleDetails = () => {
+        setIsToggled(!isToggled); // 상태 변경으로 요소 토글
+    };
+
     return (
-        <article className='proSearchListWrap'>
-            <div className='proSearchListAWrap'>
-                {/* <Link className='proSearchListLink' to={`/pro/proview/proNo=${id}`}> */}
-                <Link className='proSearchListLink' to={`/pro/proview?proNo=${id}`}>
-                    <div className='proSearchListContentWrap'>
-                        {/* 제목 */}
-                        <div className='proSearchListTitleWrap'>
-                            <h3>
-                                {name}
-                            </h3>
+        <article className="proSearchListWrap">
+            <div className="proSearchListAWrap" onClick={toggleDetails}>
+                <div className="proSearchListLink">
+                    <div className="proSearchListContentWrap">
+                        <div className="proSearchListTitleWrap">
+                            <h3>{item.name}</h3>
                         </div>
-
-                        {/* 상세정보 */}
-                        <div className='proSearchListProInfoWrap'>
-                            <span>⭐️ {rating}</span>
-                            <span>({reviews})</span>
-                            <span>경력 {experience}년</span>
+                        <div className="proSearchListProInfoWrap">
+                            <span>
+                                <span
+                                    style={{
+                                        color: "#f39c12",
+                                        marginRight: "0.25rem",
+                                    }}
+                                >
+                                    <span
+                                        style={{
+                                            color: "#f39c12",
+                                            marginRight: "0.15rem",
+                                        }}
+                                    >
+                                        ★
+                                    </span>
+                                    {Math.floor(item.star * 10) / 10}
+                                </span>
+                                ({item.reviewCount})
+                            </span>
                         </div>
-
-                        {/* 소개 내용 */}
-                        <p className='proSearchListIntro'>
-                            {intro}
-                        </p>
+                        <p className="proSearchListIntro">{item.oneIntro}</p>
                     </div>
-                </Link>
-                {/* 프로필 이미지 */}
-                <div className='proSearchListProfileWrap'>
+                </div>
+                <div className="proSearchListProfileWrap">
                     <div className="user-profile-picture">
                         <img
-                            src={img_main}
+                            src={
+                                item.profileImage
+                                    ? `https://kr.object.ncloudstorage.com/moeego/profile/${item.profileImage}`
+                                    : "/image/default.svg"
+                            }
                             width={150}
                             height={150}
-                            alt={name}
+                            alt={item.name}
                         />
                     </div>
                 </div>
+            </div>
+            {/* 토글된 상세 정보 부분 */}
+            <div
+                className={`proSearchListDetailWrap ${isToggled ? "active" : ""
+                    }`}
+            >
+                {isToggled &&
+                    item.proItems.map((serviceItem) => (
+                        <div
+                            key={serviceItem.proItemNo}
+                            className="servicePage"
+                            onClick={() => handleProViewNavigation(serviceItem)}
+                        >
+                            <div className="serviceWrap">
+                                <div className="serviceSubject">
+                                    {serviceItem.subject} (
+                                    {serviceItem.subCategory.subCateName})
+                                </div>
+                                <div className="serviceStar">
+                                    <span
+                                        style={{
+                                            color: "#f39c12",
+                                            marginRight: "0.25rem",
+                                        }}
+                                    >
+                                        ★{" "}
+                                        {Math.floor(serviceItem.star * 10) / 10}
+                                    </span>{" "}
+                                    ({serviceItem.reviewCount})
+                                </div>
+                            </div>
+                        </div>
+                    ))}
             </div>
         </article>
     );

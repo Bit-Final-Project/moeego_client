@@ -1,30 +1,58 @@
-import React, { useContext, useEffect, useState } from 'react';
-import ProInfo from './ProInfo';
-import ProDetail from './ProDetail';
-import ProReview from './ProReview';
-import Reservation from './Reservation';
-import "../../css/pro/ProView.css";
-//---------------------------------
-import { ProContext } from '../../context/pro/ProContext';
-import { useLocation, useParams } from 'react-router-dom';
-import WeekCalendar from './WeekCalendar';
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { ProContext } from "../../context/pro/ProContext";
+import apiAxios from "../../api/apiAxios"; // apiAxios import 추가
+import ProInfo from "./ProInfo";
+import ProDetail from "./ProDetail";
+import ProReview from "./ProReview";
+import Reservation from "./Reservation";
+import ProViewPaging from "../Pro/ProViewPaging";
+import "../../css/Pro/Proview.css";
+import "../../css/Pro/SearchList.css";
 
 const ProView = () => {
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const proNo = queryParams.get('proNo');
-    //const { id } = useParams(); 
-    const { pro, updatePro } = useContext(ProContext); 
+    const { item: routeStateItem, serviceItem, proNo } = location.state || {};
 
     const [modalType, setModalType] = useState(null);
+    const [proItem, setProItem] = useState(routeStateItem || {});
+    const [service, setService] = useState(serviceItem || []);
+    const [prono, setProno] = useState(proNo || []);
+    const [reviewData, setReviewData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Track current page
+    const [totalPages, setTotalPages] = useState(1); // Track total pages
+
+    useEffect(() => {
+        const fetchProDetails = async () => {
+            try {
+                setProItem(routeStateItem);
+                setService(serviceItem);
+                setProno(proNo);
+
+                const response = await apiAxios.get(`/api/pro/item/detail`, {
+                    params: {
+                        proItemNo: serviceItem.proItemNo,
+                        pg: currentPage, // Include the current page in the request
+                    },
+                });
+
+                const fetchedItem = response.data.data.content;
+                setReviewData(fetchedItem);
+                setTotalPages(response.data.data.totalPages); // Set total pages
+            } catch (error) {
+                console.error("프로 상세 정보 가져오기 실패:", error);
+                alert("프로 상세 정보를 가져오는 데 실패했습니다.");
+            }
+        };
+
+        if (serviceItem.proItemNo) {
+            fetchProDetails();
+        }
+    }, [currentPage]); // Add currentPage to dependency array
 
     const openModal = (type) => {
         setModalType((prevType) => (prevType === type ? null : type));
-        if (type) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "auto";
-        }
+        document.body.style.overflow = type ? "hidden" : "auto";
     };
 
     const closeModal = () => {
@@ -35,61 +63,85 @@ const ProView = () => {
     const handleModalClose = () => {
         setModalType(null);
         document.body.style.overflow = "auto";
+    };
+
+    if (!proItem || !reviewData) {
+        return <div>로딩 중...</div>;
     }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            // 예시 데이터 (API에서 데이터를 가져오는 로직으로 대체 가능)
-            const fetchedData = {
-                id: proNo,
-                title: `프로필 제목 ${proNo}`,
-                description: `상세 정보 for ${proNo}`,
-                rating: 4.5,
-                reviews: 1234
-            };
-            updatePro(fetchedData); // 데이터를 ProContext에 업데이트
-        };
-
-        fetchData();
-    }, [proNo]);
-
-    if (!pro) {
-        return <div>로딩 중...</div>; // pro 데이터가 없으면 로딩 중 화면 표시
-    }
+    const handlePageChange = (page) => {
+        setCurrentPage(page); // Change page on pagination
+    };
 
     return (
         <section className="detail-view">
             <section className="dalin-photo">
                 <div className="dalin-photo-background">
-                    {/* <img src="../src/image/mc.jpg" alt="긴딩동" width="100" /> */}
-                    <img src="/src/image/mc.jpg" alt="긴딩동" width="100" />
+                    <img
+                        src={`https://kr.object.ncloudstorage.com/moeego/profile/${proItem.profileImage}`}
+                        alt={proItem.name}
+                        width="100"
+                    />
                 </div>
                 <div className="dalin-photo-main">
-                    <img src="/src/image/mc.jpg" alt="딩동" width="100" height="100" />
+                    <img
+                        src={`https://kr.object.ncloudstorage.com/moeego/profile/${proItem.profileImage}`}
+                        alt={proItem.name}
+                        width="100"
+                        height="100"
+                    />
                 </div>
             </section>
-            <section className='detail-view-wrap'>
+            <section className="detail-view-wrap">
                 <section className="dalin-mainpage">
-                    <div className='leftWrap'>
+                    <div className="leftWrap">
                         <div className="reservationBtn-modal-wrap">
-                            <div className='reservationBtn-modal-button-wrap'>
-                                <input type="button" className="reservation-modalBtn" value="예약하기" onClick={() => openModal("reservation")} />
+                            <div className="reservationBtn-modal-button-wrap">
+                                <input
+                                    type="button"
+                                    className="reservation-modalBtn"
+                                    value="예약하기"
+                                    onClick={() => openModal("reservation")}
+                                />
                             </div>
                         </div>
-                        <div className={`ModalWrap ${modalType ? 'show' : ''}`} onClick={handleModalClose}>
+                        <div
+                            className={`ModalWrap ${modalType ? "show" : ""}`}
+                            onClick={handleModalClose}
+                        >
                             {modalType === "reservation" && (
-                                <Reservation closeModal={closeModal} />
+                                <Reservation
+                                    closeModal={closeModal}
+                                    proItem={proItem}
+                                    service={service}
+                                    review={reviewData}
+                                />
                             )}
                         </div>
-                        <ProInfo pro={pro}/>
-                        <ProDetail pro={pro}/>
-                        <ProReview pro={pro}/>
+                        <ProInfo
+                            proItem={proItem}
+                            service={service}
+                            review={reviewData}
+                            prono={prono}
+                        />
+                        <ProDetail
+                            proItem={proItem}
+                            service={service}
+                            review={reviewData}
+                        />
+                        <ProReview
+                            proItem={proItem}
+                            service={service}
+                            review={reviewData}
+                        />
+
+                        {/* Pagination Component */}
+                        <ProViewPaging
+                            pages={totalPages}
+                            currentPage={currentPage}
+                            onPageChange={handlePageChange}
+                        />
                     </div>
-                    {/* <div className='rightWrap'>
-                        <div className='relativeWrap'>
-                            <Reservation />
-                        </div>
-                    </div> */}
                 </section>
             </section>
         </section>

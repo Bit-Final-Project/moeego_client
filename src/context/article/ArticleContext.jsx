@@ -18,8 +18,9 @@ const ArticleProvider = ({ children }) => {
     const [error, setError] = useState(null); // 에러 상태
     const [images, setImages] = useState([]);
     const [pages, setPages] = useState(1); // 총 페이지 수
-    const [articleCurrentPage, setArticleCurrentPage] = useState(1); // 현재 페이지
+    const [articleCurrentPage, setArticleCurrentPage] = useState(1); // 현재 게시글 페이지
     const [reviews, setReviews] = useState([]);
+
     const navigate = useNavigate();
 
     const [noticeArticles, setNoticeArticles] = useState([]);
@@ -334,26 +335,27 @@ const ArticleProvider = ({ children }) => {
             return;
         }
     };
-    // 전체 리뷰 조회
-    const fetchReviews = useCallback(async () => {
+
+    // 리뷰 이미지 불러오기
+    const reviewImage = async () => {
         setIsLoading(true);
         try {
-            const response = await apiAxios.get(`/api/review`);
-            setReviews(response.data.content);
+            const response = await apiAxios.get(`/api/review/images`);
+            setImages(response.data.images);
         } catch (err) { 
             console.error("Error fetching articles:", err);
             setError(err);
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }
 
     // 리뷰 쓰기
     const reviewWrite = useCallback(async (formData) => {
         setIsLoading(true);
         try {
             await apiAxios.post("/api/review/write", formData);
-            navigate('/mypage/review');
+            navigate('/mypage/review/0');
         } catch (err) {
             console.error("Error writing article:", err);
             setError(err);
@@ -384,12 +386,22 @@ const ArticleProvider = ({ children }) => {
     };
 
     // 조회수
-    const hitUpdate = async (articleNo) => {
+    const viewUpdate = async (articleNo) => {
         try {
             const response = await apiAxios.put(`/api/article/hit?articleNo=${articleNo}`);
             console.log('조회수 증가 성공:', response.data);
         } catch (error) {
             console.error('조회수 증가 실패:', error);
+        }
+    };
+
+    // 좋아요
+    const likeUpdate = async (articleNo) => {
+        try {
+            const response = await apiAxios.put(`/api/article/like?articleNo=${articleNo}`);
+            console.log('좋아요 증가 성공:', response.data);
+        } catch (error) {
+            console.error('좋아요 증가 실패:', error);
         }
     };
 
@@ -430,7 +442,10 @@ const ArticleProvider = ({ children }) => {
         fetchLatestArticle,
         setArticleCurrentPage,
         reviewWrite,
-        fetchReviews,
+        reviewImage,
+        deleteReview,
+        viewUpdate,
+        likeUpdate,
         GoWrite,
         GoLogin
     };

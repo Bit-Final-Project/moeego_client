@@ -13,30 +13,10 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     margin: 0 auto;
-    font-family: 'Arial', sans-serif;
+    font-family: "Arial", sans-serif;
     color: #333;
     margin-bottom: 1em;
 }
-/* .infoWrap {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    width: 100%;
-    margin-bottom: 1.2em;
-}
-
-.info {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-} */
 
 .info-section-header {
     display: flex;
@@ -61,12 +41,34 @@
     height: 40px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s, color 0.3s;
     margin-left: 10px;
 }
 
+/* Hover effect */
 .icon-buttons .heart:hover {
     background-color: #ffe0e0;
+}
+
+/* Favorited heart (when isFavorite is true) */
+.icon-buttons .heart.favorited {
+    background-color: #fff; /* Light red background for favorited state */
+    color: #ffbbb3; /* Red color */
+}
+
+/* Not favorited heart */
+.icon-buttons .heart.not-favorited {
+    background-color: #fff; /* White background for non-favorited state */
+    color: #f2f2f2; /* Gray color */
+}
+
+/* Change SVG fill color based on favorited state */
+.icon-buttons .heart.favorited svg path {
+    fill: #ffbbb3; /* Red fill for favorited */
+}
+
+.icon-buttons .heart.not-favorited svg path {
+    fill: none; /* No fill for non-favorited */
 }
 
 .info-sub-header {
@@ -74,10 +76,10 @@
     align-items: center;
     justify-content: space-between;
     width: 90%;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
-.info-sub-header div:nth-child(2) {
+.info-sub-header div:nth-child(1) {
     display: flex;
     align-items: center;
     justify-content: right;
@@ -90,6 +92,10 @@
     padding: 5px 10px;
     background-color: #e8e8e8;
     border-radius: 20px;
+}
+
+.info-sub-header .category {
+    margin-bottom: 1rem;
 }
 
 .address {
@@ -155,7 +161,6 @@
     margin-left: 5px;
 }
 
-
 @media (max-width: 1250px) {
     .infoWrap {
         padding: 20px;
@@ -164,39 +169,13 @@
         box-sizing: border-box;
         align-items: flex-start;
         flex-direction: column;
-        /* align-items: center; */
-        /* justify-content: left; */
         width: 100%;
         margin-bottom: 1em;
         background-color: #f4f4f4;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        
     }
-    /* .infoWrap {
-        padding: 20px;
-        margin: 0 auto;
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-        /* align-items: center; */
-        /* justify-content: left; */
-        /*width: 85%;
-        margin-bottom: -0.2em;
-        
-    } */
-    /* .info {
-        display: flex;
-        flex-direction: column;
-        width: 90%;
-        padding: 18px 7px; 
-        background-color: #f4f4f4;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-left: 6%;
-        font-family: 'Arial', sans-serif;
-        color: #333;
-    }   */
+
     .info {
         display: flex;
         flex-direction: column;
@@ -205,9 +184,9 @@
         background-color: #f4f4f4;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        font-family: 'Arial', sans-serif;
+        font-family: "Arial", sans-serif;
         color: #333;
-    }  
+    }
 
     .info-section-header {
         display: flex;
@@ -223,26 +202,30 @@
     .info-sub-header {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        flex-direction: column;
         width: 100%;
     }
 
     .info-sub-header .category {
-        width: 20%;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 0.9rem;
     }
 
-    .info-sub-header .category div:nth-child(2) {
-        width: 80%;
+    .info-sub-header div:nth-child(1) {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: left;
+        width: 100%;
+        gap: 0.25rem;
+        margin-bottom: 1rem;
     }
 
-    .address {
+    .info-sub-header div:nth-child(1) .address {
         font-size: 0.8rem;
+        width: auto;
     }
 }
