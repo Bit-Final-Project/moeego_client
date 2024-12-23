@@ -108,7 +108,7 @@ const SearchPage = () => {
                 <div>
                     {proResults.length > 0 ? (
                         proResults.map((pro, index) => (
-                            <SearchProItem key={index} data={pro} />
+                            <SearchProItem key={index} item={pro} />
                         ))
                     ) : (
                         <p>검색된 전문가가 없습니다.</p>
@@ -128,7 +128,7 @@ const SearchPage = () => {
                     <div className="articleListContent">
                         {articleResults.length > 0 ? (
                             articleResults.map((article, index) => (
-                                <SearchArticleItem key={index} data={article} />
+                                <SearchArticleItem key={index} item={article} />
                             ))
                         ) : (
                             <p>검색된 커뮤니티 글이 없습니다.</p>

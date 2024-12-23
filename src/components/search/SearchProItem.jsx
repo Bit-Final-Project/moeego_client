@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SearchProItem = () => {
+const SearchProItem = ({item}) => {
     const [isToggled, setIsToggled] = useState(false); // 토글 상태 관리
 
     const toggleDetails = () => {
@@ -12,7 +12,7 @@ const SearchProItem = () => {
                 <div className="searchListLink">
                     <div className="searchListContentWrap">
                         <div className="searchListTitleWrap">
-                            <h3>전문가 이름</h3>
+                            <h3>{item.name}</h3>
                         </div>
                         <div className="searchListProInfoWrap">
                             <span>⭐️ 평점 (리뷰 수)</span>
