@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     host: "175.45.194.160", // 호스트를 localhost로 설정
     port: 80, // 포트 설정
-    #proxy: {
+    proxy: {
       "/api": {
         target: "http://211.188.49.199:8080", // Spring Boot 서버 주소
         changeOrigin: true,
