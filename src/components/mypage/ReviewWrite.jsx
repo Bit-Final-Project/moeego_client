@@ -14,7 +14,7 @@ const ReviewWrite = () => {
     const [formData, setFormData] = useState({
         rating: '',
         memberNo: userNo,
-        proItemNo: 4, // 이전 페이지에서 데이터 받아옴
+        proItemNo: 2, // 이전 페이지에서 데이터 받아옴
         content: '',
     });
 
