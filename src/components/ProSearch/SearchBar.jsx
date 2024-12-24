@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ProContext } from "../../context/pro/ProContext";
+import apiAxios from '../../api/apiAxios';
 import KakaoMap from './KakaoMap';
 import apiAxios from '../../api/apiAxios';
 
@@ -7,7 +8,7 @@ const SearchBar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const { keyword, setKeyword } = useContext(ProContext);
+  const { keyword, setKeyword, area } = useContext(ProContext);
 
   const handleSearch = (event) => {
     setKeyword(event.target.value);
@@ -34,7 +35,7 @@ const SearchBar = () => {
   useEffect(() => {
     apiAxios.get("/api/pro/item", {
       params: {
-        location: "서울",
+        location: area,
       },
     })
       .then((response) => {
