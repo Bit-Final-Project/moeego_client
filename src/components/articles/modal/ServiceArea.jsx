@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import "../../css/Pro/Service_area.css";
 import ServiceAreaModal from './ServiceAreaModal'; // 모달 컴포넌트 import
+import "../../../css/Pro/Service_area.css";
 
 const ServiceArea = ({ service, area, onServiceAreaChange }) => {
     const [isModalOpen, setModalOpen] = useState(false); // 모달 상태 관리

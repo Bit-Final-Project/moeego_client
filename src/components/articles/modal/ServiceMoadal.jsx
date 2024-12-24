@@ -1,6 +1,5 @@
-// src/components/ServiceModal.jsx
 import React, { useState, useEffect } from 'react';
-import apiAxios from '../../api/apiAxios';
+import apiAxios from '../../../api/apiAxios';
 
 const ServiceModal = ({ handleServiceSelect }) => {
     const [categories, setCategories] = useState([]);
@@ -38,8 +37,8 @@ const ServiceModal = ({ handleServiceSelect }) => {
             });
     }, []);
 
-    const handleSubItemClick = (subCateNo, subCateName) => {
-        handleServiceSelect(subCateNo, subCateName); // subCateNo와 subCateName을 분리하여 전달
+    const handleSubItemClick = (subItem) => {
+        handleServiceSelect(subItem);
     };
 
     return (
@@ -63,11 +62,8 @@ const ServiceModal = ({ handleServiceSelect }) => {
                         {openIndex === index && (
                             <ul className='modalSubMenu'>
                                 {subCategories[category.mainCateNo] ? (
-                                    subCategories[category.mainCateNo].map((subItem) => (
-                                        <li
-                                            key={subItem.subCateNo}
-                                            onClick={() => handleSubItemClick(subItem.subCateNo, subItem.subCateName)}
-                                        >
+                                    subCategories[category.mainCateNo].map((subItem, subIndex) => (
+                                        <li key={subIndex} onClick={() => handleSubItemClick(subItem.subCateName)}>
                                             {subItem.subCateName}
                                         </li>
                                     ))

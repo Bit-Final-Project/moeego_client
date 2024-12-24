@@ -64,9 +64,8 @@ const SearchList = ({ item, proNo }) => {
             </div>
             {/* 토글된 상세 정보 부분 */}
             <div
-                className={`proSearchListDetailWrap ${
-                    isToggled ? "active" : ""
-                }`}
+                className={`proSearchListDetailWrap ${isToggled ? "active" : ""
+                    }`}
             >
                 {isToggled &&
                     item.proItems.map((serviceItem) => (

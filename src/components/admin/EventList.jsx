@@ -1,100 +1,340 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/admin/EventList.css';
+import apiAxios from '../../api/apiAxios';
 
 const EventList = () => {
-    const [newWindow, setNewWindow] = useState(null); // 새로운 창 상태 관리
+    const [tableData, setTableData] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const userNo = localStorage.getItem("userno");
+    const ImagePath = "https://kr.object.ncloudstorage.com/moeego/storage/";
 
-    // 테이블 데이터
-    const tableData = [
-        {
-            id: 2,
-            category:'공지',
-            imgName : 'img1.jpg',
-            eventName: '공지 테스트',
-            content: '공지 테스트',
-            registrationDate: '2024.11.20',
-            views: 150,
-        },
-        {
-            id: 1,
-            category:'이벤트',
-            imgName : 'img5.jpg',
-            eventName: '신규 회원 이벤트',
-            content: '신규 회원가입 시 20% 할인 쿠폰 증정',
-            registrationDate: '2024.11.20',
-            views: 150,
-        },
-    ];
+    const [formData, setFormData] = useState({
+        subject: '',
+        type: 1,
+        content: '',
+        memberNo: userNo,
+        images: [],
+    });
 
-    // 새로운 창을 열기 위한 함수
-    const openNewWriteWindow = () => {
-        if (newWindow && !newWindow.closed) {
-            alert('이미 창이 열려있습니다. 창을 닫고 다시 시도하세요.');
-            newWindow.focus(); // 이미 열린 창이 있으면 그 창을 포커스
-        } else {
-            const openedWindow = window.open('/admin/event-write', '_blank', 'width=800,height=600,scrollbars=yes');
-            if (openedWindow) {
-                setNewWindow(openedWindow); // 새로 열린 창을 상태에 저장
+    const [removeImages, setRemoveImages] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedType, setSelectedType] = useState('all');
+
+    const fetchEvents = async () => {
+        try {
+            const { data } = await apiAxios.get('/api/admin/article');
+            setTableData(data);
+        } catch (error) {
+            console.error('API 호출 오류:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchEvents();
+    }, []);
+
+    const openModal = (event = null) => {
+        setSelectedEvent(event);
+        
+        setFormData({
+            subject: event ? event.subject : '',
+            type: event ? (event.type === '이벤트' ? 1 : 0) : 1,
+            content: event ? event.content : '',
+            images: event && event.imageUuidNames ? event.imageUuidNames : [],
+            memberNo: userNo
+        });
+        
+        setRemoveImages([]); // 삭제할 이미지 배열 초기화
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setSelectedEvent(null);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: name === 'type' ? (value === 'event' ? 1 : 0) : value,
+        }));
+    };
+
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        const maxFileSize = 20 * 1024 * 1024;  // 20MB
+        const maxFileCount = 5;
+
+        let newImages = [];
+        let isFileTooLarge = false;
+        let exceededFiles = 0;
+
+        files.forEach(file => {
+            if (file.size > maxFileSize) {
+                isFileTooLarge = true;
+            } else if (newImages.length < maxFileCount) {
+                newImages.push(file);
+            } else {
+                exceededFiles++;
+            }
+        });
+
+        if (isFileTooLarge) {
+            alert(`파일 크기는 ${maxFileSize / 1024 / 1024}MB를 초과할 수 없습니다.`);
+        }
+        if (exceededFiles > 0) {
+            alert(`최대 ${maxFileCount}장까지만 업로드 가능합니다.`);
+        }
+
+        setFormData(prevData => ({
+            ...prevData,
+            images: [...prevData.images, ...newImages],
+        }));
+    };
+
+    const handleRemoveFile = (fileToRemove) => {
+        if (typeof fileToRemove === 'string') {
+            setRemoveImages(prevRemoveImages => [...prevRemoveImages, fileToRemove]);
+        }
+        setFormData(prevData => ({
+            ...prevData,
+            images: prevData.images.filter(file => file !== fileToRemove),
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        const articleDto = {
+            subject: formData.subject,
+            type: formData.type,
+            content: formData.content
+        };
+
+        const data = new FormData();
+        Object.keys(articleDto).forEach(key => {
+            data.append(key, articleDto[key]);
+        });
+
+        removeImages.forEach(image => {
+            data.append('removeImages', image);
+        });
+
+        formData.images.forEach(image => {
+            if (typeof image === 'string') {
+                data.append('existingImageIds', image);
+            } else {
+                data.append('images', image);
+            }
+        });
+
+        try {
+            if (selectedEvent) {
+                await apiAxios.put(`/api/admin/article/update/${selectedEvent.articleNo}`, data, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                alert('이벤트가 수정되었습니다.');
+            } else {
+                await apiAxios.post(`/api/admin/article/write`, data, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                alert('새 이벤트가 등록되었습니다.');
+            }
+
+            fetchEvents();
+            closeModal();
+        } catch (error) {
+            console.error('API 호출 오류:', error);
+        }
+    };
+
+    const handleDelete = async (articleNo) => {
+        if (window.confirm('정말 삭제하시겠습니까?')) {
+            try {
+                await apiAxios.delete(`/api/admin/article/delete/${articleNo}`);
+                alert('이벤트가 삭제되었습니다.');
+                fetchEvents();
+            } catch (error) {
+                console.error('삭제 오류:', error);
             }
         }
     };
 
-    const openNewUpdateWindow = () => {
-        if (newWindow && !newWindow.closed) {
-            alert('이미 창이 열려있습니다. 창을 닫고 다시 시도하세요.');
-            newWindow.focus(); // 이미 열린 창이 있으면 그 창을 포커스
-        } else {
-            const openedWindow = window.open('/admin/event-update', '_blank', 'width=800,height=600,scrollbars=yes');
-            if (openedWindow) {
-                setNewWindow(openedWindow); // 새로 열린 창을 상태에 저장
-            }
-        }
+    const formatDate = (date) => {
+        if (!date) return ''; 
+        return new Date(date).toLocaleDateString('ko-KR');
     };
+
+    const groupedData = tableData.reduce((acc, item) => {
+        const { articleNo, imageUuidNames } = item;
+        if (!acc[articleNo]) {
+            acc[articleNo] = { ...item, images: imageUuidNames || [] };
+        }
+        return acc;
+    }, {});
+
+    const groupedDataArray = Object.values(groupedData);
+
+    const filteredData = groupedDataArray.filter(item => {
+        const matchesSearchTerm = item.subject.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesType = selectedType === 'all' || (selectedType === 'event' && item.type === 1) || (selectedType === 'notice' && item.type === 0);
+        return matchesSearchTerm && matchesType;
+    });
 
     return (
         <div className="eventList-container">
             <div className="eventList-inner-container">
                 <h1 className="eventList-title">이벤트 및 공지 게시판</h1>
-
-                <div className="eventList-table-wrapper">
-                    <hr className="eventList-divider" />
-                    <table className="eventList-table">
-                        <thead>
-                            <tr>
-                                <th>번호</th>
-                                <th>카테고리</th>
-                                <th>사진</th>
-                                <th>제목</th>
-                                <th>내용</th>
-                                <th>등록일</th>
-                                <th>조회수</th>
-                                <th>수정/삭제</th>
+                <hr className="eventList-divider" />
+                <div className="eventList-search-container">
+                    <select 
+                        value={selectedType}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                        className="eventList-select"
+                    >
+                        <option value="all">전체</option>
+                        <option value="event">이벤트</option>
+                        <option value="notice">공지</option>
+                    </select>
+                    <input
+                        type="text"
+                        placeholder="검색"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <table className="eventList-table">
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>카테고리</th>
+                            <th>제목</th>
+                            <th>등록일</th>
+                            <th>수정/삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredData.map((row) => (
+                            <tr key={row.articleNo} onClick={() => openModal(row)}>
+                                <td>{row.articleNo}</td>
+                                <td>{row.type === 1 ? '이벤트' : '공지'}</td>
+                                <td>{row.subject}</td>
+                                <td>{formatDate(row.writeDate)}</td>
+                                <td>
+                                    <button 
+                                        className="eventList-delete-button" 
+                                        onClick={(e) => { 
+                                            e.stopPropagation(); 
+                                            handleDelete(row.articleNo); 
+                                        }}
+                                    >
+                                        삭제
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {tableData.map((row) => (
-                                <tr key={row.id}>
-                                    <td>{row.id}</td>
-                                    <td>{row.category}</td>
-                                    <td>{row.imgName}</td>
-                                    <td>{row.eventName}</td>
-                                    <td>{row.content}</td>
-                                    <td>{row.registrationDate}</td>
-                                    <td>{row.views}</td>
-                                    <td>
-                                        <button className="eventList-edit-button" onClick={openNewUpdateWindow}>편집</button>
-                                        <button className="eventList-delete-button">삭제</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className="eventList-button-container">
-                    <button className="eventList-register-button" onClick={openNewWriteWindow}>등록</button>
-                </div>
+                        ))}
+                    </tbody>
+                </table>
+                <button className="eventList-register-button" onClick={() => openModal()}>
+                    새 이벤트 및 공지 등록
+                </button>
             </div>
+
+            {modalOpen && (
+                <div className="eventList-modal-container">
+                    <div className="eventList-modal-content">
+                        <div className="eventList-modal-header">
+                            <h2>{selectedEvent ? '이벤트 수정' : '새 이벤트 등록'}</h2>
+                        </div>
+                        <form onSubmit={handleSubmit} className="eventList-modal-body">
+                            <div className="modal-body-content">
+                                <div className="left-section">
+                                    <div className="title-section">
+                                        <label>제목</label>
+                                        <input
+                                            type="text"
+                                            name="subject"
+                                            value={formData.subject}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="category-section">
+                                        <label>카테고리</label>
+                                        <select
+                                            name="type"
+                                            value={formData.type === 1 ? 'event' : 'notice'}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="event">이벤트</option>
+                                            <option value="notice">공지</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="eventList-upload-section">
+                                        <label>사진 업로드</label>
+                                        <input
+                                            type="file"
+                                            multiple
+                                            accept="image/*"
+                                            onChange={handleFileChange}
+                                        />
+                                        <div className="eventList-upload-preview">
+                                            {formData.images.map((image, index) => (
+                                                <div key={index} className="eventList-upload-preview-item">
+                                                    {typeof image === 'string' ? (
+                                                        <img
+                                                            src={ImagePath + image}
+                                                            alt={`미리보기 ${index + 1}`}
+                                                            className="event-image"
+                                                        />
+                                                    ) : (
+                                                        <img
+                                                            src={URL.createObjectURL(image)}
+                                                            alt={`미리보기 ${index + 1}`}
+                                                            className="event-image"
+                                                        />
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleRemoveFile(image)}
+                                                        className="eventList-remove-button"
+                                                    >
+                                                        제거
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="right-section">
+                                    <div className="content-section">
+                                        <label>내용</label>
+                                        <textarea
+                                            name="content"
+                                            value={formData.content}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="eventList-modal-footer">
+                                <button type="submit" className="eventList-save-button">
+                                    {selectedEvent ? '수정' : '등록'}
+                                </button>
+                                <button type="button" className="eventList-cancel-button" onClick={closeModal}>
+                                    취소
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

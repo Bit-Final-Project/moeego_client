@@ -1,4 +1,3 @@
-
 .MonthCalendar-wrap {
     display: flex;
     align-items: center;
@@ -13,15 +12,12 @@
     font-family: Arial, sans-serif;
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
-}
-
-.MonthCalendar-body {
-    font-family: Arial, sans-serif;
-    box-sizing: border-box;
-    width: 100%;
-    /* padding: 3%; */
-    height: 100%;
+    max-width: 900px;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .MonthCalendar-controller {
@@ -30,195 +26,265 @@
     align-items: center;
     padding: 15px;
     background-color: #fcc1cc;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    color: white;
+    flex-wrap: wrap; /* 버튼이 줄바꿈 되어도 보이도록 추가 */
 }
 
 .prev-btn,
 .next-btn {
     background-color: transparent;
     border: none;
-    font-size: 30px;
+    font-size: 24px;
     cursor: pointer;
-    color: #ffffff;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+.prev-btn:hover,
+.next-btn:hover {
+    transform: scale(1.2);
 }
 
 .month-year {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    color: #ffffff;
+    text-align: center;
+    flex-grow: 1; /* 공간을 유동적으로 채우도록 설정 */
 }
 
 .calendar-table {
     width: 100%;
-    border-collapse: collapse; 
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
-.weekday {
-    padding: 10px 0;
+.calendar-table th {
+    padding: 10px;
     background-color: #f4f4f4;
     color: #302f2f;
     font-size: 16px;
-    text-align: center;
     font-weight: bold;
+    text-align: center;
     border: 1px solid #ddd;
 }
-/* .weekday {
-    padding: 10px 20px; 
-    background-color: #fcc1cc;
-    color: #ffffff;
-    font-size: 16px;
+
+.calendar-table td {
+    padding: 10px;
     text-align: center;
-    font-weight: bold;
-    border: 1px solid #ddd;
-    border-radius: 50px; 
-    margin: 0 5px;
-    min-width: 50px; 
-    border: none;
-} */
-
-
-.MonthCalendar-wrap .day {
-    text-align: left;  /* 날짜 왼쪽 정렬 */
+    font-size: 14px;
     vertical-align: top;
-    font-size: 18px;
-    cursor: pointer;
-    background-color: #fff;
-    padding: 15px;
     border: 1px solid #ddd;
-    height: 55px;
+    cursor: pointer;
+    position: relative;
+    height: 60px;
 }
 
-.MonthCalendar-wrap .day:hover {
+.calendar-table .day {
+    background-color: white;
+    transition: background-color 0.2s;
+}
+
+.calendar-table .day:hover {
     background-color: #f0f0f0;
 }
 
-.MonthCalendar-wrap .empty-day {
+.calendar-table .selected {
+    background-color: #ffe8ec;
+    z-index: 100;
+    font-weight: bold;
+}
+
+.calendar-table .has-schedule {
+    background-color: #ffe5ea;
+    color: #333; /* 배경색과 텍스트 색상 조화 */
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+/* 공통 스타일 */
+.calendar-table .has-schedule .schedule-dot {
+    position: relative;
+    bottom: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: block; /* display:block으로 설정하여 보이지 않는 dot이 있을 경우 숨기도록 처리 */
+}
+
+/* 일정 점들이 나란히 배치되도록 설정 */
+.calendar-table .has-schedule .schedule-dots-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    bottom: 8px;
+    gap: 1rem; /* 간격을 조정할 수 있습니다 */
+    left: 0;
+}
+
+/* 나의 예약 일정 표시 */
+.calendar-table .has-schedule .my-dot {
+    background-color: #6495ed; /* 나의 일정 색상 */
+}
+
+/* 받은 예약 일정 표시 */
+.calendar-table .has-schedule .received-dot {
+    background-color: #ffa07a !important; /* received-dot에 스타일 우선순위 강화 */
+}
+
+/* 두 개의 일정이 있을 경우, 한 줄로 표시하기 위해 수정 */
+.calendar-table .has-schedule {
+    position: relative; /* relative로 설정하여 내부의 absolute 위치가 부모 요소에 대해 계산되도록 함 */
+}
+
+.calendar-table .empty-day {
     background-color: transparent;
-}
-
-.MonthCalendar-wrap .day-number {
-    font-weight: bold;
-    font-size: 20px;
-}
-
-table td {
-    padding: 10px;
-    text-align: center;
-}
-
-table th {
-    padding: 10px;
-    background-color: #f4f4f4;
-    color: #302f2f;
-    font-weight: bold;
-}
-
-.MonthCalendar-wrap .weekday:nth-child(1),
-.MonthCalendar-wrap .day:nth-child(1) { 
-    color: #d80909; 
-}
-
-.MonthCalendar-wrap .weekday:nth-child(7), 
-.MonthCalendar-wrap .day:nth-child(7) { 
-    color: rgb(18, 18, 143); 
-}
-
-.MonthCalendar-wrap select {
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #fcc1cc;
-    font-size: 24px;  
-    /* appearance: none;  */
-    cursor: pointer; 
     border: none;
-    transition: all 0.3s ease-in-out;  
+    cursor: default;
 }
 
-.MonthCalendar-wrap select:focus {
-    border-color: #fcc1cc;  /* 포커스 시 테두리 색상 */
-    outline: none;  /* 포커스 시 기본 외곽선 제거 */
+/* 일요일과 토요일의 날짜 색상 */
+.calendar-table .weekday:nth-child(1),
+.calendar-table .day:nth-child(1) {
+    color: #d80909; /* Sunday */
 }
 
-.year-dropdown::-ms-expand {
-    display: none; /* Internet Explorer에서 드롭다운 화살표 숨기기 */
-}
-
-
-.year-dropdown option {
-    font-size: 15px; 
-    background-color: #fff; 
-    color: #333; 
-    font-weight: bold;
-    text-align: center;
-}
-
-.month-dropdown option {
-    font-size: 15px; 
-    background-color: #fff; 
-    color: #333; 
-    font-weight: bold;
-    text-align: center;
+.calendar-table .weekday:nth-child(7),
+.calendar-table .day:nth-child(7) {
+    color: rgb(18, 18, 143); /* Saturday */
 }
 
 .selected-date-info {
-    padding: 10px;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #fcc1cc;
+    border-radius: 8px;
+    background-color: #fff7f8;
+}
+
+.selected-date-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+    word-break: break-word;
 }
 
 .schedule-date-title {
-    border: 2px solid #fcc1cc; 
+    border: 2px solid #fcc1cc;
     padding: 10px;
     font-weight: bold;
-    border-radius: 60px; 
-    background-color: #fcc1cc; 
-    margin-bottom: 10px;
+    border-radius: 30px;
+    background-color: #fcc1cc;
     color: white;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
-@media (max-width: 1280px) {
-    .MonthCalendar-wrap {
-        width:100%;
-        margin-bottom:8%;
+.reservationTitle {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.reservationUl {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.reservationUl .reservationLi {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.25rem 0rem 0.25rem 0;
+}
+
+/* 버튼 공통 스타일 */
+.reservationUl button {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 취소 버튼 스타일 */
+.reservationUl .cancel-btn {
+    background-color: transparent;
+    color: #828282;
+}
+
+.reservationUl .cancel-btn:hover {
+    color: #222;
+}
+
+/* 리뷰 버튼 스타일 */
+.reservationUl .review-btn {
+    background-color: transparent;
+    color: #828282;
+}
+
+.reservationUl .review-btn:hover {
+    color: #222;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .MonthCalendar-container {
+        max-width: 100%;
     }
 
-    .month-year {
-        font-size: 20px;
-        font-weight: bold;
-        color: #ffffff;
-    }
-
-    .MonthCalendar-wrap select {
-        font-weight: bold;
-        color: #ffffff;
-        background-color: #fcc1cc;
-        font-size: 20px;  
-        appearance: none; 
-        cursor: pointer; 
-        border: none;
-        transition: all 0.3s ease-in-out;  
+    .MonthCalendar-controller {
+        flex-direction: row;
+        gap: 10px;
     }
 
     .prev-btn,
     .next-btn {
-        background-color: transparent;
-        border: none;
         font-size: 20px;
-        cursor: pointer;
-        color: #ffffff;
     }
 
-    .calendar-table {
-        font-size: 1rem; 
-    }
-
-    .MonthCalendar-wrap .day {
-        font-size: 14px; 
-        padding: 1.5%; 
+    .calendar-table td {
+        font-size: 12px;
         height: 50px;
     }
 
-    .MonthCalendar-wrap .weekday {
-        font-size: 14px; 
-        
+    .month-year {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-table td {
+        font-size: 10px;
+        padding: 5px;
+        height: 40px;
+    }
+
+    .MonthCalendar-controller {
+        padding: 10px;
+    }
+
+    .prev-btn,
+    .next-btn {
+        font-size: 18px;
+    }
+
+    .month-year {
+        font-size: 16px;
+    }
+
+    .calendar-table .has-schedule .schedule-dots-container {
+        gap: 0.25rem;
     }
 }

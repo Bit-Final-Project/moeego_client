@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/about/About.css';
+import { AuthContext } from '../../context/member/AuthContext';
 
 const About = () => {
+    const {isLoggedIn} = useContext(AuthContext);
     return (
         <div className='homepageInfoPage'>
             <div className='infoBannerWrap'>
-                <div className='infoWrap'>
+                <div className='aboutInfoWrap'>
                     <div className='infoMissionWrap'>
                         <h1>모이고의 미션</h1>
                     </div>
@@ -51,11 +53,10 @@ const About = () => {
                 <div>
                     <h2>모이고에 가입해보세요</h2>
                     <hr />
-                    <Link to="/login">이미 계정이 있으신가요?</Link>
-                    <div className='aboutBtnWrap'>
+                    {isLoggedIn ? (<Link to="/login">이미 계정이 있으신가요?</Link>) : (<div className='aboutBtnWrap'>
                         <Link to="/signup"><input type='button' value='일반 회원 가입' /></Link>
                         <Link to="/pro/signup/main"><input type='button' value='달인 회원 가입' /></Link>
-                    </div>
+                    </div>)}
                 </div>
             </div>
         </div>
