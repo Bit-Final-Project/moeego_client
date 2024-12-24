@@ -87,6 +87,8 @@ import { SignOutProvider } from './context/mypage/SignOutContext.jsx';
 // OAuth2
 import Oauth2Redirect from './api/Oauth2Redirect.jsx'
 import KakaoMap from "./components/ProSearch/KakaoMap.jsx";
+import { UserInfoProvider } from "./context/pro/UserInfoContext.jsx";
+import SearchBar from "./components/ProSearch/SearchBar.jsx";
 
 const App = () => {
   return (
@@ -102,6 +104,7 @@ const App = () => {
                       <SignOutProvider>
                         <ArticleProvider>
                           <ProProvider>
+                            <UserInfoProvider>
                             {/* Header와 Footer를 제외할 조건 */}
                             {!window.location.pathname.startsWith('/admin') && <Header />}
 
@@ -185,9 +188,11 @@ const App = () => {
 
                               {/* 카카오맵 */}
                               <Route path="/map" element={<KakaoMap />} />
+                              <Route path="/maplist" element={<SearchBar />} />
 
                             </Routes>
                             {!window.location.pathname.startsWith('/admin') && <Footer />}
+                            </UserInfoProvider>
                           </ProProvider>
                         </ArticleProvider>
                       </SignOutProvider>
