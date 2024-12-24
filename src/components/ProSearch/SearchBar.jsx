@@ -1,29 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ProContext } from "../../context/pro/ProContext";
 import KakaoMap from './KakaoMap';
-import apiAxios from "../../api/apiAxios";
 
 const SearchBar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const { keyword, setKeyword } = useContext(ProContext);
-
-    // DB에서 데이터 가져오기
-    useEffect(() => {
-      apiAxios.get("/api/pro/item", {
-        params: {
-          location: "서울",
-        },
-      })
-        .then((response) => {
-          console.log("받은 데이터:", response.data.data);
-          setUserInfo(response.data.data); // 받아온 데이터 userInfo에 저장
-        })
-        .catch((error) => {
-          console.error("데이터를 가져오는데 실패했습니다.", error);
-        });
-    }, []);
 
   const handleSearch = (event) => {
     setKeyword(event.target.value);
@@ -46,24 +29,28 @@ const SearchBar = () => {
     document.body.style.overflow = "auto";
   };
 
-  // useEffect(() => {
-  //   const fetchedItems = [
-  //     { name: '서울 송파구/코딩달인/정세묵/수업 안들어도 코딩고수 가능!'},
-  //     { name: '서울 강남구/웹 개발/김소영/비전공자도 고수 될 수 있어!'},
-  //     { name: '서울 마포구/UX디자인/김태훈/디자인 실력 향상!' },
-  //     { name: '서울 서초구/데이터 분석/이민지/통계로 세상을 변화시킨다!'},
-  //     { name: '서울 송파구/네트워크 보안/박성호/해킹방어 능력 키우기!'},
-  //     { name: '서울 송파구/수비천재/오지환/모든 공은 나에게로' }
-  //   ];
-
-  //   setItems(fetchedItems);
-  // }, []);
+  // DB에서 데이터 가져오기
+  useEffect(() => {
+    apiAxios.get("/api/pro/item", {
+      params: {
+        location: "서울",
+      },
+    })
+      .then((response) => {
+        console.log("받은 데이터:", response.data.data);
+        setUserInfo(response.data.data); // 받아온 데이터 userInfo에 저장
+      })
+      .catch((error) => {
+        console.error("데이터를 가져오는데 실패했습니다.", error);
+      });
+  }, []);
 
   // 마커 클릭 시 해당 위치로 지도 이동
   const handleMarkerClick = (item) => {
     setSelectedLocation(item); // 선택된 위치 업데이트
     setItems([item]); // 클릭된 항목을 items로 업데이트
   };
+
   // const handleMarkerClick = (item) => {
   //   setSelectedLocation(item); // 선택된 위치 업데이트
   //   if (window.kakao && window.kakao.maps) {
@@ -77,7 +64,7 @@ const SearchBar = () => {
   return (
     <div className='proSearchBarWrap'>
       <div className='proSearchInputBarWrap'>
-        <img src="../../src/image/search.png" alt="검색버튼" />
+        <img src="/image/search.png" alt="검색버튼" />
         <input
           type="text"
           placeholder='어떤 서비스가 필요하세요?'
