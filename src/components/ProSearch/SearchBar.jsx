@@ -39,8 +39,9 @@ const SearchBar = () => {
     if (map) {
       const { lat, lng } = item;
       const newPosition = new window.kakao.maps.LatLng(lat, lng);
-      map.panTo(newPosition); // 지도 이동
-      map.setLevel(6); // 지도 레벨 조정
+      const kakaoMap = window.kakao.maps.Map.getMap();
+      kakaoMap.panTo(newPosition); 
+      kakaoMap.setLevel(6);
     }
   };
 

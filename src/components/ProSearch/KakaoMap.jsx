@@ -8,6 +8,7 @@ const KakaoMap = ({ selectedLocation, onMarkerClick }) => {
   const container = useRef(null);
   const [map, setMap] = useState(null);
   const { userInfo } = useUserInfo();
+  const [image, setImage] = useState("");
   
   useEffect(() => {
     // Geolocation API로 사용자의 현재 위치 가져오기
@@ -32,17 +33,22 @@ const KakaoMap = ({ selectedLocation, onMarkerClick }) => {
           if (userInfo && userInfo.content) {
             userInfo.content.map((item) => {
               const address = item.address;
-              const profileImage = item.profileImage;
+              setImage(item.profileImage);
 
               // 위도, 경도로 변환
               geocoder.addressSearch(address, (result, status) => {
                 if (status === kakao.maps.services.Status.OK) {
                   const position = new kakao.maps.LatLng(result[0].y, result[0].x);
-                  //const profileImage = selectedLocation.profileImage;
+                  
                   const markerContent = `
                     <div class="custom-marker">
                       <div class="marker-circle">
-                        <img src="${profileImage ? `https://kr.object.ncloudstorage.com/profile/${profileImage}` : '/image/default.svg'}" class="marker-image" />
+                        <img src="${item.profileImage 
+                          ? item.profileImage.startsWith("https://") 
+                            ? item.profileImage 
+                            : `https://kr.object.ncloudstorage.com/moeego/profile/${item.profileImage}` 
+                          : '/image/default.svg'}" 
+                          class="marker-image" />
                       </div>
                       <div class="marker-arrow"></div>
                     </div>
@@ -59,7 +65,6 @@ const KakaoMap = ({ selectedLocation, onMarkerClick }) => {
                   //클릭 시 해당 위치로 지도 이동
                   kakao.maps.event.addListener(customOverlay, "click", () => {
                     onMarkerClick(item); // 부모 컴포넌트로 클릭된 항목을 전달
-
                     const newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
                     kakaoMap.panTo(newPosition); 
                     kakaoMap.setLevel(5);
@@ -93,11 +98,16 @@ const KakaoMap = ({ selectedLocation, onMarkerClick }) => {
       geocoder.addressSearch(selectedLocation.address, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const position = new kakao.maps.LatLng(result[0].y, result[0].x);
-          const profileImage = selectedLocation.profileImage;
-          const markerContent = `
+
+           const markerContent = `
                     <div class="custom-marker">
                       <div class="marker-circle">
-                        <img src="${profileImage ? `https://kr.object.ncloudstorage.com/profile/${profileImage}` : '/image/default.svg'}" class="marker-image" />
+                        <img src="${selectedLocation.profileImage 
+                          ? selectedLocation.profileImage.startsWith("https://") 
+                            ? selectedLocation.profileImage 
+                            : `https://kr.object.ncloudstorage.com/moeego/profile/${selectedLocation.profileImage}` 
+                          : '/image/default.svg'}" 
+                          class="marker-image" />
                       </div>
                       <div class="marker-arrow"></div>
                     </div>
@@ -109,12 +119,6 @@ const KakaoMap = ({ selectedLocation, onMarkerClick }) => {
             yAnchor: 1,
           });
           customOverlay.setMap(map);
-
-          //클릭된 위치의 위도와 경도 출력
-          const lat = position.getLat();
-          const lng = position.getLng();
-          console.log("클릭된 위치의 위도:", lat, "경도:", lng);
-
           map.panTo(position);
           map.setLevel(5);
         }
