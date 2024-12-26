@@ -665,6 +665,7 @@ h1{
         height: auto;
         overflow: hidden;
         padding-bottom: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
     .mainReviewContentWrap .mainReviewImageWrap img{
         height: auto;
@@ -731,7 +732,7 @@ h1{
     }
     
     .carousel-button.next {
-        right: -10px; /* 오른쪽 버튼을 carousel 바깥에 위치시킴 */
+        right: -30px; /* 오른쪽 버튼을 carousel 바깥에 위치시킴 */
     }
 
     .city-box {
