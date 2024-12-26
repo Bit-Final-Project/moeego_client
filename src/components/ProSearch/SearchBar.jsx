@@ -16,18 +16,18 @@ const SearchBar = () => {
   const handleSearch = (event) => {
     setKeyword(event.target.value);
   };
-  
+
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       setKeyword(event.target.value);
     }
   };
-  
+
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     document.body.style.overflow = isModalOpen ? "auto" : "hidden";
   };
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
     document.body.style.overflow = "auto";
