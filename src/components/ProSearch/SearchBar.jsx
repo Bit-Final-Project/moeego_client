@@ -28,6 +28,7 @@ const SearchBar = () => {
     document.body.style.overflow = isModalOpen ? "auto" : "hidden";
   };
 
+  
   const closeModal = () => {
     setIsModalOpen(false);
     document.body.style.overflow = "auto";
