@@ -19,10 +19,11 @@ const ArticleMain = () => {
             isLoading,
             GoWrite,
             GoLogin,
+            viewUpdate,
             articleCurrentPage  } = useContext(ArticleContext);
     const {isLoggedIn} = useContext(AuthContext);
     const [hotArticles, setHotArticles] = useState([]);
-
+    const navigate = useNavigate();
     // 인기 게시글
     useEffect(() => {
         const fetchHotArticles = async () => {
@@ -105,7 +106,7 @@ const ArticleMain = () => {
                         <LifeTopic />
                     </div>
                     <div className="Main-RightContainer">
-                        <div className='NotionContainer'>
+                        <Link to='/event' className='NotionContainer'>
                             <div>
                                 <h4>공지</h4>
                             </div>
@@ -115,7 +116,7 @@ const ArticleMain = () => {
                                 <div className='MainNotice'>공지사항이 없습니다.</div>
                             )}
                             <div><img src="/image/next_icon.png" alt="next" /></div>
-                        </div>
+                        </Link>
                         <div className='HotArticleContainer'>
                             <h3>인기글 모이고</h3>
                             <div className='HotList'>

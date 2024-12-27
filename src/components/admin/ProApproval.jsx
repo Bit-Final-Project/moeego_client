@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../../css/admin/ProApproval.css';
 import apiAxios from '../../api/apiAxios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/member/AuthContext';
 
 const ProApproval = () => {
     // 상태 변수 정의
@@ -11,12 +13,36 @@ const ProApproval = () => {
     const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
     const pageSize = 5; // 페이지 당 아이템 수 고정
 
+    const navigate = useNavigate();
+    const { setIsLoggedIn, setLoginStatus } = useContext(AuthContext);
+    const [isAdmin, setIsAdmin] = useState(false); // 관리자 여부 상태
+    useEffect(() => {
+        const checkLoginStatus = () => {
+            const isLoggedIn = window.localStorage.getItem("login") === 'true'; // 로그인 상태 확인
+            const memberStatus = window.localStorage.getItem("memberStatus"); // 관리자 여부 확인
+
+            if (!isLoggedIn) {
+                // 로그인하지 않은 경우
+                navigate('/admin/login'); // 로그인 페이지로 리디렉션
+            } else if (memberStatus !== "ROLE_ADMIN") {
+                // 관리자가 아닌 경우
+                alert("관리자만 접근할 수 있습니다.");
+                navigate('/'); // 대시보드가 아닌 다른 페이지로 리디렉션
+            } else {
+                setIsAdmin(true); // 관리자인 경우
+            }
+        };
+
+        checkLoginStatus();
+    }, [navigate]); // `navigate`가 변경될 때마다 실행되도록 의존성 추가
+
     // 승인 대기 중인 데이터 불러오기
     const fetchApprovalData = async (page = 1) => {
         try {
             const response = await apiAxios.get(`/api/admin/pro/approval?page=${page}&size=${pageSize}`);
-            setApprovedMember(response.data.content || []);
-            setTotalPages(response.data.totalPages); // 전체 페이지 수 설정
+            console.log('API 응답 데이터:', response.data); // API 응답 데이터 확인
+            setApprovedMember(response.data || []); // 바로 response.data로 설정
+            setTotalPages(response.data.totalPages || 1); // 전체 페이지 수 설정
             setCurrentPage(page); // 현재 페이지 업데이트
         } catch (err) {
             console.error('API 호출 오류:', err);
@@ -25,6 +51,8 @@ const ProApproval = () => {
             setLoading(false);
         }
     };
+    
+    
 
     // 승인 처리 함수
     const handleApprove = async (memberNo, name) => {
@@ -71,7 +99,7 @@ const ProApproval = () => {
     // 로딩 중일 때 UI 표시
     if (loading) return <div>로딩 중...</div>;
     if (error) return <div>오류: {error}</div>;
-
+    
     return (
         <div className="proApproval-approve-container">
             <div className="proApproval-approve-inner-container">
@@ -90,7 +118,7 @@ const ProApproval = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {approvedMember && approvedMember.length === 0 ? (
+                            {approvedMember.length === 0 ? (
                                 <tr>
                                     <td colSpan="6">승인 대기 중인 회원이 없습니다.</td>
                                 </tr>

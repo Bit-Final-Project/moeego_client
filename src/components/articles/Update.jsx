@@ -20,7 +20,7 @@ const Update = () => {
     const [selectedFiles, setSelectedFiles] = useState([]); // 선택한 파일 저장
     const [removedImageIds, setRemovedImageIds] = useState([]);
     const maxFileSize = 20 * 1024 * 1024; // 20MB
-    const maxFileCount = 5; // 최대 5장
+    const maxFileCount = 4; // 최대 4장
 
     // 글자수 상태 추가
     const [subjectLength, setSubjectLength] = useState(0);
@@ -198,13 +198,13 @@ const Update = () => {
                     <div className="content-container">
                         <textarea
                             placeholder="내용을 입력하세요"
-                            maxLength={5000}
+                            maxLength={500}
                             name="content"
                             value={formData.content}
                             onChange={handleChange}
                         />
-                        <div className="char-count">
-                            {contentLength} / 5000
+                        <div className="content-count">
+                            {contentLength} / 500
                         </div>
                     </div>
                     <hr />

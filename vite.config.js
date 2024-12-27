@@ -6,6 +6,7 @@ export default defineConfig({
   server: {
     host: "175.45.194.160", // 호스트를 localhost로 설정
     port: 80, // 포트 설정
+
     proxy: {
       "/api": {
         target: "https://server.moeego.site", // Spring Boot 서버 주소

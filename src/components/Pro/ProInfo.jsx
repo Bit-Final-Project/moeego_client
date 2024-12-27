@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import apiAxios from "../../api/apiAxios";
 import "../../css/Pro/ProInfo.css";
+import { AuthContext } from '../../context/member/AuthContext';
 
 const ProInfo = ({ proItem, serviceItem, service, prono }) => {
     const [address, setAddress] = useState("");
@@ -71,7 +72,7 @@ const ProInfo = ({ proItem, serviceItem, service, prono }) => {
     }, [userno, service.proItemNo]);
 
     // 찜하기 / 찜 해제 처리
-    const handleFavoriteToggle = () => {
+    const handleFavoriteToggle = async () => {
         const apiUrl = "/api/pro/favorite";
         const method = isFavorite ? "delete" : "post"; // 찜 상태에 따라 메서드 결정
 
@@ -85,25 +86,52 @@ const ProInfo = ({ proItem, serviceItem, service, prono }) => {
         const data =
             method === "delete"
                 ? {
-                      memberNo: userno,
-                      proNo: proNoList, // 삭제할 proNo는 배열로 전달
-                  }
+                    memberNo: userno,
+                    proNo: proNoList, // 삭제할 proNo는 배열로 전달
+                }
                 : {
-                      memberNo: userno,
-                      proNo: proNoList[0], // POST는 단일 proNo 전달
-                  };
+                    memberNo: userno,
+                    proNo: proNoList[0], // POST는 단일 proNo 전달
+                };
 
-        apiAxios({
-            method: method,
-            url: apiUrl,
-            data: data,
-        })
-            .then((response) => {
-                setIsFavorite(!isFavorite); // 찜 여부 상태 반영
-            })
-            .catch((error) => {
-                console.error("API 요청 실패:", error);
+        try {
+            // Axios 요청
+            const response = await apiAxios({
+                method: method,
+                url: apiUrl,
+                data: data,
             });
+
+            // 서버 응답 성공 시 상태 업데이트
+            setIsFavorite(!isFavorite);
+        } catch (error) {
+            // Axios 에러 처리
+            if (error.response) {
+                // 서버에서 응답을 반환한 경우
+                const { status, data } = error.response;
+
+                if (status === 400) {
+                    alert(error.response.data.message);
+                } else if (status === 401) {
+                    alert("인증 오류입니다. 다시 로그인해주세요.");
+                } else if (status === 404) {
+                    alert("요청한 자원을 찾을 수 없습니다.");
+                } else {
+                    alert(
+                        `서버 오류: ${data.message || "알 수 없는 오류가 발생했습니다."
+                        }`
+                    );
+                }
+            } else if (error.request) {
+                // 요청이 서버에 도달하지 못한 경우
+                console.error("요청 전송 실패:", error.request);
+                alert("서버로부터 응답이 없습니다. 네트워크 상태를 확인하세요.");
+            } else {
+                // 그 외 오류 (예: 설정 문제)
+                console.error("요청 구성 오류:", error.message);
+                alert("요청 구성에 문제가 있습니다. 관리자에게 문의하세요.");
+            }
+        }
     };
 
     return (
@@ -113,9 +141,8 @@ const ProInfo = ({ proItem, serviceItem, service, prono }) => {
                 <div className="icon-buttons">
                     <div
                         role="button"
-                        className={`heart ${
-                            isFavorite ? "favorited" : "not-favorited"
-                        }`} // Conditionally add the class based on isFavorite
+                        className={`heart ${isFavorite ? "favorited" : "not-favorited"
+                            }`} // Conditionally add the class based on isFavorite
                         onClick={handleFavoriteToggle} // 버튼 클릭 시 찜하기/해제 처리
                     >
                         <svg
@@ -199,7 +226,7 @@ const ProInfo = ({ proItem, serviceItem, service, prono }) => {
                                 {Math.floor(proItem.star * 10) / 10}
                             </span>
                             <span className="count">
-                                ({proItem.reviewCount})
+                                ({proItem.reviewCount || 0})
                             </span>
                         </div>
                     </div>

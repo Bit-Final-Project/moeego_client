@@ -12,7 +12,7 @@ import "../../css/Pro/SearchList.css";
 
 const ProView = () => {
     const location = useLocation();
-    const { item: routeStateItem, serviceItem, proNo } = location.state || {};
+    const { item: routeStateItem = [], serviceItem = {}, proNo = null } = location.state || {};
 
     const [modalType, setModalType] = useState(null);
     const [proItem, setProItem] = useState(routeStateItem || {});
@@ -23,6 +23,9 @@ const ProView = () => {
     const [totalPages, setTotalPages] = useState(1); // Track total pages
 
     useEffect(() => {
+        // Scroll to the top of the page when the component is loaded
+        window.scrollTo(0, 0);
+
         const fetchProDetails = async () => {
             try {
                 setProItem(routeStateItem);
@@ -48,7 +51,7 @@ const ProView = () => {
         if (serviceItem.proItemNo) {
             fetchProDetails();
         }
-    }, [currentPage]); // Add currentPage to dependency array
+    }, [currentPage, routeStateItem, serviceItem, proNo]); // Add necessary dependencies
 
     const openModal = (type) => {
         setModalType((prevType) => (prevType === type ? null : type));
@@ -78,14 +81,27 @@ const ProView = () => {
             <section className="dalin-photo">
                 <div className="dalin-photo-background">
                     <img
-                        src={`https://kr.object.ncloudstorage.com/moeego/profile/${proItem.profileImage}`}
+                        src={
+                            proItem.profileImage
+                                ? proItem.profileImage.startsWith("https://")
+                                    ? proItem.profileImage  // https://로 시작하면 그대로 사용
+                                    : `https://kr.object.ncloudstorage.com/moeego/profile/${proItem.profileImage}`  // 아니면 경로 추가
+                                : "/image/default.svg"  // profileImage가 없으면 기본 이미지 사용
+                        }
                         alt={proItem.name}
                         width="100"
                     />
                 </div>
                 <div className="dalin-photo-main">
                     <img
-                        src={`https://kr.object.ncloudstorage.com/moeego/profile/${proItem.profileImage}`}
+                        src={
+                            proItem.profileImage
+                                ? proItem.profileImage.startsWith("https://")
+                                    ? proItem.profileImage  // https://로 시작하면 그대로 사용
+                                    : `https://kr.object.ncloudstorage.com/moeego/profile/${proItem.profileImage}`  // 아니면 경로 추가
+                                : "/image/default.svg"  // profileImage가 없으면 기본 이미지 사용
+                        }
+                        style={{ backgroundColor: "#fff" }}
                         alt={proItem.name}
                         width="100"
                         height="100"

@@ -128,10 +128,14 @@
     margin-top: 1rem;
 }
 .noticeView h2 {
+    color:black;
     margin: 0;
     margin-top: 4rem;
 }
-
+.noticeView .post-image-wrapper{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
 @media (max-width: 1250px) {
     .noticePageWrap {
         flex-direction: column;

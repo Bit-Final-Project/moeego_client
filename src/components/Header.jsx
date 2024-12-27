@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../css/Header.css";
 import HeaderModal from "./mypage/HeaderModal";
 import { AuthContext } from '../context/member/AuthContext';
 import { MyPageContext } from '../context/mypage/MyPageContext';
+import apiAxios from '../api/apiAxios';
+import "../css/Header.css";
 
 function Header() {
   const [modalType, setModalType] = useState(null);
@@ -11,9 +12,9 @@ function Header() {
   const [isIconToggled, setIsIconToggled] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isSearchButtonVisible, setIsSearchButtonVisible] = useState(true);
-  const { isLoggedIn, loginEmail, loginUser, loginStatus, loginProfile } = useContext(AuthContext);
   const [userno, setUserno] = useState(localStorage.getItem('userno') || ''); // 초기값 설정
   const [profile, setUserProfile] = useState(localStorage.getItem('userprofile') || ''); // 초기값 설정
+  const { isLoggedIn, loginEmail, loginUser, loginStatus, loginProfile } = useContext(AuthContext);
 
   const dropdownRef = useRef(null);
   const searchRef = useRef(null);
@@ -22,17 +23,17 @@ function Header() {
   const navigate = useNavigate();
 
   const handleSearch = (value) => {
-      if (value.trim()) { // 검색어가 비어있지 않을 경우에만 이동
-          navigate(`/search?value=${value}`); // 쿼리 파라미터에 검색어 포함
-      } else {
-          alert("검색어를 입력해주세요.");
-      }
+    if (value.trim()) { // 검색어가 비어있지 않을 경우에만 이동
+      navigate(`/search?value=${value}`); // 쿼리 파라미터에 검색어 포함
+    } else {
+      alert("검색어를 입력해주세요.");
+    }
   };
   const handleKeyPress = (event) => {
     if (event.key === "Enter") { // 엔터키 감지
-        handleSearch(searchValue);
+      handleSearch(searchValue);
     }
-};
+  };
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -125,6 +126,41 @@ function Header() {
     navigate('/logout');
   }
 
+  const GoProAccess = () => {
+    navigate('/pro/signup/main');
+  }
+
+  const closeAndAccessMenu = async () => {
+    try {
+      const response = await apiAxios.get("/api/admin/emailstatus");
+
+      if (response.status === 200) {
+        const access = Number(response.data);
+
+        navigate(`/pro/result?access=${access}`);
+
+      } else {
+        console.warn("Unexpected response status:", response.status);
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 404) {
+          console.error("Error: 사용자 정보를 찾을 수 없거나 이메일 상태를 찾을 수 없습니다.");
+          alert("사용자를 찾을 수 없거나 이메일 상태를 찾을 수 없습니다.");
+        } else {
+          console.error(`Error: ${error.response.data || "An error occurred"}`);
+          alert(`오류가 발생했습니다: ${error.response.data || "알 수 없는 오류"}`);
+        }
+      } else {
+        console.error("Network error or other issue:", error);
+        alert("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    } finally {
+      setIsMenuOpen(false);
+      document.body.style.overflow = "auto";
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -204,8 +240,12 @@ function Header() {
                   </Link>
                   <div className='HamburgerUserInfoButtonWrap'>
                     <input type="button" value="로그아웃" onClick={() => (closeMenu(), GoLogOut())} />
-                    {loginStatus == 'ROLE_USER' && (
-                      <input type="button" value="달인전환" onClick={closeMenu} />
+                    {loginStatus !== "ROLE_PRO" && loginStatus !== "ROLE_PEND_PRO" && loginStatus !== "ROLE_ADMIN" && loginStatus !== "ROLE_CANCEL_PRO" && loginStatus !== "ROLE_CANCEL" && (
+                      <input type="button" value="달인전환" onClick={() => { closeMenu(), GoProAccess() }} />
+                    )}
+
+                    {loginStatus === 'ROLE_PEND_PRO' && (
+                      <input type="button" value="승인대기" onClick={() => { closeAndAccessMenu() }} />
                     )}
                   </div>
                 </li>
@@ -250,12 +290,12 @@ function Header() {
 
         {/* 검색창 */}
         <div className="search-bar">
-          <input type="text" 
-                 placeholder="검색할 내용을 입력하세요"
-                 className="search-input"
-                 value={searchValue}
-                 onChange={(e) => setSearchValue(e.target.value)}
-                 onKeyDown={handleKeyPress}/>
+          <input type="text"
+            placeholder="검색할 내용을 입력하세요"
+            className="search-input"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={handleKeyPress} />
           <button className="search-button" onClick={() => handleSearch(searchValue)}>
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M15 10.5C15 12.9853 12.9853 15 10.5 15C8.01472 15 6 12.9853 6 10.5C6 8.01472 8.01472 6 10.5 6C12.9853 6 15 8.01472 15 10.5ZM14.1793 15.2399C13.1632 16.0297 11.8865 16.5 10.5 16.5C7.18629 16.5 4.5 13.8137 4.5 10.5C4.5 7.18629 7.18629 4.5 10.5 4.5C13.8137 4.5 16.5 7.18629 16.5 10.5C16.5 11.8865 16.0297 13.1632 15.2399 14.1792L20.0304 18.9697L18.9697 20.0303L14.1793 15.2399Z" fill="#ffffff"></path> </g></svg>
           </button>
@@ -303,7 +343,7 @@ function Header() {
           {modalType === "userMenu" && (
             <div className="ToggleMenu" onClick={closeModal}>
               <div className="ToggleMenuList" onClick={(e) => e.stopPropagation()}>
-                <HeaderModal closeModal={closeModal} />
+                <HeaderModal closeModal={closeModal} closeAndAccessMenu={closeAndAccessMenu} GoProAccess={GoProAccess} loginStatus={loginStatus} />
               </div>
             </div>
           )}
@@ -313,8 +353,8 @@ function Header() {
       <div className='moblie-search-insert'>
         {isSearchVisible && (
           <div className="moblie-search-bar">
-            <input ref={searchRef} type="text" placeholder="검색할 내용을 입력하세요" className="moblie-search-input" onBlur={handleFocusOut} 
-            value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onKeyDown={handleKeyPress}/>
+            <input ref={searchRef} type="text" placeholder="검색할 내용을 입력하세요" className="moblie-search-input" onBlur={handleFocusOut}
+              value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onKeyDown={handleKeyPress} />
             <button className="moblie-search-button" onClick={() => handleSearch(searchValue)}>
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M15 10.5C15 12.9853 12.9853 15 10.5 15C8.01472 15 6 12.9853 6 10.5C6 8.01472 8.01472 6 10.5 6C12.9853 6 15 8.01472 15 10.5ZM14.1793 15.2399C13.1632 16.0297 11.8865 16.5 10.5 16.5C7.18629 16.5 4.5 13.8137 4.5 10.5C4.5 7.18629 7.18629 4.5 10.5 4.5C13.8137 4.5 16.5 7.18629 16.5 10.5C16.5 11.8865 16.0297 13.1632 15.2399 14.1792L20.0304 18.9697L18.9697 20.0303L14.1793 15.2399Z" fill="#ffffff"></path> </g></svg>
             </button>
