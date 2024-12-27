@@ -9,7 +9,7 @@ export default defineConfig({
 
     proxy: {
       "/api": {
-        #target: "https://server.moeego.site", // Spring Boot 서버 주소
+        // target: "https://server.moeego.site", // Spring Boot 서버 주소
         target: "211.188.48.106",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""), // "/api" 제거
