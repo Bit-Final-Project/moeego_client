@@ -171,23 +171,28 @@ const SearchBar = () => {
       )}
 
       {/* 두 번째 모달: 상세보기 모달 */}
-      {isDetailModalOpen && (
-        <div className={`detail-modalOverlay ${isDetailModalOpen ? "show" : "hide"}`} onClick={closeDetailModal}>
+      {isDetailModalOpen && selectedItem && (
+        <div className={`detail-modalOverlay ${isDetailModalOpen ? 'show' : 'hide'}`} onClick={closeDetailModal}>
           <div className="detail-modalContent" onClick={(e) => e.stopPropagation()}>
-            <button onClick={closeDetailModal}>닫기</button>
-            {/* 상세보기 내용 */}
-            <div className="detail-modalContent-inner">
-              <div className="item-image">
-                <img src={selectedItem.profileImage ? selectedItem.profileImage : "/image/default.svg"} alt="" />
-              </div>
-              <div className="item-info">
-                <h3>{selectedItem.name}</h3>
-                <p>{selectedItem.address}</p>
-                <p>{selectedItem.mainCateName}</p>
-                <p>{selectedItem.description}</p>
-              </div>
-              <button onClick={() => goProView(selectedItem)}>상세보기</button>
+            <div className='detail-mapName'>
+              <h2>{selectedItem.name}의 서비스</h2>
+              <button onClick={closeDetailModal}>닫기</button>
             </div>
+            <ul className="detail-map-content-wrap">
+              {selectedItem.proItems && selectedItem.proItems.filter((service) => service.subject).length > 0 ? (
+                selectedItem.proItems.filter((service) => service.subject).map((service, index) => (
+                  <li key={index} className="detail-map-content-wrap-list" onClick={() => goProView(selectedItem, service)}>
+                    <span className="service-name">{service.subject}</span>
+                    <span className="service-name">
+                      <span style={{ color: '#f39c12', marginRight: '0.25rem' }}>★</span>
+                      {Math.floor((service.star * 10) / 10)}
+                    </span>
+                  </li>
+                ))
+              ) : (
+                <li className='detail-map-content-wrap-list'>등록된 서비스가 없습니다.</li> // service.subject가 없는 경우 이 메시지 출력
+              )}
+            </ul>
           </div>
         </div>
       )}
