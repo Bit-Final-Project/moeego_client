@@ -4,20 +4,23 @@
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    margin-bottom: 20em;
+    overflow-y: auto;
 }
 
 .ChangeEmailWrap hr {
     margin-top: 5%;
     margin-bottom: 5%;
-    border-width:1px 0 0 0; 
-    border-color:#f2f2f2;
+    border-width: 1px 0 0 0;
+    border-color: #f2f2f2;
     opacity: 30%;
 }
 
 .ChangeEmailWrap {
     width: 80%;
-    margin-top: 5%;
+    min-height: 80vh;
+    padding-top: 5%;
+    overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 .ChangeEmailWrap .PageTitle {
@@ -59,7 +62,9 @@
     border-bottom: 1px solid #b2b2b2;
 }
 
-.EmailWrap input[type="text"]:focus, .EmailWrap input[type="text"]:active, .EmailWrap input[type="text"]:not(:placeholder-shown) {
+.EmailWrap input[type="text"]:focus,
+.EmailWrap input[type="text"]:active,
+.EmailWrap input[type="text"]:not(:placeholder-shown) {
     border-bottom: 1px solid lightcoral;
     box-sizing: border-box;
 }
