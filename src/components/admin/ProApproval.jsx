@@ -16,6 +16,7 @@ const ProApproval = () => {
     const navigate = useNavigate();
     const { setIsLoggedIn, setLoginStatus } = useContext(AuthContext);
     const [isAdmin, setIsAdmin] = useState(false); // 관리자 여부 상태
+
     useEffect(() => {
         const checkLoginStatus = () => {
             const isLoggedIn = window.localStorage.getItem("login") === 'true'; // 로그인 상태 확인
@@ -41,7 +42,8 @@ const ProApproval = () => {
         try {
             const response = await apiAxios.get(`/api/admin/pro/approval?page=${page}&size=${pageSize}`);
             console.log('API 응답 데이터:', response.data); // API 응답 데이터 확인
-            setApprovedMember(response.data || []); // 바로 response.data로 설정
+            // 데이터가 배열 형태로 바로 전달되는 경우
+            setApprovedMember(response.data.content || []); // 바로 response.data.content로 설정
             setTotalPages(response.data.totalPages || 1); // 전체 페이지 수 설정
             setCurrentPage(page); // 현재 페이지 업데이트
         } catch (err) {
@@ -51,8 +53,6 @@ const ProApproval = () => {
             setLoading(false);
         }
     };
-    
-    
 
     // 승인 처리 함수
     const handleApprove = async (memberNo, name) => {
@@ -87,6 +87,7 @@ const ProApproval = () => {
     // 페이지 변경 함수
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
             fetchApprovalData(page); // 페이지 변경 시 데이터 불러오기
         }
     };
@@ -99,7 +100,20 @@ const ProApproval = () => {
     // 로딩 중일 때 UI 표시
     if (loading) return <div>로딩 중...</div>;
     if (error) return <div>오류: {error}</div>;
-    
+
+    // 페이지 범위 계산 함수
+    const getPageRange = () => {
+        const pageNumbers = [];
+        const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
+        const endPage = Math.min(startPage + 4, totalPages);
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(i);
+        }
+
+        return pageNumbers;
+    };
+
     return (
         <div className="proApproval-approve-container">
             <div className="proApproval-approve-inner-container">
@@ -158,12 +172,12 @@ const ProApproval = () => {
                         disabled={currentPage === 1}>이전</button>
 
                     {/* 페이지 번호 버튼 */}
-                    {[...Array(totalPages).keys()].map((i) => (
+                    {getPageRange().map((i) => (
                         <button
                             key={i}
-                            onClick={() => handlePageChange(i + 1)}
-                            className={currentPage === i + 1 ? 'active' : ''}>
-                            {i + 1}
+                            onClick={() => handlePageChange(i)}
+                            className={currentPage === i ? 'active' : ''}>
+                            {i}
                         </button>
                     ))}
 
