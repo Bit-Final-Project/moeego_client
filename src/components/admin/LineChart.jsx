@@ -13,9 +13,9 @@ const LineChart = ({ weekMemberData, weekProData, weekLeaveMemberData }) => {
             .filter(item => item.date >= new Date(new Date().setDate(new Date().getDate() - 6))); // 최근 7일 데이터 필터링
     };
 
-    const sortedWeekMemberData = sortAndFilterData(weekMemberData);
-    const sortedWeekProData = sortAndFilterData(weekProData);
-    const sortedWeekLeaveMemberData = sortAndFilterData(weekLeaveMemberData);
+    const sortedWeekMemberData = [...weekMemberData].sort((a, b) => new Date(a.date) - new Date(b.date)).reverse();
+    const sortedWeekProData = [...weekProData].sort((a, b) => new Date(a.date) - new Date(b.date)).reverse();
+    const sortedWeekLeaveMemberData = [...weekLeaveMemberData].sort((a, b) => new Date(a.date) - new Date(b.date)).reverse();
 
     const chartData = {
         labels: sortedWeekMemberData.map(item => item.date.toISOString().split('T')[0]), // 날짜 (X축)
