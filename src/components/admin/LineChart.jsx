@@ -6,7 +6,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const LineChart = ({ weekMemberData, weekProData, weekLeaveMemberData }) => {
-
     const getPastWeekDates = () => {
         const dates = [];
         const today = new Date();
@@ -42,6 +41,7 @@ const LineChart = ({ weekMemberData, weekProData, weekLeaveMemberData }) => {
             {
                 label: '고수 등록 수',
                 data: fillData(pastWeekDates, weekProData), // 고수 신청 수 (Y축)
+
                 borderColor: 'rgba(255, 99, 132, 1)', // 고수 신청 선 색상
                 backgroundColor: 'rgba(255, 99, 132, 0.2)', // 선 내부 색상
                 fill: true, // 선 내부 채우기
