@@ -5,18 +5,34 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 // Chart.js의 모듈 등록
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-const LineChart = ({ weekMemberData, weekProData , weekLeaveMemberData}) => {
+const LineChart = ({ weekMemberData, weekProData, weekLeaveMemberData }) => {
+    const getPastWeekDates = () => {
+        const dates = [];
+        const today = new Date();
+        for (let i = 7; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            dates.push(date.toISOString().split('T')[0]);
+        }
+        return dates;
+    };
 
-    const reversedWeekMemberData = weekMemberData.reverse();
-    const reversedWeekProData = weekProData.reverse();
-    const reversedWeekLeaveMemberData = weekLeaveMemberData.reverse();
+    const fillData = (dates, data) => {
+        const dataMap = data.reduce((map, item) => {
+            map[item.date] = item.count;
+            return map;
+        }, {});
+        return dates.map(date => dataMap[date] || 0);
+    };
+
+    const pastWeekDates = getPastWeekDates();
 
     const chartData = {
-        labels: reversedWeekMemberData.map(item => item.date), // 날짜 (X축)
+        labels: pastWeekDates, // 날짜 (X축)
         datasets: [
             {
                 label: '회원 가입 수',
-                data: reversedWeekMemberData.map(item => item.count), // 가입된 사용자 수 (Y축)
+                data: fillData(pastWeekDates, weekMemberData), // 가입된 사용자 수 (Y축)
                 borderColor: 'rgba(75, 192, 192, 1)', // 선 색상
                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // 선 내부 색상
                 fill: true, // 선 내부 채우기
@@ -24,7 +40,8 @@ const LineChart = ({ weekMemberData, weekProData , weekLeaveMemberData}) => {
             },
             {
                 label: '고수 등록 수',
-                data: reversedWeekProData.map(item => item.count), // 고수 신청 수 (Y축)
+                data: fillData(pastWeekDates, weekProData), // 고수 신청 수 (Y축)
+
                 borderColor: 'rgba(255, 99, 132, 1)', // 고수 신청 선 색상
                 backgroundColor: 'rgba(255, 99, 132, 0.2)', // 선 내부 색상
                 fill: true, // 선 내부 채우기
@@ -32,7 +49,7 @@ const LineChart = ({ weekMemberData, weekProData , weekLeaveMemberData}) => {
             },
             {
                 label: '탈퇴 회원 수',
-                data: reversedWeekLeaveMemberData.map(item => item.count), // 탈퇴 회원 수 (Y축)
+                data: fillData(pastWeekDates, weekLeaveMemberData), // 탈퇴 회원 수 (Y축)
                 borderColor: 'rgba(255, 206, 86, 1)', // 탈퇴 회원 선 색상
                 backgroundColor: 'rgba(255, 206, 86, 0.2)', // 선 내부 색상
                 fill: true, // 선 내부 채우기
@@ -59,8 +76,8 @@ const LineChart = ({ weekMemberData, weekProData , weekLeaveMemberData}) => {
                         scales: {
                             y: {
                                 beginAtZero: true, // Y축 시작점을 0으로 설정
-                                max: 1000, // Y축 최대값을 50으로 설정
-                                stepsize:10,
+                                max: 1000, // Y축 최대값을 1000으로 설정
+                                stepsize: 10,
                             },
                         },
                     }}
