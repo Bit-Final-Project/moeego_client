@@ -13,7 +13,7 @@
   - 커뮤니티 시스템
   - 관리자 페이지
 - 개발 기간
-  - 총 7주(24.11 3주차 ~ 24.12 4주차)
+  - 총 7주(24.11 1주차 ~ 24.12 4주차)
 
 # 스케줄 캘린더
 ![image](https://github.com/user-attachments/assets/6cc62017-457a-4aa9-b4cb-7c871b1e4bfd)
